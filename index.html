@@ -172,6 +172,9 @@
                     <a onclick="showHome()" class="nav-link text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-bold transition-colors">Home</a>
                     <a onclick="showHome('#courses')" class="nav-link text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-bold transition-colors">Courses</a>
                     <a href="#quizzes" class="nav-link text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-bold transition-colors">Quizzes</a>
+                    <a href="#books" class="nav-link text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-bold transition-colors">Books</a>
+                    <a href="#about" class="nav-link text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-bold transition-colors">About Us</a>
+                    <a onclick="showProfile()" class="nav-link text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-bold transition-colors cursor-pointer">Settings</a>
                     
                     <div class="flex items-center gap-3 border-l border-gray-300 dark:border-gray-700 pl-4 ml-2" id="auth-buttons">
                         <button onclick="openModal('login-modal')" class="text-gray-600 dark:text-accent hover:text-gray-900 dark:hover:text-yellow-400 flex items-center gap-2 font-bold transition-colors">
@@ -207,6 +210,10 @@
             <div class="flex flex-col gap-4">
                 <a onclick="showHome()" class="text-gray-800 dark:text-white font-bold text-center cursor-pointer">Home</a>
                 <a onclick="showHome('#courses')" class="text-gray-800 dark:text-white font-bold text-center cursor-pointer">Courses</a>
+                <a href="#quizzes" class="text-gray-800 dark:text-white font-bold text-center cursor-pointer">Quizzes</a>
+                <a href="#books" class="text-gray-800 dark:text-white font-bold text-center cursor-pointer">Books</a>
+                <a href="#about" class="text-gray-800 dark:text-white font-bold text-center cursor-pointer">About Us</a>
+                <a onclick="showProfile()" class="text-gray-800 dark:text-white font-bold text-center cursor-pointer">Settings</a>
                 <div class="h-px bg-gray-200 dark:bg-gray-800 my-2"></div>
                 <div id="mobile-auth-buttons" class="flex flex-col gap-4">
                     <button onclick="openModal('login-modal')" class="w-full text-center py-3 text-accent dark:text-accent font-bold border border-gray-300 dark:border-gray-700 rounded-lg">Login</button>
@@ -699,7 +706,7 @@
                 alert('Account created successfully!');
                 closeModal('signup-modal');
                 updateUIAfterLogin(data.user);
-                showProfile();
+                showHome();
             }
         }
 
@@ -720,7 +727,7 @@
                 alert('Logged in successfully!');
                 closeModal('login-modal');
                 updateUIAfterLogin(data.user);
-                showProfile(); // تحويله لصفحته الشخصية دايركت
+                showHome(); // تحويله للصفحة الرئيسية بعد الدخول
             }
         }
 
