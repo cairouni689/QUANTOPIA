@@ -6,9 +6,7 @@
     <title>QUANTOPIA Platform</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     
     <script>
@@ -408,7 +406,6 @@
     </footer>
 
 
-    <!-- Login Modal -->
     <div id="login-modal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal('login-modal')"></div>
         
@@ -426,7 +423,6 @@
                 <form id="login-form" onsubmit="event.preventDefault(); handleLogin();" class="space-y-6">
                     <div class="relative">
                         <i class="fa-solid fa-envelope absolute left-0 top-3 text-primary"></i>
-                        <!-- تعديل التايب إلى text ليقبل الإيميل ورقم الهاتف -->
                         <input type="text" id="login-email" required placeholder="Email Address or Phone Number" class="custom-input">
                     </div>
                     
@@ -440,7 +436,6 @@
                         <button type="submit" class="border border-accent text-accent hover:bg-accent hover:text-darkBg font-bold py-2 px-8 rounded-lg w-fit transition-colors">
                             Login
                         </button>
-                        <!-- تم إزالة الزر الخاص بالدفع هنا -->
                     </div>
                 </form>
                 <p class="text-gray-400 text-xs mt-8">Don't have an account? <span class="text-primary cursor-pointer hover:underline" onclick="switchModal('login-modal', 'signup-modal')">Sign up now !</span></p>
@@ -468,7 +463,6 @@
         </div>
     </div>
 
-    <!-- Sign Up Modal -->
     <div id="signup-modal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal('signup-modal')"></div>
         
@@ -486,22 +480,21 @@
                     <div class="grid grid-cols-2 gap-6">
                         <div class="relative">
                             <i class="fa-solid fa-user absolute left-0 top-3 text-primary"></i>
-                            <input type="text" placeholder="First Name" class="custom-input" required>
+                            <input type="text" id="signup-first-name" placeholder="First Name" class="custom-input" required>
                         </div>
                         <div class="relative">
                             <i class="fa-solid fa-user absolute left-0 top-3 text-primary"></i>
-                            <input type="text" placeholder="Middle Name" class="custom-input">
+                            <input type="text" id="signup-middle-name" placeholder="Middle Name" class="custom-input">
                         </div>
                     </div>
                     
                     <div class="relative">
                         <i class="fa-solid fa-user absolute left-0 top-3 text-primary"></i>
-                        <input type="text" placeholder="Last Name" class="custom-input" required>
+                        <input type="text" id="signup-last-name" placeholder="Last Name" class="custom-input" required>
                     </div>
 
                     <div class="relative mt-6">
                         <i class="fa-solid fa-envelope absolute left-0 top-3 text-primary"></i>
-                        <!-- تعديل التايب إلى text ليقبل الإيميل ورقم الهاتف -->
                         <input type="text" id="signup-email" required placeholder="Email Address or Phone Number" class="custom-input">
                     </div>
                     
@@ -517,11 +510,9 @@
                     </div>
 
                     <div class="flex flex-col gap-4 pt-4">
-                        <!-- تغيير النص إلى Sign Up -->
                         <button type="submit" class="bg-primary hover:bg-primaryDark text-white font-bold py-3 px-8 rounded-lg w-fit transition-colors shadow-lg shadow-primary/30">
                             Sign Up
                         </button>
-                        <!-- تم إزالة الزر الخاص بالدليل هنا -->
                     </div>
                 </form>
                 
@@ -627,12 +618,15 @@
             }
         });
 
-        // Sign Up Handle (Email OR Phone)
+        // Sign Up Handle (Email OR Phone with Fake Domain Trick)
         async function handleSignUp() {
             if(!supabase) {
                 alert("Library is still loading. Please try again.");
                 return;
             }
+            const firstName = document.getElementById('signup-first-name').value;
+            const middleName = document.getElementById('signup-middle-name').value;
+            const lastName = document.getElementById('signup-last-name').value;
             const contactInfo = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
             const confirmPassword = document.getElementById('signup-confirm-password').value;
@@ -642,29 +636,37 @@
                 return;
             }
 
-            // تجهيز بيانات التسجيل
-            let authData = { password: password };
-            
-            // فحص هل المدخل إيميل أو هاتف
-            if (contactInfo.includes('@')) {
-                authData.email = contactInfo;
-            } else {
-                authData.phone = contactInfo;
+            // الخدعة: لو المدخل مفيهوش @ هنعتبره رقم ونضيفله دومين المنصة الوهمي
+            let finalEmail = contactInfo;
+            if (!contactInfo.includes('@')) {
+                finalEmail = contactInfo + '@quantopia.com';
             }
 
-            const { data, error } = await supabase.auth.signUp(authData);
+            // إرسال البيانات لسوبابيز (إيميل + بيانات اضافية)
+            const { data, error } = await supabase.auth.signUp({
+                email: finalEmail,
+                password: password,
+                options: {
+                    data: {
+                        first_name: firstName,
+                        middle_name: middleName,
+                        last_name: lastName,
+                        original_contact: contactInfo 
+                    }
+                }
+            });
 
             if (error) {
                 console.error('Error signing up:', error.message);
                 alert('Sign up failed: ' + error.message);
             } else {
                 console.log('User signed up:', data);
-                alert('Account created successfully! Check your email/phone to verify.');
+                alert('Account created successfully!');
                 closeModal('signup-modal');
             }
         }
 
-        // Login Handle (Email OR Phone)
+        // Login Handle (Email OR Phone with Fake Domain Trick)
         async function handleLogin() {
             if(!supabase) {
                 alert("Library is still loading. Please try again.");
@@ -673,16 +675,16 @@
             const contactInfo = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
 
-            let authData = { password: password };
-            
-            // فحص هل المدخل إيميل أو هاتف
-            if (contactInfo.includes('@')) {
-                authData.email = contactInfo;
-            } else {
-                authData.phone = contactInfo;
+            // تطبيق نفس الخدعة في تسجيل الدخول
+            let finalEmail = contactInfo;
+            if (!contactInfo.includes('@')) {
+                finalEmail = contactInfo + '@quantopia.com';
             }
 
-            const { data, error } = await supabase.auth.signInWithPassword(authData);
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: finalEmail,
+                password: password
+            });
 
             if (error) {
                 console.error('Error logging in:', error.message);
