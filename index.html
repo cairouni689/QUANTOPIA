@@ -9,7 +9,7 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     
     <script>
         tailwind.config = {
@@ -613,29 +613,22 @@
         const SUPABASE_URL = 'https://cilhimtbujromcbvqvgh.supabase.co';
         const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_a4YGKVHx6oBBY5XvB0iS8Q_GJCcfcHa'; 
         
-        let supabase;
+        // غيرنا اسم المتغير لـ supabaseApp عشان ميتعارضش مع المكتبة الأساسية
+        let supabaseApp;
         
-        const initSupabase = () => {
-            if (window.supabase && !supabase) {
-                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
-            }
-        };
-        
-        // التهيئة مع الـ DOM بدل ما نستنى الصور (أسرع بكتير)
-        document.addEventListener('DOMContentLoaded', initSupabase);
-        
-        // محاولة التهيئة كل نص ثانية كحل احتياطي لو النت بطيء
-        const initInterval = setInterval(() => {
+        // التهيئة المباشرة بعد تحميل الصفحة
+        window.addEventListener('load', () => {
             if (window.supabase) {
-                initSupabase();
-                clearInterval(initInterval);
+                supabaseApp = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+            } else {
+                console.error("Supabase failed to load from CDN.");
             }
-        }, 500);
+        });
 
         // Sign Up Handle (Email OR Phone with Fake Domain Trick)
         async function handleSignUp() {
-            if(!supabase) {
-                alert("Library is still loading. Please try again.");
+            if(!supabaseApp) {
+                alert("مكتبة قواعد البيانات لسه بتحمل، جرب تدوس تاني بعد ثانية.");
                 return;
             }
             const firstName = document.getElementById('signup-first-name').value;
@@ -657,7 +650,7 @@
             }
 
             // إرسال البيانات لسوبابيز (إيميل + بيانات اضافية)
-            const { data, error } = await supabase.auth.signUp({
+            const { data, error } = await supabaseApp.auth.signUp({
                 email: finalEmail,
                 password: password,
                 options: {
@@ -682,8 +675,8 @@
 
         // Login Handle (Email OR Phone with Fake Domain Trick)
         async function handleLogin() {
-            if(!supabase) {
-                alert("Library is still loading. Please try again.");
+            if(!supabaseApp) {
+                alert("مكتبة قواعد البيانات لسه بتحمل، جرب تدوس تاني بعد ثانية.");
                 return;
             }
             const contactInfo = document.getElementById('login-email').value;
@@ -695,7 +688,7 @@
                 finalEmail = contactInfo + '@quantopia.com';
             }
 
-            const { data, error } = await supabase.auth.signInWithPassword({
+            const { data, error } = await supabaseApp.auth.signInWithPassword({
                 email: finalEmail,
                 password: password
             });
