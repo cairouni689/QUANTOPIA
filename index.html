@@ -614,11 +614,23 @@
         const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_a4YGKVHx6oBBY5XvB0iS8Q_GJCcfcHa'; 
         
         let supabase;
-        window.addEventListener('load', () => {
-            if(window.supabase) {
+        
+        const initSupabase = () => {
+            if (window.supabase && !supabase) {
                 supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
             }
-        });
+        };
+        
+        // التهيئة مع الـ DOM بدل ما نستنى الصور (أسرع بكتير)
+        document.addEventListener('DOMContentLoaded', initSupabase);
+        
+        // محاولة التهيئة كل نص ثانية كحل احتياطي لو النت بطيء
+        const initInterval = setInterval(() => {
+            if (window.supabase) {
+                initSupabase();
+                clearInterval(initInterval);
+            }
+        }, 500);
 
         // Sign Up Handle (Email OR Phone with Fake Domain Trick)
         async function handleSignUp() {
