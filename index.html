@@ -6,8 +6,10 @@
     <title>QUANTOPIA Platform</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     
     <script>
         tailwind.config = {
@@ -608,11 +610,15 @@
         }
 
         // 4. Supabase Integration
-const SUPABASE_URL = 'https://cilhimtbujromcbvqvgh.supabase.co';
-const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_a4YGKVHx6oBBY5XvB0iS8Q_GJCcfcHa'; 
-
-// الربط المباشر بدون انتظار تحميل الصور
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+        const SUPABASE_URL = 'https://cilhimtbujromcbvqvgh.supabase.co';
+        const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_a4YGKVHx6oBBY5XvB0iS8Q_GJCcfcHa'; 
+        
+        let supabase;
+        window.addEventListener('load', () => {
+            if(window.supabase) {
+                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+            }
+        });
 
         // Sign Up Handle (Email OR Phone with Fake Domain Trick)
         async function handleSignUp() {
