@@ -147,8 +147,22 @@
         .delay-100 { animation-delay: 100ms; }
         .delay-200 { animation-delay: 200ms; }
         .delay-300 { animation-delay: 300ms; }
+
+/* Custom Notification Animations */
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        .notif-enter { animation: slideInRight 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+        .notif-leave { animation: slideOutRight 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+
     </style>
 </head>
+<div id="notification-container" class="fixed top-24 right-5 z-[100] flex flex-col gap-3 pointer-events-none w-80 sm:w-96"></div>
 <body class="antialiased bg-gray-50 text-gray-900 dark:bg-darkBg dark:text-white selection:bg-primary selection:text-white">
 
     <!-- Navbar -->
@@ -560,6 +574,53 @@
 
     <script>
         // 1. Mobile Menu Toggle
+        // --- Custom Notification System ---
+        function showNotification(title, message, type = 'success') {
+            const container = document.getElementById('notification-container');
+            const notif = document.createElement('div');
+            
+            // تحديد الألوان والأيقونات حسب النوع
+            let icon = '';
+            let colorClass = '';
+            let borderClass = '';
+            
+            if (type === 'success') {
+                icon = '<i class="fa-solid fa-circle-check"></i>';
+                colorClass = 'text-green-500';
+                borderClass = 'border-l-4 border-green-500';
+            } else if (type === 'error') {
+                icon = '<i class="fa-solid fa-circle-xmark"></i>';
+                colorClass = 'text-red-500';
+                borderClass = 'border-l-4 border-red-500';
+            } else if (type === 'info') {
+                icon = '<i class="fa-solid fa-circle-info"></i>';
+                colorClass = 'text-primary';
+                borderClass = 'border-l-4 border-primary';
+            }
+
+            notif.className = `notif-enter bg-white/95 dark:bg-[#080c13]/95 backdrop-blur-md shadow-2xl p-4 rounded-xl flex items-start gap-4 pointer-events-auto border border-gray-200 dark:border-gray-800 ${borderClass}`;
+            
+            notif.innerHTML = `
+                <div class="text-2xl mt-0.5 ${colorClass}">${icon}</div>
+                <div class="flex-1">
+                    <h4 class="font-bold text-gray-900 dark:text-white">${title}</h4>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">${message}</p>
+                </div>
+                <button class="text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors" onclick="this.parentElement.classList.replace('notif-enter', 'notif-leave'); setTimeout(() => this.parentElement.remove(), 400);">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            `;
+
+            container.appendChild(notif);
+
+            // الاختفاء التلقائي بعد 4 ثواني
+            setTimeout(() => {
+                if (notif.parentElement) {
+                    notif.classList.replace('notif-enter', 'notif-leave');
+                    setTimeout(() => notif.remove(), 400);
+                }
+            }, 4000);
+        }
         const mobileBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
 
@@ -786,9 +847,9 @@ async function fetchStudentStats(userId) {
             });
 
             if (error) {
-                alert('Sign up failed: ' + error.message);
+                showNotification('Registration Failed', error.message, 'error');
             } else {
-                alert('Account created successfully!');
+                showNotification('Welcome to QUANTOPIA!', 'Your account has been created successfully.', 'success');
                 closeModal('signup-modal');
                 updateUIAfterLogin(data.user);
                 showHome();
@@ -807,9 +868,9 @@ async function fetchStudentStats(userId) {
             });
 
             if (error) {
-                alert('Invalid login credentials: ' + error.message);
+                showNotification('Login Failed', 'Invalid email or password. Please try again.', 'error');
             } else {
-                alert('Logged in successfully!');
+                showNotification('Welcome Back!', 'You have logged in successfully.', 'success');
                 closeModal('login-modal');
                 updateUIAfterLogin(data.user);
                 showHome(); // تحويله للصفحة الرئيسية بعد الدخول
