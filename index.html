@@ -880,7 +880,10 @@ async function fetchStudentStats(userId) {
         async function handleLogout() {
             if(supabaseApp) {
                 await supabaseApp.auth.signOut();
-                window.location.reload(); // أسهل طريقة عشان نرجع الموقع لحالة الـ Guest
+                showNotification('Logged Out', 'You have been logged out successfully.', 'info');
+                setTimeout(() => {
+                    window.location.reload(); // تأخير بسيط عشان الإشعار يظهر قبل ما الصفحة تحمل
+                }, 1500);
             }
         }
 
