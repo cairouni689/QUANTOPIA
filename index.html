@@ -183,10 +183,9 @@
                 <div class="hidden lg:flex items-center gap-6 text-sm xl:text-base">
                     <a onclick="showHome()" class="nav-link text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold transition-colors">Home</a>
                     <a onclick="showHome('#courses')" class="nav-link text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold transition-colors">Courses</a>
-                    <a href="#quizzes" class="nav-link text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold transition-colors">Quizzes</a>
-                    <a href="#materials" class="nav-link text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold transition-colors">Materials</a>
-                    <a href="#about" class="nav-link text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold transition-colors">About Us</a>
-                    <a href="#settings" class="nav-link text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold transition-colors cursor-pointer">Settings</a>
+                    <a onclick="showSection('quizzes-section')" class="nav-link text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold transition-colors cursor-pointer">Quizzes</a>
+                    <a onclick="showMaterialsLevel('years')" class="nav-link text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold transition-colors cursor-pointer">Materials</a>
+                    <a onclick="showSection('about-section')" class="nav-link text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold transition-colors cursor-pointer">About Us</a>
                     
                     <div class="flex items-center gap-3 border-l border-slate-400 dark:border-gray-700 pl-4 ml-2" id="auth-buttons">
                         <button onclick="openModal('login-modal')" class="text-slate-700 dark:text-accent hover:text-slate-900 dark:hover:text-yellow-400 flex items-center gap-2 font-bold transition-colors">
@@ -222,10 +221,9 @@
             <div class="flex flex-col gap-4">
                 <a onclick="showHome()" class="text-slate-800 dark:text-white font-bold text-center cursor-pointer">Home</a>
                 <a onclick="showHome('#courses')" class="text-slate-800 dark:text-white font-bold text-center cursor-pointer">Courses</a>
-                <a href="#quizzes" class="text-slate-800 dark:text-white font-bold text-center cursor-pointer">Quizzes</a>
-                <a href="#materials" class="text-slate-800 dark:text-white font-bold text-center cursor-pointer">Materials</a>
-                <a href="#about" class="text-slate-800 dark:text-white font-bold text-center cursor-pointer">About Us</a>
-                <a href="#settings" class="text-slate-800 dark:text-white font-bold text-center cursor-pointer">Settings</a>
+                <a onclick="showSection('quizzes-section')" class="text-slate-800 dark:text-white font-bold text-center cursor-pointer">Quizzes</a>
+                <a onclick="showMaterialsLevel('years')" class="text-slate-800 dark:text-white font-bold text-center cursor-pointer">Materials</a>
+                <a onclick="showSection('about-section')" class="text-slate-800 dark:text-white font-bold text-center cursor-pointer">About Us</a>
                 <div class="h-px bg-slate-300 dark:bg-gray-800 my-2"></div>
                 <div id="mobile-auth-buttons" class="flex flex-col gap-4">
                     <button onclick="openModal('login-modal')" class="w-full text-center py-3 text-accent dark:text-accent font-bold border border-slate-400 dark:border-gray-700 rounded-lg">Login</button>
@@ -450,6 +448,78 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+        <div id="quizzes-section" class="hidden py-24 min-h-screen bg-slate-200 dark:bg-darkBg transition-colors relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 animate-fade-in-up">
+            <h2 class="text-4xl font-black mb-8 text-slate-900 dark:text-white border-b border-slate-300 dark:border-gray-800 pb-4">
+                Available <span class="text-primary">Quizzes</span>
+            </h2>
+            <div class="text-center py-20 bg-slate-100 dark:bg-cardBg rounded-3xl border border-slate-300 dark:border-gray-800 shadow-xl">
+                <i class="fa-solid fa-clipboard-question text-7xl text-primary mb-6 opacity-60"></i>
+                <p class="text-2xl font-bold text-slate-600 dark:text-gray-400">No quizzes have been added yet.</p>
+            </div>
+        </div>
+    </div>
+
+        <div id="materials-section" class="hidden py-24 min-h-screen bg-slate-200 dark:bg-darkBg transition-colors relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 animate-fade-in-up">
+            <div class="flex items-center gap-4 border-b border-slate-300 dark:border-gray-800 pb-4 mb-8">
+                <button id="materials-back-btn" onclick="goBackMaterials()" class="hidden bg-slate-300 hover:bg-slate-400 dark:bg-gray-800 dark:hover:bg-gray-700 text-slate-800 dark:text-white px-5 py-2.5 rounded-xl font-bold transition-colors shadow-sm">
+                    <i class="fa-solid fa-arrow-left mr-2"></i> Back
+                </button>
+                <h2 id="materials-title" class="text-4xl font-black text-slate-900 dark:text-white">
+                    Academic <span class="text-primary">Materials</span>
+                </h2>
+            </div>
+
+                        <div id="mat-level-years" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div onclick="showMaterialsLevel('terms', 'First Year')" class="bg-slate-100 dark:bg-cardBg p-8 rounded-2xl border border-slate-300 dark:border-gray-800 shadow-lg text-center cursor-pointer hover:-translate-y-2 transition-transform hover:border-primary group">
+                    <i class="fa-solid fa-1 text-6xl text-primary mb-4 group-hover:scale-110 transition-transform"></i><h3 class="text-2xl font-bold dark:text-white text-slate-900 mt-2">First Year</h3>
+                </div>
+                <div onclick="showMaterialsLevel('terms', 'Second Year')" class="bg-slate-100 dark:bg-cardBg p-8 rounded-2xl border border-slate-300 dark:border-gray-800 shadow-lg text-center cursor-pointer hover:-translate-y-2 transition-transform hover:border-primary group">
+                    <i class="fa-solid fa-2 text-6xl text-primary mb-4 group-hover:scale-110 transition-transform"></i><h3 class="text-2xl font-bold dark:text-white text-slate-900 mt-2">Second Year</h3>
+                </div>
+                <div onclick="showMaterialsLevel('terms', 'Third Year')" class="bg-slate-100 dark:bg-cardBg p-8 rounded-2xl border border-slate-300 dark:border-gray-800 shadow-lg text-center cursor-pointer hover:-translate-y-2 transition-transform hover:border-primary group">
+                    <i class="fa-solid fa-3 text-6xl text-primary mb-4 group-hover:scale-110 transition-transform"></i><h3 class="text-2xl font-bold dark:text-white text-slate-900 mt-2">Third Year</h3>
+                </div>
+                <div onclick="showMaterialsLevel('terms', 'Fourth Year')" class="bg-slate-100 dark:bg-cardBg p-8 rounded-2xl border border-slate-300 dark:border-gray-800 shadow-lg text-center cursor-pointer hover:-translate-y-2 transition-transform hover:border-primary group">
+                    <i class="fa-solid fa-4 text-6xl text-primary mb-4 group-hover:scale-110 transition-transform"></i><h3 class="text-2xl font-bold dark:text-white text-slate-900 mt-2">Fourth Year</h3>
+                </div>
+            </div>
+
+                        <div id="mat-level-terms" class="hidden grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div onclick="showMaterialsLevel('subjects', 'First Term')" class="bg-slate-100 dark:bg-cardBg p-10 rounded-3xl border border-slate-300 dark:border-gray-800 shadow-xl text-center cursor-pointer hover:-translate-y-2 transition-transform hover:border-accent group">
+                    <i class="fa-regular fa-calendar-days text-7xl text-accent mb-6 group-hover:scale-110 transition-transform"></i><h3 class="text-3xl font-bold dark:text-white text-slate-900">First Term</h3>
+                </div>
+                <div onclick="showMaterialsLevel('subjects', 'Second Term')" class="bg-slate-100 dark:bg-cardBg p-10 rounded-3xl border border-slate-300 dark:border-gray-800 shadow-xl text-center cursor-pointer hover:-translate-y-2 transition-transform hover:border-accent group">
+                    <i class="fa-solid fa-calendar-days text-7xl text-accent mb-6 group-hover:scale-110 transition-transform"></i><h3 class="text-3xl font-bold dark:text-white text-slate-900">Second Term</h3>
+                </div>
+            </div>
+
+                        <div id="mat-level-subjects" class="hidden text-center py-20 bg-slate-100 dark:bg-cardBg rounded-3xl border border-slate-300 dark:border-gray-800 shadow-xl max-w-4xl mx-auto">
+                <i class="fa-solid fa-book-open-reader text-7xl text-primary mb-6 opacity-60"></i>
+                <p class="text-2xl font-bold text-slate-600 dark:text-gray-400">No subjects have been added to this term yet.</p>
+            </div>
+        </div>
+    </div>
+
+        <div id="about-section" class="hidden py-24 min-h-screen bg-slate-200 dark:bg-darkBg transition-colors relative">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 animate-fade-in-up">
+            <div class="bg-slate-100 dark:bg-cardBg p-10 md:p-16 rounded-3xl border border-slate-300 dark:border-gray-800 shadow-2xl text-center relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-primary rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse pointer-events-none"></div>
+                <i class="fa-solid fa-atom text-7xl text-primary mb-6 animate-spin-slow"></i>
+                <h2 class="text-4xl md:text-5xl font-black mb-4 text-slate-900 dark:text-white">
+                    About <span class="text-primary">QUANTOPIA</span>
+                </h2>
+                <div class="curved-underline mx-auto w-32 mb-10"></div>
+                <p class="text-lg md:text-xl text-slate-700 dark:text-gray-300 leading-relaxed font-semibold text-center max-w-3xl mx-auto">
+                    كوانتوبيا مش مجرد منصة تعليمية عادية؛ دي مجتمع متكامل اتعمل مخصوص عشان يسهل عليك رحلتك في دراسة الفيزياء. إحنا مؤمنين إن فهم أسرار الكون ومواضيع الفيزياء المعقدة محتاج مسار واضح وتجربة تفاعلية ممتعة. 
+                    <br><br>
+                    هدفنا هنا إننا نوفرلك كل حاجة ممكن تحتاجها في مكان واحد، بداية من الكورسات المترتبة صح، الماتريالز والمصادر اللي هتساعدك في المذاكرة، لحد الكويزات اللي هتقيم بيها مستواك. سواء كنت بتدرس أساسيات أو بتتعمق في مواد متقدمة، كوانتوبيا هي رفيقك الذكي عشان تتفوق وتنجح من غير تعقيد.
+                </p>
             </div>
         </div>
     </div>
@@ -763,40 +833,88 @@
             setTimeout(() => { openModal(openId); }, 300);
         }
 
+        let materialsHistory = [];
+
+        function hideAllSections() {
+            document.getElementById('main-content').classList.add('hidden');
+            document.getElementById('profile-section').classList.add('hidden');
+            document.getElementById('quizzes-section').classList.add('hidden');
+            document.getElementById('materials-section').classList.add('hidden');
+            document.getElementById('about-section').classList.add('hidden');
+            mobileMenu.classList.add('hidden');
+        }
+
+        function showSection(sectionId) {
+            hideAllSections();
+            const section = document.getElementById(sectionId);
+            section.classList.remove('hidden');
+            section.classList.remove('animate-fade-in-up');
+            void section.offsetWidth; 
+            section.classList.add('animate-fade-in-up');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         function showProfile() {
-    document.getElementById('main-content').classList.add('hidden');
-    
-    const profileSection = document.getElementById('profile-section');
-    profileSection.classList.remove('hidden');
-    
-    // إزالة الأنيميشن القديم إن وجد
-    profileSection.classList.remove('animate-fade-in-up');
-    
-    // Trigger Reflow: خدعة بسيطة لإجبار المتصفح على إعادة تشغيل الأنيميشن
-    void profileSection.offsetWidth; 
-    
-    // إضافة كلاس الأنيميشن من جديد
-    profileSection.classList.add('animate-fade-in-up');
-    
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    mobileMenu.classList.add('hidden');
-}
+            showSection('profile-section');
+        }
 
         function showHome(hash = null) {
+            hideAllSections();
             document.getElementById('main-content').classList.remove('hidden');
-            document.getElementById('profile-section').classList.add('hidden');
-            mobileMenu.classList.add('hidden');
             if(hash) {
                 setTimeout(() => {
                     const target = document.querySelector(hash);
                     if(target) {
                         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        // عشان نحدث الرابط فوق من غير ما يعمل Jump سريع
                         history.pushState(null, null, hash);
                     }
                 }, 50);
             } else {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function showMaterialsLevel(level, title = '') {
+            showSection('materials-section');
+            
+            const yearsLevel = document.getElementById('mat-level-years');
+            const termsLevel = document.getElementById('mat-level-terms');
+            const subjectsLevel = document.getElementById('mat-level-subjects');
+            const titleEl = document.getElementById('materials-title');
+            const backBtn = document.getElementById('materials-back-btn');
+
+            yearsLevel.classList.add('hidden');
+            termsLevel.classList.add('hidden');
+            termsLevel.classList.remove('grid');
+            subjectsLevel.classList.add('hidden');
+            
+            if (level === 'years') {
+                materialsHistory = ['years'];
+                yearsLevel.classList.remove('hidden');
+                titleEl.innerHTML = `Academic <span class="text-primary">Materials</span>`;
+                backBtn.classList.add('hidden');
+            } else if (level === 'terms') {
+                materialsHistory.push({level: 'terms', title: title});
+                termsLevel.classList.remove('hidden');
+                termsLevel.classList.add('grid');
+                titleEl.innerHTML = `<span class="text-primary">${title}</span>`;
+                backBtn.classList.remove('hidden');
+            } else if (level === 'subjects') {
+                materialsHistory.push({level: 'subjects', title: title});
+                subjectsLevel.classList.remove('hidden');
+                titleEl.innerHTML = `<span class="text-primary">${title}</span>`;
+                backBtn.classList.remove('hidden');
+            }
+        }
+
+        function goBackMaterials() {
+            materialsHistory.pop();
+            const prevState = materialsHistory[materialsHistory.length - 1];
+            if (prevState === 'years' || !prevState) {
+                showMaterialsLevel('years');
+            } else {
+                materialsHistory.pop(); 
+                showMaterialsLevel(prevState.level, prevState.title);
             }
         }
 
