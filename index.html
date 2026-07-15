@@ -476,26 +476,78 @@
             </div>
 
                         <div id="mat-level-years" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div onclick="showMaterialsLevel('terms', 'First Year')" class="bg-slate-100 dark:bg-cardBg p-8 rounded-2xl border border-slate-300 dark:border-gray-800 shadow-lg text-center cursor-pointer hover:-translate-y-2 transition-transform hover:border-primary group">
-                    <i class="fa-solid fa-1 text-6xl text-primary mb-4 group-hover:scale-110 transition-transform"></i><h3 class="text-2xl font-bold dark:text-white text-slate-900 mt-2">First Year</h3>
+                <div onclick="showMaterialsLevel('terms', 'First Year')" class="relative overflow-hidden bg-gradient-to-br from-slate-100 to-white dark:from-[#131b26] dark:to-[#080c13] p-8 rounded-[2rem] border border-slate-300 dark:border-gray-800 shadow-xl cursor-pointer transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:shadow-primary/20 hover:border-primary/50 group">
+                    <div class="absolute -right-8 -top-8 w-32 h-32 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/30 transition-colors duration-500"></div>
+                    <div class="relative z-10 flex flex-col items-center text-center">
+                        <div class="w-20 h-20 bg-slate-200 dark:bg-[#1a2332] rounded-2xl flex items-center justify-center mb-6 shadow-inner border border-slate-300 dark:border-gray-700 group-hover:rotate-[10deg] group-hover:scale-110 transition-transform duration-500">
+                            <span class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-tr from-primary to-primaryDark">1</span>
+                        </div>
+                        <h3 class="text-2xl font-black dark:text-white text-slate-900 tracking-tight">First Year</h3>
+                        <p class="text-sm text-slate-500 dark:text-gray-400 mt-2 font-medium">Core Physics</p>
+                    </div>
+                    <div class="absolute bottom-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary to-tealBtn scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
                 </div>
-                <div onclick="showMaterialsLevel('terms', 'Second Year')" class="bg-slate-100 dark:bg-cardBg p-8 rounded-2xl border border-slate-300 dark:border-gray-800 shadow-lg text-center cursor-pointer hover:-translate-y-2 transition-transform hover:border-primary group">
-                    <i class="fa-solid fa-2 text-6xl text-primary mb-4 group-hover:scale-110 transition-transform"></i><h3 class="text-2xl font-bold dark:text-white text-slate-900 mt-2">Second Year</h3>
+                
+                <div onclick="showMaterialsLevel('terms', 'Second Year')" class="relative overflow-hidden bg-gradient-to-br from-slate-100 to-white dark:from-[#131b26] dark:to-[#080c13] p-8 rounded-[2rem] border border-slate-300 dark:border-gray-800 shadow-xl cursor-pointer transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:shadow-primary/20 hover:border-primary/50 group">
+                    <div class="absolute -right-8 -top-8 w-32 h-32 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/30 transition-colors duration-500"></div>
+                    <div class="relative z-10 flex flex-col items-center text-center">
+                        <div class="w-20 h-20 bg-slate-200 dark:bg-[#1a2332] rounded-2xl flex items-center justify-center mb-6 shadow-inner border border-slate-300 dark:border-gray-700 group-hover:rotate-[10deg] group-hover:scale-110 transition-transform duration-500">
+                            <span class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-tr from-primary to-primaryDark">2</span>
+                        </div>
+                        <h3 class="text-2xl font-black dark:text-white text-slate-900 tracking-tight">Second Year</h3>
+                        <p class="text-sm text-slate-500 dark:text-gray-400 mt-2 font-medium">Advanced Mechanics</p>
+                    </div>
+                    <div class="absolute bottom-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary to-tealBtn scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
                 </div>
-                <div onclick="showMaterialsLevel('terms', 'Third Year')" class="bg-slate-100 dark:bg-cardBg p-8 rounded-2xl border border-slate-300 dark:border-gray-800 shadow-lg text-center cursor-pointer hover:-translate-y-2 transition-transform hover:border-primary group">
-                    <i class="fa-solid fa-3 text-6xl text-primary mb-4 group-hover:scale-110 transition-transform"></i><h3 class="text-2xl font-bold dark:text-white text-slate-900 mt-2">Third Year</h3>
+
+                <div onclick="showMaterialsLevel('terms', 'Third Year')" class="relative overflow-hidden bg-gradient-to-br from-slate-100 to-white dark:from-[#131b26] dark:to-[#080c13] p-8 rounded-[2rem] border border-slate-300 dark:border-gray-800 shadow-xl cursor-pointer transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:shadow-primary/20 hover:border-primary/50 group">
+                    <div class="absolute -right-8 -top-8 w-32 h-32 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/30 transition-colors duration-500"></div>
+                    <div class="relative z-10 flex flex-col items-center text-center">
+                        <div class="w-20 h-20 bg-slate-200 dark:bg-[#1a2332] rounded-2xl flex items-center justify-center mb-6 shadow-inner border border-slate-300 dark:border-gray-700 group-hover:rotate-[10deg] group-hover:scale-110 transition-transform duration-500">
+                            <span class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-tr from-primary to-primaryDark">3</span>
+                        </div>
+                        <h3 class="text-2xl font-black dark:text-white text-slate-900 tracking-tight">Third Year</h3>
+                        <p class="text-sm text-slate-500 dark:text-gray-400 mt-2 font-medium">Modern Physics</p>
+                    </div>
+                    <div class="absolute bottom-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary to-tealBtn scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
                 </div>
-                <div onclick="showMaterialsLevel('terms', 'Fourth Year')" class="bg-slate-100 dark:bg-cardBg p-8 rounded-2xl border border-slate-300 dark:border-gray-800 shadow-lg text-center cursor-pointer hover:-translate-y-2 transition-transform hover:border-primary group">
-                    <i class="fa-solid fa-4 text-6xl text-primary mb-4 group-hover:scale-110 transition-transform"></i><h3 class="text-2xl font-bold dark:text-white text-slate-900 mt-2">Fourth Year</h3>
+
+                <div onclick="showMaterialsLevel('terms', 'Fourth Year')" class="relative overflow-hidden bg-gradient-to-br from-slate-100 to-white dark:from-[#131b26] dark:to-[#080c13] p-8 rounded-[2rem] border border-slate-300 dark:border-gray-800 shadow-xl cursor-pointer transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:shadow-primary/20 hover:border-primary/50 group">
+                    <div class="absolute -right-8 -top-8 w-32 h-32 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/30 transition-colors duration-500"></div>
+                    <div class="relative z-10 flex flex-col items-center text-center">
+                        <div class="w-20 h-20 bg-slate-200 dark:bg-[#1a2332] rounded-2xl flex items-center justify-center mb-6 shadow-inner border border-slate-300 dark:border-gray-700 group-hover:rotate-[10deg] group-hover:scale-110 transition-transform duration-500">
+                            <span class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-tr from-primary to-primaryDark">4</span>
+                        </div>
+                        <h3 class="text-2xl font-black dark:text-white text-slate-900 tracking-tight">Fourth Year</h3>
+                        <p class="text-sm text-slate-500 dark:text-gray-400 mt-2 font-medium">Quantum & Beyond</p>
+                    </div>
+                    <div class="absolute bottom-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary to-tealBtn scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
                 </div>
             </div>
 
-                        <div id="mat-level-terms" class="hidden grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <div onclick="showMaterialsLevel('subjects', 'First Term')" class="bg-slate-100 dark:bg-cardBg p-10 rounded-3xl border border-slate-300 dark:border-gray-800 shadow-xl text-center cursor-pointer hover:-translate-y-2 transition-transform hover:border-accent group">
-                    <i class="fa-regular fa-calendar-days text-7xl text-accent mb-6 group-hover:scale-110 transition-transform"></i><h3 class="text-3xl font-bold dark:text-white text-slate-900">First Term</h3>
+            <div id="mat-level-terms" class="hidden grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div onclick="showMaterialsLevel('subjects', 'First Term')" class="relative overflow-hidden bg-gradient-to-br from-slate-100 to-white dark:from-[#131b26] dark:to-[#080c13] p-10 rounded-[2.5rem] border border-slate-300 dark:border-gray-800 shadow-xl cursor-pointer transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:shadow-accent/20 hover:border-accent/50 group">
+                    <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-accent/10 rounded-full blur-3xl group-hover:bg-accent/20 transition-colors duration-500"></div>
+                    <div class="absolute right-6 top-6 text-slate-200 dark:text-gray-800 text-6xl opacity-30 group-hover:rotate-12 group-hover:scale-110 transition-all duration-500"><i class="fa-solid fa-calendar-days"></i></div>
+                    <div class="relative z-10 flex flex-col items-start text-left">
+                        <div class="w-20 h-20 bg-accent/10 rounded-2xl flex items-center justify-center mb-6 border border-accent/20 group-hover:bg-accent group-hover:text-darkBg transition-colors duration-500">
+                            <i class="fa-regular fa-folder-open text-4xl text-accent group-hover:text-darkBg transition-colors duration-500"></i>
+                        </div>
+                        <h3 class="text-4xl font-black dark:text-white text-slate-900 tracking-tight mb-2">First Term</h3>
+                        <p class="text-slate-500 dark:text-gray-400 font-medium">Explore Fall Semester Subjects</p>
+                    </div>
                 </div>
-                <div onclick="showMaterialsLevel('subjects', 'Second Term')" class="bg-slate-100 dark:bg-cardBg p-10 rounded-3xl border border-slate-300 dark:border-gray-800 shadow-xl text-center cursor-pointer hover:-translate-y-2 transition-transform hover:border-accent group">
-                    <i class="fa-solid fa-calendar-days text-7xl text-accent mb-6 group-hover:scale-110 transition-transform"></i><h3 class="text-3xl font-bold dark:text-white text-slate-900">Second Term</h3>
+                
+                <div onclick="showMaterialsLevel('subjects', 'Second Term')" class="relative overflow-hidden bg-gradient-to-br from-slate-100 to-white dark:from-[#131b26] dark:to-[#080c13] p-10 rounded-[2.5rem] border border-slate-300 dark:border-gray-800 shadow-xl cursor-pointer transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:shadow-accent/20 hover:border-accent/50 group">
+                    <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-accent/10 rounded-full blur-3xl group-hover:bg-accent/20 transition-colors duration-500"></div>
+                    <div class="absolute right-6 top-6 text-slate-200 dark:text-gray-800 text-6xl opacity-30 group-hover:-rotate-12 group-hover:scale-110 transition-all duration-500"><i class="fa-solid fa-calendar-check"></i></div>
+                    <div class="relative z-10 flex flex-col items-start text-left">
+                        <div class="w-20 h-20 bg-accent/10 rounded-2xl flex items-center justify-center mb-6 border border-accent/20 group-hover:bg-accent group-hover:text-darkBg transition-colors duration-500">
+                            <i class="fa-regular fa-folder-closed text-4xl text-accent group-hover:text-darkBg transition-colors duration-500"></i>
+                        </div>
+                        <h3 class="text-4xl font-black dark:text-white text-slate-900 tracking-tight mb-2">Second Term</h3>
+                        <p class="text-slate-500 dark:text-gray-400 font-medium">Explore Spring Semester Subjects</p>
+                    </div>
                 </div>
             </div>
 
@@ -528,82 +580,83 @@
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
-    <footer class="bg-slate-200 dark:bg-[#080c13] border-t border-slate-300 dark:border-gray-800 py-12 transition-colors">
+    <footer class="bg-slate-200 dark:bg-[#080c13] border-t border-slate-300 dark:border-gray-800 pt-12 pb-6 transition-colors">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12 text-left">
-                <div class="col-span-1 lg:col-span-2">
-                    <div class="flex items-center gap-2 mb-4">
-                        <div class="text-primary text-3xl">
-                            <i class="fa-solid fa-atom"></i>
+            <div id="fat-footer">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12 text-left">
+                    <div class="col-span-1 lg:col-span-2">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="text-primary text-3xl">
+                                <i class="fa-solid fa-atom"></i>
+                            </div>
+                            <span class="font-black text-2xl text-slate-900 dark:text-white">
+                                QUANTO<span class="text-primary">PIA</span>
+                            </span>
                         </div>
-                        <span class="font-black text-2xl text-slate-900 dark:text-white">
-                            QUANTO<span class="text-primary">PIA</span>
-                        </span>
+                        <p class="text-slate-600 dark:text-gray-400 mb-6 text-sm leading-relaxed max-w-sm">
+                            A community built for physics students to learn, practice and master physics together.
+                        </p>
+                        <div class="flex gap-4">
+                            <a href="#" class="w-10 h-10 rounded-full bg-slate-300 dark:bg-cardBg flex items-center justify-center text-slate-700 dark:text-white hover:bg-primary hover:text-white transition-all duration-300 shadow-sm"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-slate-300 dark:bg-cardBg flex items-center justify-center text-slate-700 dark:text-white hover:bg-primary hover:text-white transition-all duration-300 shadow-sm"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-slate-300 dark:bg-cardBg flex items-center justify-center text-slate-700 dark:text-white hover:bg-primary hover:text-white transition-all duration-300 shadow-sm"><i class="fa-brands fa-telegram"></i></a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-slate-300 dark:bg-cardBg flex items-center justify-center text-slate-700 dark:text-white hover:bg-primary hover:text-white transition-all duration-300 shadow-sm"><i class="fa-brands fa-youtube"></i></a>
+                        </div>
                     </div>
-                    <p class="text-slate-600 dark:text-gray-400 mb-6 text-sm leading-relaxed max-w-sm">
-                        A community built for physics students to learn, practice and master physics together.
-                    </p>
-                    <div class="flex gap-4">
-                        <a href="#" class="w-10 h-10 rounded-full bg-slate-300 dark:bg-cardBg flex items-center justify-center text-slate-700 dark:text-white hover:bg-primary hover:text-white transition-all duration-300 shadow-sm"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-slate-300 dark:bg-cardBg flex items-center justify-center text-slate-700 dark:text-white hover:bg-primary hover:text-white transition-all duration-300 shadow-sm"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-slate-300 dark:bg-cardBg flex items-center justify-center text-slate-700 dark:text-white hover:bg-primary hover:text-white transition-all duration-300 shadow-sm"><i class="fa-brands fa-telegram"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-slate-300 dark:bg-cardBg flex items-center justify-center text-slate-700 dark:text-white hover:bg-primary hover:text-white transition-all duration-300 shadow-sm"><i class="fa-brands fa-youtube"></i></a>
+
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-6 uppercase tracking-wider">Quick Links</h4>
+                        <ul class="space-y-3 text-sm text-slate-600 dark:text-gray-400 font-medium">
+                            <li><a href="#" class="hover:text-primary transition-colors">Books</a></li>
+                            <li><a href="#" class="hover:text-primary transition-colors">Courses</a></li>
+                            <li><a href="#" class="hover:text-primary transition-colors">Questions</a></li>
+                            <li><a href="#" class="hover:text-primary transition-colors">Articles</a></li>
+                            <li><a href="#" class="hover:text-primary transition-colors">About Us</a></li>
+                        </ul>
                     </div>
-                </div>
 
-                <div>
-                    <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-6 uppercase tracking-wider">Quick Links</h4>
-                    <ul class="space-y-3 text-sm text-slate-600 dark:text-gray-400 font-medium">
-                        <li><a href="#" class="hover:text-primary transition-colors">Books</a></li>
-                        <li><a href="#" class="hover:text-primary transition-colors">Courses</a></li>
-                        <li><a href="#" class="hover:text-primary transition-colors">Questions</a></li>
-                        <li><a href="#" class="hover:text-primary transition-colors">Articles</a></li>
-                        <li><a href="#" class="hover:text-primary transition-colors">About Us</a></li>
-                    </ul>
-                </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-6 uppercase tracking-wider">Resources</h4>
+                        <ul class="space-y-3 text-sm text-slate-600 dark:text-gray-400 font-medium">
+                            <li><a href="#" class="hover:text-primary transition-colors">Study Guides</a></li>
+                            <li><a href="#" class="hover:text-primary transition-colors">Formula Sheet</a></li>
+                            <li><a href="#" class="hover:text-primary transition-colors">Mind Maps</a></li>
+                            <li><a href="#" class="hover:text-primary transition-colors">Past Papers</a></li>
+                            <li><a href="#" class="hover:text-primary transition-colors">All Resources</a></li>
+                        </ul>
+                    </div>
 
-                <div>
-                    <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-6 uppercase tracking-wider">Resources</h4>
-                    <ul class="space-y-3 text-sm text-slate-600 dark:text-gray-400 font-medium">
-                        <li><a href="#" class="hover:text-primary transition-colors">Study Guides</a></li>
-                        <li><a href="#" class="hover:text-primary transition-colors">Formula Sheet</a></li>
-                        <li><a href="#" class="hover:text-primary transition-colors">Mind Maps</a></li>
-                        <li><a href="#" class="hover:text-primary transition-colors">Past Papers</a></li>
-                        <li><a href="#" class="hover:text-primary transition-colors">All Resources</a></li>
-                    </ul>
-                </div>
+                    <div class="col-span-1 lg:col-span-1">
+                        <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-6 uppercase tracking-wider">Contact Us</h4>
+                        <ul class="space-y-4 text-sm text-slate-600 dark:text-gray-400 mb-8 font-medium">
+                            <li class="flex items-start gap-3">
+                                <i class="fa-solid fa-location-dot mt-1 text-primary"></i>
+                                <span>Cairo, Egypt</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="fa-solid fa-headset mt-1 text-primary"></i>
+                                <span>We're here to help!</span>
+                            </li>
+                        </ul>
 
-                <div class="col-span-1 lg:col-span-1">
-                    <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-6 uppercase tracking-wider">Contact Us</h4>
-                    <ul class="space-y-4 text-sm text-slate-600 dark:text-gray-400 mb-8 font-medium">
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-location-dot mt-1 text-primary"></i>
-                            <span>Cairo, Egypt</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-headset mt-1 text-primary"></i>
-                            <span>We're here to help!</span>
-                        </li>
-                    </ul>
-
-                    <div class="bg-slate-300 dark:bg-[#131b26] p-5 rounded-2xl border border-slate-400 dark:border-gray-800 shadow-sm">
-                        <h4 class="text-xs font-bold text-slate-900 dark:text-white mb-2 uppercase tracking-wider">Stay Updated</h4>
-                        <p class="text-[11px] text-slate-600 dark:text-gray-400 mb-4 font-medium leading-relaxed">Get the latest resources and updates in your inbox.</p>
-                        <form class="flex items-center bg-slate-100 dark:bg-[#080c13] rounded-lg overflow-hidden border border-slate-300 dark:border-gray-700 focus-within:border-primary transition-colors">
-                            <input type="email" placeholder="Your email" class="w-full bg-transparent px-3 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none placeholder-slate-500 dark:placeholder-gray-500">
-                            <button type="submit" class="bg-primary hover:bg-primaryDark text-white px-4 py-2.5 transition-colors">
-                                <i class="fa-regular fa-paper-plane"></i>
-                            </button>
-                        </form>
+                        <div class="bg-slate-300 dark:bg-[#131b26] p-5 rounded-2xl border border-slate-400 dark:border-gray-800 shadow-sm">
+                            <h4 class="text-xs font-bold text-slate-900 dark:text-white mb-2 uppercase tracking-wider">Stay Updated</h4>
+                            <p class="text-[11px] text-slate-600 dark:text-gray-400 mb-4 font-medium leading-relaxed">Get the latest resources and updates in your inbox.</p>
+                            <form class="flex items-center bg-slate-100 dark:bg-[#080c13] rounded-lg overflow-hidden border border-slate-300 dark:border-gray-700 focus-within:border-primary transition-colors">
+                                <input type="email" placeholder="Your email" class="w-full bg-transparent px-3 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none placeholder-slate-500 dark:placeholder-gray-500">
+                                <button type="submit" class="bg-primary hover:bg-primaryDark text-white px-4 py-2.5 transition-colors">
+                                    <i class="fa-regular fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
+                <div class="h-px w-full bg-slate-300 dark:bg-gray-800 mb-6"></div>
             </div>
             
-            <div class="h-px w-full bg-slate-300 dark:bg-gray-800 mb-6"></div>
-            
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-medium text-slate-500 dark:text-gray-500">
-                <p>&copy; 2024 QUANTOPIA. All rights reserved.</p>
-                <div class="flex gap-4">
+            <div class="flex flex-col md:flex-row justify-center md:justify-between items-center gap-4 text-xs font-medium text-slate-500 dark:text-gray-500 relative">
+                <p class="text-center w-full md:w-auto">&copy; 2026 QUANTOPIA. All rights reserved.</p>
+                <div id="footer-links" class="flex gap-4 md:absolute md:right-0">
                     <a href="#" class="hover:text-primary transition-colors">Privacy Policy</a>
                     <a href="#" class="hover:text-primary transition-colors">Terms of Service</a>
                 </div>
@@ -842,6 +895,10 @@
             document.getElementById('materials-section').classList.add('hidden');
             document.getElementById('about-section').classList.add('hidden');
             mobileMenu.classList.add('hidden');
+            
+            // إخفاء دوشة الفوتر في الصفحات الداخلية
+            document.getElementById('fat-footer').classList.add('hidden');
+            document.getElementById('footer-links').classList.add('hidden');
         }
 
         function showSection(sectionId) {
@@ -859,16 +916,32 @@
         }
 
         function showHome(hash = null) {
-            hideAllSections();
-            document.getElementById('main-content').classList.remove('hidden');
+            const isHomeActive = !document.getElementById('main-content').classList.contains('hidden');
+            
+            // لو احنا مش في الرئيسية، نخفي الباقي ونظهرها
+            if (!isHomeActive) {
+                hideAllSections();
+                document.getElementById('main-content').classList.remove('hidden');
+            }
+            
+            // إرجاع الفوتر الكامل للرئيسية
+            document.getElementById('fat-footer').classList.remove('hidden');
+            document.getElementById('footer-links').classList.remove('hidden');
+            mobileMenu.classList.add('hidden');
+            
             if(hash) {
+                // لو احنا أصلاً في الرئيسية مفيش داعي للتأخير عشان النزول يبقى Smooth ومباشر
                 setTimeout(() => {
                     const target = document.querySelector(hash);
                     if(target) {
-                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        const headerOffset = 80;
+                        const elementPosition = target.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        
+                        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
                         history.pushState(null, null, hash);
                     }
-                }, 50);
+                }, isHomeActive ? 0 : 50);
             } else {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
