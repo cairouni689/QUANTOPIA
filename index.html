@@ -239,9 +239,23 @@
 
     <!-- الهيكل الرئيسي للموقع (الصفحة الرئيسية) -->
     <div id="main-content">
-        <section class="relative pt-20 pb-32 overflow-hidden">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
-                <div class="flex-1 text-center md:text-left opacity-0 animate-fade-in-up delay-100">
+        <section class="relative pt-20 pb-32 overflow-hidden min-h-[85vh] flex items-center">
+            <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden hidden dark:block">
+                <svg class="absolute w-full h-full" viewBox="0 0 1440 800" preserveAspectRatio="none">
+                    <defs>
+                        <filter id="glow-wave" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur stdDeviation="8" result="blur" />
+                            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                        </filter>
+                    </defs>
+                    <path d="M -100,700 Q 400,650 750,450 T 1400,300" fill="none" stroke="#00b4d8" stroke-width="3" filter="url(#glow-wave)" opacity="0.7"/>
+                    <path d="M 0,800 Q 350,700 700,500 T 1400,400" fill="none" stroke="#00b4d8" stroke-width="1.5" filter="url(#glow-wave)" opacity="0.4"/>
+                </svg>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-center justify-between gap-12 w-full">
+                
+                <div class="flex-1 text-center md:text-left opacity-0 animate-fade-in-up delay-100 mt-10 md:mt-0 z-10">
                     <h1 class="text-5xl md:text-7xl font-black leading-tight mb-4 text-gray-900 dark:text-white">
                         QUANTO<span class="text-primary">PIA</span>
                     </h1>
@@ -249,29 +263,26 @@
                         An integrated platform with everything a student needs to excel in physics.
                     </p>
                     <button id="start-learning-btn" onclick="openModal('signup-modal')" class="bg-accent hover:bg-yellow-500 text-darkBg font-black py-3 px-8 rounded-lg transition-transform hover:-translate-y-1 text-lg inline-flex items-center gap-2 shadow-lg shadow-accent/20">
-    Start Learning Now <i class="fa-solid fa-arrow-right"></i>
-</button>
+                        Start Learning Now <i class="fa-solid fa-arrow-right"></i>
+                    </button>
                 </div>
                 
-                <div class="flex-1 relative flex justify-center mt-10 md:mt-0 opacity-0 animate-zoom-in delay-200">
-                    <div class="relative w-80 h-80 md:w-96 md:h-96">
-                        <div class="blob-bg"></div>
-                        <img src="https://images.unsplash.com/photo-1531384441138-2736e62e0919?q=80&w=800&auto=format&fit=crop" 
-                             alt="Student" 
-                             class="absolute inset-0 w-full h-full object-cover rounded-full z-10 border-4 border-white dark:border-[#080c13] transition-colors"
-                             style="mask-image: radial-gradient(circle, white 100%, black 100%); -webkit-mask-image: -webkit-radial-gradient(circle, white 100%, black 100%);">
+                <div class="flex-1 relative flex justify-center mt-16 md:mt-0 opacity-0 animate-zoom-in delay-200 z-10">
+                    <div class="relative w-[280px] h-[280px] md:w-[380px] md:h-[380px] rounded-full border-[3px] border-primary bg-[#080c13] shadow-[0_0_50px_rgba(0,180,216,0.5),inset_0_0_30px_rgba(0,180,216,0.3)] flex items-center justify-center">
+                                                <img src="https://images.unsplash.com/photo-1531384441138-2736e62e0919?q=80&w=800&auto=format&fit=crop" alt="Student" class="absolute w-[calc(100%-12px)] h-[calc(100%-12px)] object-cover rounded-full z-10 opacity-90 transition-opacity hover:opacity-100">
                         
-                        <div class="absolute -top-10 -left-10 text-gray-800 dark:text-white opacity-80 animate-bounce" style="animation-duration: 3s;">
-                            <i class="fa-solid fa-graduation-cap text-6xl -rotate-12"></i>
+                        <div class="absolute inset-1.5 rounded-full border border-primary opacity-50 z-20 pointer-events-none"></div>
+                        <div class="absolute inset-3 rounded-full border-[0.5px] border-primary opacity-30 z-20 pointer-events-none"></div>
+                        
+                                                <div class="absolute -top-6 -left-6 md:-top-10 md:-left-10 text-gray-400 drop-shadow-[0_0_10px_rgba(255,255,255,0.2)] z-30">
+                            <i class="fa-solid fa-graduation-cap text-5xl md:text-6xl -rotate-12"></i>
                         </div>
-                        <div class="absolute bottom-0 -right-12 text-primary opacity-90 animate-pulse">
-                            <i class="fa-solid fa-book-open text-5xl rotate-12"></i>
-                        </div>
-                        <div class="absolute -bottom-10 left-10 text-gray-400 opacity-60 hover:rotate-180 transition-transform duration-700">
-                            <i class="fa-solid fa-pen text-3xl -rotate-45"></i>
+                        <div class="absolute -bottom-6 -right-6 md:-bottom-8 md:-right-8 text-primary drop-shadow-[0_0_20px_rgba(0,180,216,0.8)] z-30">
+                            <i class="fa-solid fa-book-open text-5xl md:text-6xl rotate-12"></i>
                         </div>
                     </div>
                 </div>
+
             </div>
         </section>
 
