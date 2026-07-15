@@ -7,7 +7,6 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- رابط مكتبة Supabase السليم -->
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     
     <script>
@@ -163,10 +162,9 @@
     </style>
 </head>
 <div id="notification-container" class="fixed top-24 right-5 z-[100] flex flex-col gap-3 pointer-events-none w-80 sm:w-96"></div>
-<body class="antialiased bg-gray-50 text-gray-900 dark:bg-darkBg dark:text-white selection:bg-primary selection:text-white">
+<body class="antialiased bg-slate-200 text-slate-900 dark:bg-darkBg dark:text-white selection:bg-primary selection:text-white">
 
-    <!-- Navbar -->
-    <nav class="sticky top-0 z-40 bg-white/90 dark:bg-[#080c13]/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-colors animate-fade-in-up">
+    <nav class="sticky top-0 z-40 bg-slate-100/90 dark:bg-[#080c13]/90 backdrop-blur-md border-b border-slate-300 dark:border-gray-800 transition-colors animate-fade-in-up">
         <div class="h-1 w-full bg-primary"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
@@ -176,22 +174,22 @@
                         <i class="fa-solid fa-atom"></i>
                     </div>
                     <div class="flex flex-col">
-                        <span class="font-black text-2xl tracking-tight text-gray-900 dark:text-white">
+                        <span class="font-black text-2xl tracking-tight text-slate-900 dark:text-white">
                             QUANTO<span class="text-primary">PIA</span>
                         </span>
                     </div>
                 </div>
 
                 <div class="hidden lg:flex items-center gap-6 text-sm xl:text-base">
-                    <a onclick="showHome()" class="nav-link text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-bold transition-colors">Home</a>
-                    <a onclick="showHome('#courses')" class="nav-link text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-bold transition-colors">Courses</a>
-                    <a href="#quizzes" class="nav-link text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-bold transition-colors">Quizzes</a>
-                    <a href="#books" class="nav-link text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-bold transition-colors">Books</a>
-                    <a href="#about" class="nav-link text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-bold transition-colors">About Us</a>
-                    <a href="#settings" class="nav-link text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-bold transition-colors cursor-pointer">Settings</a>
+                    <a onclick="showHome()" class="nav-link text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold transition-colors">Home</a>
+                    <a onclick="showHome('#courses')" class="nav-link text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold transition-colors">Courses</a>
+                    <a href="#quizzes" class="nav-link text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold transition-colors">Quizzes</a>
+                    <a href="#books" class="nav-link text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold transition-colors">Books</a>
+                    <a href="#about" class="nav-link text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold transition-colors">About Us</a>
+                    <a href="#settings" class="nav-link text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold transition-colors cursor-pointer">Settings</a>
                     
-                    <div class="flex items-center gap-3 border-l border-gray-300 dark:border-gray-700 pl-4 ml-2" id="auth-buttons">
-                        <button onclick="openModal('login-modal')" class="text-gray-600 dark:text-accent hover:text-gray-900 dark:hover:text-yellow-400 flex items-center gap-2 font-bold transition-colors">
+                    <div class="flex items-center gap-3 border-l border-slate-400 dark:border-gray-700 pl-4 ml-2" id="auth-buttons">
+                        <button onclick="openModal('login-modal')" class="text-slate-700 dark:text-accent hover:text-slate-900 dark:hover:text-yellow-400 flex items-center gap-2 font-bold transition-colors">
                             <i class="fa-solid fa-person-rays"></i> Login
                         </button>
                         <button onclick="openModal('signup-modal')" class="bg-primary hover:bg-primaryDark text-white px-5 py-2.5 rounded-lg font-bold transition-colors flex items-center gap-2 shadow-lg shadow-primary/30">
@@ -199,45 +197,44 @@
                         </button>
                     </div>
                     
-                    <button id="theme-toggle" class="bg-gray-200 dark:bg-gray-800 rounded-full p-1 flex cursor-pointer transition-colors border border-gray-300 dark:border-gray-700 ml-2">
-                        <div id="icon-dark" class="rounded-full w-8 h-8 flex items-center justify-center transition-colors text-gray-400 dark:text-white dark:bg-gray-600">
+                    <button id="theme-toggle" class="bg-slate-300 dark:bg-gray-800 rounded-full p-1 flex cursor-pointer transition-colors border border-slate-400 dark:border-gray-700 ml-2">
+                        <div id="icon-dark" class="rounded-full w-8 h-8 flex items-center justify-center transition-colors text-slate-500 dark:text-white dark:bg-gray-600">
                             <i class="fa-solid fa-moon text-sm"></i>
                         </div>
-                        <div id="icon-light" class="rounded-full w-8 h-8 flex items-center justify-center transition-colors bg-white text-yellow-500 shadow-sm dark:bg-transparent dark:text-gray-500 dark:shadow-none">
+                        <div id="icon-light" class="rounded-full w-8 h-8 flex items-center justify-center transition-colors bg-slate-100 text-yellow-500 shadow-sm dark:bg-transparent dark:text-gray-500 dark:shadow-none">
                             <i class="fa-solid fa-sun text-sm"></i>
                         </div>
                     </button>
                 </div>
 
                 <div class="lg:hidden flex items-center gap-4">
-                    <button id="theme-toggle-mobile" class="bg-gray-200 dark:bg-gray-800 rounded-full p-2 text-gray-600 dark:text-white transition-colors">
+                    <button id="theme-toggle-mobile" class="bg-slate-300 dark:bg-gray-800 rounded-full p-2 text-slate-700 dark:text-white transition-colors">
                         <i class="fa-solid fa-circle-half-stroke"></i>
                     </button>
-                    <button id="mobile-menu-btn" class="text-gray-600 dark:text-gray-300 text-2xl">
+                    <button id="mobile-menu-btn" class="text-slate-700 dark:text-gray-300 text-2xl">
                         <i class="fa-solid fa-bars"></i>
                     </button>
                 </div>
             </div>
         </div>
         
-        <div id="mobile-menu" class="hidden bg-white dark:bg-[#080c13] border-b border-gray-200 dark:border-gray-800 p-4 transition-colors absolute w-full shadow-xl">
+        <div id="mobile-menu" class="hidden bg-slate-100 dark:bg-[#080c13] border-b border-slate-300 dark:border-gray-800 p-4 transition-colors absolute w-full shadow-xl">
             <div class="flex flex-col gap-4">
-                <a onclick="showHome()" class="text-gray-800 dark:text-white font-bold text-center cursor-pointer">Home</a>
-                <a onclick="showHome('#courses')" class="text-gray-800 dark:text-white font-bold text-center cursor-pointer">Courses</a>
-                <a href="#quizzes" class="text-gray-800 dark:text-white font-bold text-center cursor-pointer">Quizzes</a>
-                <a href="#books" class="text-gray-800 dark:text-white font-bold text-center cursor-pointer">Books</a>
-                <a href="#about" class="text-gray-800 dark:text-white font-bold text-center cursor-pointer">About Us</a>
-                <a href="#settings" class="text-gray-800 dark:text-white font-bold text-center cursor-pointer">Settings</a>
-                <div class="h-px bg-gray-200 dark:bg-gray-800 my-2"></div>
+                <a onclick="showHome()" class="text-slate-800 dark:text-white font-bold text-center cursor-pointer">Home</a>
+                <a onclick="showHome('#courses')" class="text-slate-800 dark:text-white font-bold text-center cursor-pointer">Courses</a>
+                <a href="#quizzes" class="text-slate-800 dark:text-white font-bold text-center cursor-pointer">Quizzes</a>
+                <a href="#books" class="text-slate-800 dark:text-white font-bold text-center cursor-pointer">Books</a>
+                <a href="#about" class="text-slate-800 dark:text-white font-bold text-center cursor-pointer">About Us</a>
+                <a href="#settings" class="text-slate-800 dark:text-white font-bold text-center cursor-pointer">Settings</a>
+                <div class="h-px bg-slate-300 dark:bg-gray-800 my-2"></div>
                 <div id="mobile-auth-buttons" class="flex flex-col gap-4">
-                    <button onclick="openModal('login-modal')" class="w-full text-center py-3 text-accent dark:text-accent font-bold border border-gray-300 dark:border-gray-700 rounded-lg">Login</button>
+                    <button onclick="openModal('login-modal')" class="w-full text-center py-3 text-accent dark:text-accent font-bold border border-slate-400 dark:border-gray-700 rounded-lg">Login</button>
                     <button onclick="openModal('signup-modal')" class="w-full bg-primary text-white py-3 rounded-lg font-bold">Sign Up!</button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- الهيكل الرئيسي للموقع (الصفحة الرئيسية) -->
     <div id="main-content">
         <section class="relative pt-20 pb-32 overflow-hidden min-h-[85vh] flex items-center">
             <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden hidden dark:block">
@@ -256,10 +253,10 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-center justify-between gap-12 w-full">
                 
                 <div class="flex-1 text-center md:text-left opacity-0 animate-fade-in-up delay-100 mt-10 md:mt-0 z-10">
-                    <h1 class="text-5xl md:text-7xl font-black leading-tight mb-4 text-gray-900 dark:text-white">
+                    <h1 class="text-5xl md:text-7xl font-black leading-tight mb-4 text-slate-900 dark:text-white">
                         QUANTO<span class="text-primary">PIA</span>
                     </h1>
-                    <p class="text-gray-600 dark:text-gray-300 text-xl md:text-2xl mb-8 font-semibold">
+                    <p class="text-slate-700 dark:text-gray-300 text-xl md:text-2xl mb-8 font-semibold">
                         An integrated platform with everything a student needs to excel in physics.
                     </p>
                     <button id="start-learning-btn" onclick="openModal('signup-modal')" class="bg-accent hover:bg-yellow-500 text-darkBg font-black py-3 px-8 rounded-lg transition-transform hover:-translate-y-1 text-lg inline-flex items-center gap-2 shadow-lg shadow-accent/20">
@@ -274,7 +271,7 @@
                         <div class="absolute inset-1.5 rounded-full border border-primary opacity-50 z-20 pointer-events-none"></div>
                         <div class="absolute inset-3 rounded-full border-[0.5px] border-primary opacity-30 z-20 pointer-events-none"></div>
                         
-                                                <div class="absolute -top-6 -left-6 md:-top-10 md:-left-10 text-gray-400 drop-shadow-[0_0_10px_rgba(255,255,255,0.2)] z-30">
+                                                <div class="absolute -top-6 -left-6 md:-top-10 md:-left-10 text-slate-500 drop-shadow-[0_0_10px_rgba(255,255,255,0.2)] z-30">
                             <i class="fa-solid fa-graduation-cap text-5xl md:text-6xl -rotate-12"></i>
                         </div>
                         <div class="absolute -bottom-6 -right-6 md:-bottom-8 md:-right-8 text-primary drop-shadow-[0_0_20px_rgba(0,180,216,0.8)] z-30">
@@ -286,19 +283,18 @@
             </div>
         </section>
 
-        <section id="courses" class="py-24 bg-gray-100 dark:bg-cardBg border-t border-gray-200 dark:border-gray-800 transition-colors">
+        <section id="courses" class="py-24 bg-slate-200 dark:bg-cardBg border-t border-slate-300 dark:border-gray-800 transition-colors">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-16 opacity-0 animate-fade-in-up">
-                    <h2 class="text-4xl md:text-5xl font-black mb-6 text-gray-900 dark:text-white">Recommended Courses</h2>
+                    <h2 class="text-4xl md:text-5xl font-black mb-6 text-slate-900 dark:text-white">Recommended Courses</h2>
                     <div class="curved-underline mx-auto w-48 mb-8"></div>
-                    <p class="text-gray-600 dark:text-gray-300 text-lg max-w-2xl mx-auto leading-relaxed">
+                    <p class="text-slate-700 dark:text-gray-300 text-lg max-w-2xl mx-auto leading-relaxed">
                         We've curated the best courses to suit your needs, handpicked with care to help you grow and succeed! <i class="fa-solid fa-sun text-yellow-400 animate-spin-slow"></i>
                     </p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Course Card 1 -->
-                    <div class="bg-white dark:bg-[#080c13] rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 hover:border-primary transition-all duration-300 group relative shadow-md dark:shadow-none opacity-0 animate-fade-in-up delay-100">
+                    <div class="bg-slate-100 dark:bg-[#080c13] rounded-2xl overflow-hidden border border-slate-300 dark:border-gray-800 hover:border-primary transition-all duration-300 group relative shadow-md dark:shadow-none opacity-0 animate-fade-in-up delay-100">
                         <div class="absolute top-4 -right-8 bg-pink-600 text-white font-bold text-xs py-1 px-10 rotate-45 z-10 shadow-lg">Pinned</div>
                         <div class="relative h-64 overflow-hidden">
                             <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=600&auto=format&fit=crop" alt="Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-90 dark:opacity-80">
@@ -309,13 +305,12 @@
                                 </h3>
                             </div>
                         </div>
-                        <div class="p-4 bg-gray-50 dark:bg-[#0d131c] border-t border-gray-200 dark:border-gray-800 text-center transition-colors">
-                            <p class="text-gray-800 dark:text-white font-bold">Exam Nights Review "Consolidation Phase" <i class="fa-solid fa-heart text-pink-500 hover:scale-125 transition-transform cursor-pointer"></i></p>
+                        <div class="p-4 bg-slate-200 dark:bg-[#0d131c] border-t border-slate-300 dark:border-gray-800 text-center transition-colors">
+                            <p class="text-slate-800 dark:text-white font-bold">Exam Nights Review "Consolidation Phase" <i class="fa-solid fa-heart text-pink-500 hover:scale-125 transition-transform cursor-pointer"></i></p>
                         </div>
                     </div>
 
-                    <!-- Course Card 2 -->
-                    <div class="bg-white dark:bg-[#080c13] rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 hover:border-primary transition-all duration-300 group relative shadow-md dark:shadow-none opacity-0 animate-fade-in-up delay-200">
+                    <div class="bg-slate-100 dark:bg-[#080c13] rounded-2xl overflow-hidden border border-slate-300 dark:border-gray-800 hover:border-primary transition-all duration-300 group relative shadow-md dark:shadow-none opacity-0 animate-fade-in-up delay-200">
                          <div class="absolute top-4 -right-8 bg-pink-600 text-white font-bold text-xs py-1 px-10 rotate-45 z-10 shadow-lg">Pinned</div>
                         <div class="relative h-64 overflow-hidden">
                             <img src="https://images.unsplash.com/photo-1614935151651-0bea6508ab6b?q=80&w=600&auto=format&fit=crop" alt="Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-90 dark:opacity-80" style="filter: sepia(0.5) hue-rotate(15deg);">
@@ -326,13 +321,12 @@
                                 </h3>
                             </div>
                         </div>
-                        <div class="p-4 bg-gray-50 dark:bg-[#0d131c] border-t border-gray-200 dark:border-gray-800 text-center transition-colors">
-                            <p class="text-gray-800 dark:text-white font-bold">Last Nights Course "Achievement Phase" <i class="fa-solid fa-heart text-pink-500 hover:scale-125 transition-transform cursor-pointer"></i></p>
+                        <div class="p-4 bg-slate-200 dark:bg-[#0d131c] border-t border-slate-300 dark:border-gray-800 text-center transition-colors">
+                            <p class="text-slate-800 dark:text-white font-bold">Last Nights Course "Achievement Phase" <i class="fa-solid fa-heart text-pink-500 hover:scale-125 transition-transform cursor-pointer"></i></p>
                         </div>
                     </div>
 
-                    <!-- Course Card 3 -->
-                    <div class="bg-white dark:bg-[#080c13] rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 hover:border-primary transition-all duration-300 group relative shadow-md dark:shadow-none opacity-0 animate-fade-in-up delay-300">
+                    <div class="bg-slate-100 dark:bg-[#080c13] rounded-2xl overflow-hidden border border-slate-300 dark:border-gray-800 hover:border-primary transition-all duration-300 group relative shadow-md dark:shadow-none opacity-0 animate-fade-in-up delay-300">
                          <div class="absolute top-4 -right-8 bg-pink-600 text-white font-bold text-xs py-1 px-10 rotate-45 z-10 shadow-lg">Pinned</div>
                         <div class="relative h-64 overflow-hidden">
                             <img src="https://images.unsplash.com/photo-1453733190371-0a9bedd82893?q=80&w=600&auto=format&fit=crop" alt="Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-90 dark:opacity-80" style="filter: contrast(1.2) brightness(0.8);">
@@ -343,8 +337,8 @@
                                 </h3>
                             </div>
                         </div>
-                        <div class="p-4 bg-gray-50 dark:bg-[#0d131c] border-t border-gray-200 dark:border-gray-800 text-center transition-colors">
-                            <p class="text-gray-800 dark:text-white font-bold">Mock Exams Course - 3rd Sec <i class="fa-solid fa-heart text-pink-500 hover:scale-125 transition-transform cursor-pointer"></i></p>
+                        <div class="p-4 bg-slate-200 dark:bg-[#0d131c] border-t border-slate-300 dark:border-gray-800 text-center transition-colors">
+                            <p class="text-slate-800 dark:text-white font-bold">Mock Exams Course - 3rd Sec <i class="fa-solid fa-heart text-pink-500 hover:scale-125 transition-transform cursor-pointer"></i></p>
                         </div>
                     </div>
                 </div>
@@ -357,8 +351,8 @@
             </div>
         </section>
 
-        <section class="py-20 bg-white dark:bg-darkBg transition-colors">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 bg-cyan-50 dark:bg-[#0a3143] rounded-3xl overflow-hidden relative border border-primary/20 transition-colors opacity-0 animate-zoom-in">
+        <section class="py-20 bg-slate-100 dark:bg-darkBg transition-colors">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 bg-slate-200 dark:bg-[#0a3143] rounded-3xl overflow-hidden relative border border-primary/20 transition-colors opacity-0 animate-zoom-in">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-primary rounded-full mix-blend-multiply filter blur-3xl opacity-10 dark:opacity-20 animate-pulse"></div>
                 
                 <div class="flex flex-col md:flex-row items-center p-8 md:p-12 gap-8">
@@ -369,10 +363,10 @@
                     </div>
 
                     <div class="w-full md:w-2/3 text-center md:text-left">
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Discover a variety of courses that fit your interests and educational goals.</h3>
+                        <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-6">Discover a variety of courses that fit your interests and educational goals.</h3>
                         
-                        <div class="bg-white/50 dark:bg-darkBg/50 border border-primary/20 dark:border-primary/30 p-6 rounded-2xl mb-8 backdrop-blur-sm transition-colors hover:shadow-lg hover:shadow-primary/10">
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed font-medium">
+                        <div class="bg-slate-100/50 dark:bg-darkBg/50 border border-primary/20 dark:border-primary/30 p-6 rounded-2xl mb-8 backdrop-blur-sm transition-colors hover:shadow-lg hover:shadow-primary/10">
+                            <p class="text-slate-700 dark:text-gray-300 leading-relaxed font-medium">
                                 We've made it easier for you by creating a course search engine on our platform. Find the perfect course in record time. Don't wait, try it yourself! <i class="fa-solid fa-rocket text-primary ml-1"></i>
                             </p>
                         </div>
@@ -386,32 +380,30 @@
         </section>
     </div>
 
-    <!-- قسم الصفحة الشخصية (يظهر فقط عند تسجيل الدخول) -->
-    <div id="profile-section" class="hidden py-16 min-h-screen bg-gray-50 dark:bg-darkBg transition-colors relative">
+    <div id="profile-section" class="hidden py-16 min-h-screen bg-slate-200 dark:bg-darkBg transition-colors relative">
         <div class="absolute top-0 right-0 w-96 h-96 bg-primary rounded-full mix-blend-multiply filter blur-[100px] opacity-10 animate-pulse z-0 pointer-events-none"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             
-            <h2 class="text-3xl font-black mb-8 text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-4">
+            <h2 class="text-3xl font-black mb-8 text-slate-900 dark:text-white border-b border-slate-300 dark:border-gray-800 pb-4">
                 Student <span class="text-primary">Dashboard</span>
             </h2>
 
             <div class="flex flex-col lg:flex-row gap-8">
-                <!-- الربع اللي في الشمال: كارت بيانات الطالب -->
                 <div class="lg:w-1/4">
-                    <div class="bg-white dark:bg-cardBg p-6 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-xl text-center sticky top-28">
+                    <div class="bg-slate-100 dark:bg-cardBg p-6 rounded-3xl border border-slate-300 dark:border-gray-800 shadow-xl text-center sticky top-28">
                         
-                        <div class="w-24 h-24 mx-auto bg-gray-100 dark:bg-[#080c13] rounded-full flex items-center justify-center text-4xl text-primary mb-4 border-2 border-primary shadow-lg shadow-primary/20">
+                        <div class="w-24 h-24 mx-auto bg-slate-200 dark:bg-[#080c13] rounded-full flex items-center justify-center text-4xl text-primary mb-4 border-2 border-primary shadow-lg shadow-primary/20">
                             <i class="fa-solid fa-user-graduate"></i>
                         </div>
                         
-                        <h3 id="profile-name" class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Loading...</h3>
+                        <h3 id="profile-name" class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Loading...</h3>
                         
-                        <div class="flex items-center justify-center gap-2 text-gray-500 dark:text-gray-400 text-sm font-semibold mb-6">
+                        <div class="flex items-center justify-center gap-2 text-slate-600 dark:text-gray-400 text-sm font-semibold mb-6">
                             <i class="fa-solid fa-address-card text-primary"></i> 
                             <span id="profile-contact">...</span>
                         </div>
                         
-                        <div class="h-px bg-gray-200 dark:border-gray-800 w-full mb-6"></div>
+                        <div class="h-px bg-slate-300 dark:border-gray-800 w-full mb-6"></div>
 
                         <button onclick="handleLogout()" class="w-full flex items-center justify-center gap-2 border-2 border-red-500/50 text-red-500 hover:bg-red-500 hover:text-white font-bold py-3 rounded-xl transition-all duration-300">
                             <i class="fa-solid fa-right-from-bracket"></i> Logout
@@ -419,9 +411,8 @@
                     </div>
                 </div>
 
-                <!-- الثلاث أرباع: محتوى الصفحة الشخصية -->
                 <div class="lg:w-3/4">
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Welcome back, <span id="welcome-first-name" class="text-primary">Student</span>! 👋</h3>
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-6">Welcome back, <span id="welcome-first-name" class="text-primary">Student</span>! 👋</h3>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                         <div class="bg-gradient-to-br from-primary to-primaryDark p-6 rounded-2xl text-white shadow-lg shadow-primary/30 flex items-center gap-4 transition-transform hover:scale-105 duration-300">
@@ -433,21 +424,21 @@
                                 <h4 id="courses-count" class="text-4xl font-black">0</h4>
                             </div>
                         </div>
-                        <div class="bg-white dark:bg-cardBg p-6 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-md flex items-center gap-4 transition-transform hover:scale-105 duration-300">
+                        <div class="bg-slate-100 dark:bg-cardBg p-6 rounded-2xl border border-slate-300 dark:border-gray-800 shadow-md flex items-center gap-4 transition-transform hover:scale-105 duration-300">
                             <div class="w-14 h-14 bg-accent/20 text-accent rounded-xl flex items-center justify-center text-2xl">
                                 <i class="fa-solid fa-star"></i>
                             </div>
                             <div>
-                                <p class="text-gray-500 dark:text-gray-400 text-sm font-bold">Completed Quizzes</p>
-                                <h4 id="quizzes-count" class="text-4xl font-black text-gray-900 dark:text-white">0</h4>
+                                <p class="text-slate-600 dark:text-gray-400 text-sm font-bold">Completed Quizzes</p>
+                                <h4 id="quizzes-count" class="text-4xl font-black text-slate-900 dark:text-white">0</h4>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white dark:bg-cardBg p-6 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-md">
-                        <h4 class="font-bold text-lg mb-4 text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">Recent Activity</h4>
+                    <div class="bg-slate-100 dark:bg-cardBg p-6 rounded-2xl border border-slate-300 dark:border-gray-800 shadow-md">
+                        <h4 class="font-bold text-lg mb-4 text-slate-900 dark:text-white border-b border-slate-300 dark:border-gray-800 pb-2">Recent Activity</h4>
                         <div id="activity-container" class="flex flex-col gap-4 mt-4">
-                            <p id="activity-placeholder" class="text-gray-500 dark:text-gray-400 text-center py-4 animate-pulse">
+                            <p id="activity-placeholder" class="text-slate-600 dark:text-gray-400 text-center py-4 animate-pulse">
                                 <i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading your activity...
                             </p>
                         </div>
@@ -461,21 +452,20 @@
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
-    <footer class="bg-gray-100 dark:bg-[#080c13] border-t border-gray-200 dark:border-gray-800 py-8 text-center transition-colors">
+    <footer class="bg-slate-200 dark:bg-[#080c13] border-t border-slate-300 dark:border-gray-800 py-8 text-center transition-colors">
         <div class="max-w-7xl mx-auto px-4">
              <div class="flex items-center justify-center gap-2 mb-4">
                 <div class="text-primary text-2xl">
                     <i class="fa-solid fa-atom"></i>
                 </div>
-                <span class="font-black text-xl text-gray-900 dark:text-white">
+                <span class="font-black text-xl text-slate-900 dark:text-white">
                     QUANTO<span class="text-primary">PIA</span>
                 </span>
             </div>
-            <p class="text-gray-500 font-medium">All rights reserved &copy; 2026 QUANTOPIA Platform</p>
+            <p class="text-slate-600 font-medium">All rights reserved &copy; 2026 QUANTOPIA Platform</p>
         </div>
     </footer>
 
-    <!-- Modals -->
     <div id="login-modal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal('login-modal')"></div>
         <div class="absolute inset-4 md:inset-10 lg:inset-y-16 lg:inset-x-32 flex rounded-2xl overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300" id="login-box">
@@ -609,15 +599,15 @@
                 borderClass = 'border-l-4 border-primary';
             }
 
-            notif.className = `notif-enter bg-white/95 dark:bg-[#080c13]/95 backdrop-blur-md shadow-2xl p-4 rounded-xl flex items-start gap-4 pointer-events-auto border border-gray-200 dark:border-gray-800 ${borderClass}`;
+            notif.className = `notif-enter bg-slate-100/95 dark:bg-[#080c13]/95 backdrop-blur-md shadow-2xl p-4 rounded-xl flex items-start gap-4 pointer-events-auto border border-slate-300 dark:border-gray-800 ${borderClass}`;
             
             notif.innerHTML = `
                 <div class="text-2xl mt-0.5 ${colorClass}">${icon}</div>
                 <div class="flex-1">
-                    <h4 class="font-bold text-gray-900 dark:text-white">${title}</h4>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">${message}</p>
+                    <h4 class="font-bold text-slate-900 dark:text-white">${title}</h4>
+                    <p class="text-sm text-slate-700 dark:text-gray-400 mt-1">${message}</p>
                 </div>
-                <button class="text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors" onclick="this.parentElement.classList.replace('notif-enter', 'notif-leave'); setTimeout(() => this.parentElement.remove(), 400);">
+                <button class="text-slate-500 hover:text-slate-700 dark:hover:text-white transition-colors" onclick="this.parentElement.classList.replace('notif-enter', 'notif-leave'); setTimeout(() => this.parentElement.remove(), 400);">
                     <i class="fa-solid fa-times"></i>
                 </button>
             `;
@@ -650,16 +640,16 @@
             if (html.classList.contains('dark')) {
                 if(iconDark) {
                     iconDark.classList.add('bg-gray-600', 'text-white');
-                    iconDark.classList.remove('bg-transparent', 'text-gray-400');
+                    iconDark.classList.remove('bg-transparent', 'text-slate-500');
                     iconLight.classList.add('bg-transparent', 'text-gray-500');
-                    iconLight.classList.remove('bg-white', 'text-yellow-500', 'shadow-sm');
+                    iconLight.classList.remove('bg-slate-100', 'text-yellow-500', 'shadow-sm');
                 }
             } else {
                 if(iconDark) {
                     iconDark.classList.remove('bg-gray-600', 'text-white');
-                    iconDark.classList.add('bg-transparent', 'text-gray-400');
+                    iconDark.classList.add('bg-transparent', 'text-slate-500');
                     iconLight.classList.remove('bg-transparent', 'text-gray-500');
-                    iconLight.classList.add('bg-white', 'text-yellow-500', 'shadow-sm');
+                    iconLight.classList.add('bg-slate-100', 'text-yellow-500', 'shadow-sm');
                 }
             }
         };
@@ -819,17 +809,17 @@ async function fetchStudentStats(userId) {
                         let dateStr = new Date(act.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
                         activityContainer.innerHTML += `
-                            <div class="flex items-center gap-4 p-3 rounded-xl bg-gray-50 dark:bg-[#080c13] border border-gray-100 dark:border-gray-800 transition-colors">
+                            <div class="flex items-center gap-4 p-3 rounded-xl bg-slate-200 dark:bg-[#080c13] border border-slate-300 dark:border-gray-800 transition-colors">
                                 <div class="text-2xl">${icon}</div>
                                 <div class="flex-1">
-                                    <p class="text-gray-800 dark:text-gray-200 font-semibold text-sm">${act.description}</p>
+                                    <p class="text-slate-800 dark:text-gray-200 font-semibold text-sm">${act.description}</p>
                                 </div>
-                                <span class="text-xs font-bold text-gray-400">${dateStr}</span>
+                                <span class="text-xs font-bold text-slate-500">${dateStr}</span>
                             </div>
                         `;
                     });
                 } else {
-                    activityContainer.innerHTML = `<p class="text-gray-500 dark:text-gray-400 text-center py-4">No recent activity to show yet. Start exploring!</p>`;
+                    activityContainer.innerHTML = `<p class="text-slate-600 dark:text-gray-400 text-center py-4">No recent activity to show yet. Start exploring!</p>`;
                 }
             } catch (err) {
                 console.error("Error fetching stats:", err);
@@ -928,7 +918,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // تحديد العناصر اللي هيتطبق عليها الأنيميشن (العناوين، النصوص، الكروت، والأقسام)
     // استثنينا القوائم والموديلز عشان ماتعملش مشاكل في الظهور
-    const elementsToAnimate = document.querySelectorAll('#main-content section, #main-content h2, #main-content h3, #main-content p, #main-content .bg-white');
+    const elementsToAnimate = document.querySelectorAll('#main-content section, #main-content h2, #main-content h3, #main-content p, #main-content .bg-slate-100');
 
     elementsToAnimate.forEach(el => {
         // لو العنصر واخد الأنيميشن مسبقاً (زي في الهيدر)، هنسيبه زي ما هو
