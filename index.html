@@ -1278,6 +1278,22 @@ async function fetchStudentStats(userId) {
             container.innerHTML = '';
 
             data.forEach(sub => {
+                // تحديث كائن المواد الثابت بالمواد اللي جاية من الداتا بيز
+                if (sub.year_level && sub.term) {
+                    if (!subjectsData[sub.year_level]) subjectsData[sub.year_level] = {};
+                    if (!subjectsData[sub.year_level][sub.term]) subjectsData[sub.year_level][sub.term] = [];
+                    
+                    // منع التكرار لو الدالة اشتغلت مرتين
+                    const exists = subjectsData[sub.year_level][sub.term].find(s => s.name === sub.name || s.name.includes(sub.name));
+                    if (!exists) {
+                        subjectsData[sub.year_level][sub.term].push({
+                            name: sub.code ? `${sub.name} (${sub.code})` : sub.name,
+                            icon: "fa-solid fa-atom",
+                            link: sub.link || "#"
+                        });
+                    }
+                }
+
                 const html = `
                     <div class="bg-slate-100 dark:bg-[#080c13] p-6 rounded-2xl border border-slate-300 dark:border-gray-800 hover:border-primary transition-colors shadow-lg group">
                         <div class="flex justify-between items-start mb-4">
