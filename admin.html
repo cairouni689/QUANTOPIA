@@ -351,25 +351,17 @@
                     <input id="inp-sub-name" type="text" placeholder="اسم المادة" class="bg-dark-900 border border-gray-700 p-3 rounded-lg text-white outline-none focus:border-blue-500">
                     <input id="inp-sub-code" type="text" placeholder="الكود" class="bg-dark-900 border border-gray-700 p-3 rounded-lg text-white outline-none focus:border-blue-500">
                 </div>
-                <select id="inp-sub-year" onchange="updateSubjectUI()" class="w-full bg-dark-900 border border-gray-700 p-3 rounded-lg text-white outline-none focus:border-blue-500">
+                <select id="inp-sub-year" class="w-full bg-dark-900 border border-gray-700 p-3 rounded-lg text-white outline-none focus:border-blue-500">
                     <option value="" disabled selected>اختر الفرقة / المستوى</option>
-                    <option value="الفرقة الأولى">الفرقة الأولى</option>
-                    <option value="الفرقة الثانية">الفرقة الثانية</option>
-                    <option value="الفرقة الثالثة">الفرقة الثالثة</option>
-                    <option value="الفرقة الرابعة">الفرقة الرابعة</option>
-                    <option value="المستوى الأول">المستوى الأول (نوعي)</option>
-                    <option value="المستوى الثاني">المستوى الثاني (نوعي)</option>
-                    <option value="المستوى الثالث">المستوى الثالث (نوعي)</option>
-                    <option value="المستوى الرابع">المستوى الرابع (نوعي)</option>
-                    <option value="متطلبات الجامعة">متطلبات الجامعة</option>
+                    <option value="First Year">First Year</option>
+                    <option value="Second Year">Second Year</option>
+                    <option value="Third Year">Third Year</option>
+                    <option value="Fourth Year">Fourth Year</option>
                 </select>
-                <div id="dept-container" class="hidden">
-                    <select id="inp-sub-dept" class="w-full bg-dark-900 border border-gray-700 p-3 rounded-lg text-white outline-none focus:border-blue-500"></select>
-                </div>
                 <select id="inp-sub-term" class="w-full bg-dark-900 border border-gray-700 p-3 rounded-lg text-white outline-none focus:border-blue-500">
                     <option value="" disabled selected>اختر الفصل</option>
-                    <option value="الفصل الدراسي الأول">الفصل الدراسي الأول</option>
-                    <option value="الفصل الدراسي الثاني">الفصل الدراسي الثاني</option>
+                    <option value="First Term">First Term</option>
+                    <option value="Second Term">Second Term</option>
                 </select>
                 <input id="inp-sub-link" type="text" placeholder="رابط Drive" class="w-full bg-dark-900 border border-gray-700 p-3 rounded-lg text-white outline-none focus:border-blue-500 text-left" dir="ltr">
             </div>
@@ -1102,18 +1094,17 @@ async function fetchResults() {
             window.requestAnimationFrame(step);
         }
 
-        function openSubjectModal(isEdit = false) {
+       function openSubjectModal(isEdit = false) {
             openModal('modal-subject');
-            const deptSelect = document.getElementById('inp-sub-dept');
-            deptSelect.innerHTML = '<option value="" disabled selected>اختر القسم</option>';
-            [...departmentsList, ...specializedProgramsList].forEach(d => deptSelect.innerHTML += `<option value="${d}">${d}</option>`);
             
             if(!isEdit) {
                 editingSubjectId = null;
                 document.getElementById('modal-sub-title').innerHTML = '<i class="fas fa-plus-circle text-blue-500"></i> مادة جديدة';
                 document.getElementById('btn-sub-save').innerText = 'حفظ البيانات';
-                ['name','code','year','dept','term','link'].forEach(id => document.getElementById(`inp-sub-${id}`).value = '');
-                updateSubjectUI();
+                ['name','code','year','term','link'].forEach(id => {
+                    const el = document.getElementById(`inp-sub-${id}`);
+                    if(el) el.value = '';
+                });
             }
         }
 
@@ -1127,33 +1118,19 @@ async function fetchResults() {
             document.getElementById('inp-sub-name').value = data.name;
             document.getElementById('inp-sub-code').value = data.code;
             document.getElementById('inp-sub-year').value = data.year_level;
-            updateSubjectUI();
-            document.getElementById('inp-sub-dept').value = data.department || '';
             document.getElementById('inp-sub-term').value = data.term;
             document.getElementById('inp-sub-link').value = data.link;
-        }
-
-        function updateSubjectUI() {
-            const year = document.getElementById('inp-sub-year').value;
-            const container = document.getElementById('dept-container');
-            if (year === 'الفرقة الأولى' || year === 'متطلبات الجامعة') {
-                container.classList.add('hidden');
-                document.getElementById('inp-sub-dept').value = "عام";
-            } else {
-                container.classList.remove('hidden');
-            }
         }
 
         async function submitSubject() {
             const name = document.getElementById('inp-sub-name').value;
             const code = document.getElementById('inp-sub-code').value;
             const year = document.getElementById('inp-sub-year').value;
-            const dept = document.getElementById('inp-sub-dept').value;
             const term = document.getElementById('inp-sub-term').value;
             const link = document.getElementById('inp-sub-link').value;
 
             if(!name || !year || !term) return Swal.fire('تنبيه', 'البيانات ناقصة', 'warning');
-            const payload = { name, code, year_level: year, department: dept, term, link };
+            const payload = { name, code, year_level: year, department: 'Physics', term, link };
             let error;
             if(editingSubjectId) {
                 const { error: err } = await sb.from('subjects').update(payload).eq('id', editingSubjectId);
@@ -1177,7 +1154,7 @@ async function fetchResults() {
                     <tr class="border-b border-gray-700/50 hover:bg-dark-800 transition">
                         <td class="p-4 text-gold-500 font-mono">${sub.code || '-'}</td>
                         <td class="p-4 font-bold text-white">${sub.name}</td>
-                        <td class="p-4"><span class="bg-dark-700 px-2 py-1 rounded text-xs text-gray-300">${sub.year_level}</span> <br> <span class="text-[10px] text-gray-500">${sub.department || ''}</span></td>
+                        <td class="p-4"><span class="bg-dark-700 px-2 py-1 rounded text-xs text-gray-300">${sub.year_level}</span></td>
                         <td class="p-4 text-center">${sub.link ? `<a href="${sub.link}" target="_blank" class="text-blue-400 hover:text-blue-300 transition hover:scale-110 inline-block"><i class="fas fa-external-link-alt"></i></a>` : '-'}</td>
                         <td class="p-4 text-center">
                             <div class="flex items-center justify-center gap-2">
