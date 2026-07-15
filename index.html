@@ -170,8 +170,35 @@
             <div class="flex justify-between items-center h-20">
                 
                 <div class="flex items-center gap-3 cursor-pointer" onclick="showHome()">
-                    <div class="text-primary text-4xl">
-                        <i class="fa-solid fa-atom"></i>
+                    <div class="w-12 h-12 flex items-center justify-center hover:scale-110 transition-transform duration-300">
+                        <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-[0_8px_15px_rgba(0,180,216,0.5)] animate-[spin_12s_linear_infinite]">
+                            <defs>
+                                <radialGradient id="nucleusGrad" cx="35%" cy="35%" r="65%">
+                                    <stop offset="0%" stop-color="#ffffff" />
+                                    <stop offset="40%" stop-color="#00b4d8" />
+                                    <stop offset="100%" stop-color="#0077b6" />
+                                </radialGradient>
+                                <radialGradient id="electronGrad" cx="30%" cy="30%" r="70%">
+                                    <stop offset="0%" stop-color="#ffffff" />
+                                    <stop offset="60%" stop-color="#ffb703" />
+                                    <stop offset="100%" stop-color="#e85d04" />
+                                </radialGradient>
+                                <filter id="glowEffect">
+                                    <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+                            <ellipse cx="50" cy="50" rx="44" ry="14" fill="none" stroke="#00b4d8" stroke-width="2" transform="rotate(30 50 50)" opacity="0.8" filter="url(#glowEffect)"/>
+                            <ellipse cx="50" cy="50" rx="44" ry="14" fill="none" stroke="#00b4d8" stroke-width="2" transform="rotate(90 50 50)" opacity="0.8" filter="url(#glowEffect)"/>
+                            <ellipse cx="50" cy="50" rx="44" ry="14" fill="none" stroke="#00b4d8" stroke-width="2" transform="rotate(150 50 50)" opacity="0.8" filter="url(#glowEffect)"/>
+                            <circle cx="50" cy="50" r="14" fill="url(#nucleusGrad)" />
+                            <circle cx="12" cy="28" r="5" fill="url(#electronGrad)" filter="url(#glowEffect)"/>
+                            <circle cx="50" cy="6" r="5" fill="url(#electronGrad)" filter="url(#glowEffect)"/>
+                            <circle cx="88" cy="72" r="5" fill="url(#electronGrad)" filter="url(#glowEffect)"/>
+                        </svg>
                     </div>
                     <div class="flex flex-col">
                         <span class="font-black text-2xl tracking-tight text-slate-900 dark:text-white">
