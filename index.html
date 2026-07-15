@@ -1268,14 +1268,8 @@ async function fetchStudentStats(userId) {
         // ==========================================
 
         async function fetchDynamicSubjects() {
-            const container = document.getElementById('courses-grid');
-            if (!container) return;
             const { data, error } = await supabaseApp.from('subjects').select('*').order('created_at', { ascending: false });
             if (error || !data || data.length === 0) return;
-
-            document.getElementById('no-courses-msg').style.display = 'none';
-            container.style.display = 'grid';
-            container.innerHTML = '';
 
             data.forEach(sub => {
                 // تحديث كائن المواد الثابت بالمواد اللي جاية من الداتا بيز
@@ -1293,19 +1287,6 @@ async function fetchStudentStats(userId) {
                         });
                     }
                 }
-
-                const html = `
-                    <div class="bg-slate-100 dark:bg-[#080c13] p-6 rounded-2xl border border-slate-300 dark:border-gray-800 hover:border-primary transition-colors shadow-lg group">
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full" dir="auto">${sub.code || 'مادة عامة'}</span>
-                            <span class="text-xs text-slate-500 dark:text-gray-400" dir="auto">${sub.year_level || ''}</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-primary transition-colors" dir="auto">${sub.name}</h3>
-                        <p class="text-sm text-slate-600 dark:text-gray-400 mb-6 line-clamp-2" dir="auto">${sub.department || 'عام'}</p>
-                        ${sub.link ? `<a href="${sub.link}" target="_blank" class="block w-full text-center bg-transparent border border-primary text-primary hover:bg-primary hover:text-white font-bold py-2 rounded-lg transition-colors">المقرر الدراسي</a>` : ''}
-                    </div>
-                `;
-                container.innerHTML += html;
             });
         }
 
