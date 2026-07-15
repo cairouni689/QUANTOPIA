@@ -153,8 +153,8 @@
                 <button onclick="nav('results')" class="sidebar-item w-full text-right p-4 rounded-xl text-gray-400 flex items-center gap-4 font-semibold group">
                     <div class="w-8 h-8 rounded-lg bg-dark-700 flex items-center justify-center group-hover:bg-yellow-500 group-hover:text-white transition-colors"><i class="fas fa-trophy"></i></div> نتائج الطلاب
                 </button>
-                <button onclick="nav('news')" class="sidebar-item w-full text-right p-4 rounded-xl text-gray-400 flex items-center gap-4 font-semibold group">
-                    <div class="w-8 h-8 rounded-lg bg-dark-700 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-colors"><i class="fas fa-bullhorn"></i></div> شريط الأخبار
+                <button onclick="nav('courses')" class="sidebar-item w-full text-right p-4 rounded-xl text-gray-400 flex items-center gap-4 font-semibold group">
+                    <div class="w-8 h-8 rounded-lg bg-dark-700 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-colors"><i class="fas fa-video"></i></div> إدارة الكورسات
                 </button>
             </nav>
             <div class="p-6 border-t border-gray-700/50">
@@ -211,11 +211,11 @@
                                 <div class="w-12 h-12 bg-purple-500/20 rounded-2xl flex items-center justify-center text-purple-400 text-xl border border-purple-500/30 group-hover:scale-110 transition-transform"><i class="fas fa-brain"></i></div>
                             </div>
                         </div>
-                        <div class="kpi-card glass-panel p-6 rounded-3xl border-b-4 border-green-500 glow-gold relative overflow-hidden group cursor-default">
+                        <div class="kpi-card glass-panel p-6 rounded-3xl border-b-4 border-green-500 glow-green relative overflow-hidden group cursor-default">
                             <div class="absolute right-0 top-0 w-32 h-32 bg-green-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-green-500/20 transition duration-500"></div>
                             <div class="flex justify-between items-start mb-4 relative z-10">
-                                <div><p class="text-gray-400 text-xs font-bold uppercase tracking-widest mb-1">أخبار</p><h3 class="text-4xl font-extrabold text-white font-mono" id="kpi-news">0</h3></div>
-                                <div class="w-12 h-12 bg-green-500/20 rounded-2xl flex items-center justify-center text-green-400 text-xl border border-green-500/30 group-hover:scale-110 transition-transform"><i class="fas fa-bullhorn"></i></div>
+                                <div><p class="text-gray-400 text-xs font-bold uppercase tracking-widest mb-1">كورسات</p><h3 class="text-4xl font-extrabold text-white font-mono" id="kpi-courses">0</h3></div>
+                                <div class="w-12 h-12 bg-green-500/20 rounded-2xl flex items-center justify-center text-green-400 text-xl border border-green-500/30 group-hover:scale-110 transition-transform"><i class="fas fa-video"></i></div>
                             </div>
                         </div>
                     </div>
@@ -325,15 +325,13 @@
                     </div>
                 </div>
 
-                <div id="view-news" class="hidden space-y-6 animate-fade-in-up">
-                    <div class="glass-panel p-6 rounded-2xl">
-                        <h3 class="text-lg font-bold text-white mb-4">بث خبر عاجل</h3>
-                        <div class="flex gap-2">
-                            <input type="text" id="new-news-input" placeholder="نص الخبر..." class="flex-1 bg-dark-900 border border-gray-700 rounded-xl px-4 py-2 text-white focus:border-green-500 outline-none">
-                            <button onclick="addNews()" class="bg-green-600 hover:bg-green-500 text-white px-6 py-2 rounded-xl font-bold"><i class="fas fa-paper-plane"></i></button>
-                        </div>
+                <div id="view-courses" class="hidden space-y-6 animate-fade-in-up">
+                    <div class="flex flex-col md:flex-row justify-between gap-4">
+                        <input type="text" id="search-courses" onkeyup="filterCourses()" placeholder="بحث في الكورسات..." class="bg-dark-800 border border-gray-700 rounded-xl px-4 py-3 text-white w-full md:w-80 focus:border-green-500 outline-none">
+                        <button onclick="openCourseModal()" class="bg-green-600 hover:bg-green-500 text-white px-6 py-3 rounded-xl font-bold shadow-lg flex items-center justify-center gap-2"><i class="fas fa-plus"></i> كورس جديد</button>
                     </div>
-                    <div class="space-y-2" id="list-news"></div>
+                    <div id="grid-courses" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                    <div id="empty-courses" class="hidden p-8 text-center text-gray-500 glass-panel rounded-2xl">لا توجد كورسات مضافة</div>
                 </div>
 
             </div>
@@ -455,6 +453,34 @@
             </div>
         </div>
     </div>
+
+    <div id="modal-course" class="fixed inset-0 z-[60] bg-black/90 hidden flex items-center justify-center backdrop-blur-sm transition-opacity opacity-0 overflow-y-auto py-10">
+        <div class="bg-dark-800 p-8 rounded-[2rem] w-full max-w-2xl border border-gray-600 shadow-2xl m-4 modal-content transform scale-95 transition-all">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-white"><i class="fas fa-video text-green-500"></i> كورس جديد</h3>
+                <button onclick="closeModal('modal-course')" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="space-y-4">
+                <input id="inp-course-name" type="text" placeholder="اسم الكورس" class="w-full bg-dark-900 border border-gray-700 p-3 rounded-lg text-white outline-none focus:border-green-500">
+                
+                <div>
+                    <input id="inp-course-img-url" type="text" placeholder="رابط صورة غلاف الكورس (من أي موقع رفع خارجي)" class="w-full bg-dark-900 border border-gray-700 p-3 rounded-lg text-white outline-none focus:border-green-500 text-left" dir="ltr" oninput="previewCourseUrlImage(this.value)">
+                    <img id="course-url-preview" src="" class="hidden max-h-40 mx-auto rounded-lg shadow-lg mt-3 border border-gray-700/50">
+                </div>
+
+                <div class="p-4 bg-dark-900 border border-gray-700 rounded-xl">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-white font-bold">المحاضرات</h4>
+                        <button onclick="addLectureRow()" class="text-xs bg-green-600/20 text-green-400 hover:bg-green-600 hover:text-white px-3 py-1.5 rounded-lg transition"><i class="fas fa-plus"></i> إضافة محاضرة أخرى</button>
+                    </div>
+                    <div id="lectures-container" class="space-y-3">
+                        </div>
+                </div>
+            </div>
+            <button onclick="submitCourse()" class="w-full mt-6 bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-lg transition shadow-lg">حفظ الكورس</button>
+        </div>
+    </div>
+
     <div id="modal-video" class="fixed inset-0 z-[80] bg-black/90 hidden flex items-center justify-center backdrop-blur-sm transition-opacity opacity-0">
     <div class="bg-dark-800 p-8 rounded-[2rem] w-full max-w-md border border-gray-600 m-4 modal-content transform scale-95 transition-all">
         <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
@@ -692,15 +718,15 @@ function showDashboard() {
         }
 
         function nav(id) {
-            ['overview', 'subjects', 'quizzes', 'results', 'news'].forEach(i => document.getElementById(`view-${i}`).classList.add('hidden'));
+            ['overview', 'subjects', 'quizzes', 'results', 'courses'].forEach(i => document.getElementById(`view-${i}`).classList.add('hidden'));
             document.getElementById(`view-${id}`).classList.remove('hidden');
             
             const titles = {
                 'overview': '<span class="p-2 bg-gold-500/10 rounded-lg text-gold-500"><i class="fas fa-chart-pie"></i></span> نظرة عامة',
                 'subjects': '<span class="p-2 bg-blue-500/10 rounded-lg text-blue-500"><i class="fas fa-book"></i></span> إدارة المواد',
                 'quizzes': '<span class="p-2 bg-purple-500/10 rounded-lg text-purple-500"><i class="fas fa-brain"></i></span> بنك الكويزات',
-                'results': '<span class="p-2 bg-yellow-500/10 rounded-lg text-yellow-500"><i class="fas fa-trophy"></i></span> نتائج الطلاب',
-                'news': '<span class="p-2 bg-green-500/10 rounded-lg text-green-500"><i class="fas fa-bullhorn"></i></span> شريط الأخبار'
+               'results': '<span class="p-2 bg-yellow-500/10 rounded-lg text-yellow-500"><i class="fas fa-trophy"></i></span> نتائج الطلاب',
+                'courses': '<span class="p-2 bg-green-500/10 rounded-lg text-green-500"><i class="fas fa-video"></i></span> إدارة الكورسات'
             };
             document.getElementById('page-title').innerHTML = titles[id];
             
@@ -997,7 +1023,7 @@ async function refreshData() {
         fetchStats(), 
         fetchSubjects(), 
         fetchQuizzes(), 
-        fetchNews(),
+        fetchCourses(),
         fetchResults(),
         fetchQuizAnalytics()
     ]);
@@ -1009,12 +1035,12 @@ async function refreshData() {
         async function fetchStats() {
             const { count: sCount } = await sb.from('subjects').select('*', { count: 'exact', head: true });
             const { count: qCount } = await sb.from('quizzes').select('*', { count: 'exact', head: true });
-            const { count: nCount } = await sb.from('news').select('*', { count: 'exact', head: true });
+            const { count: cCount } = await sb.from('courses').select('*', { count: 'exact', head: true });
             const { count: questionsCount } = await sb.from('questions').select('*', { count: 'exact', head: true });
 
             animateValue("kpi-subjects", 0, sCount || 0, 1000);
             animateValue("kpi-quizzes", 0, qCount || 0, 1000);
-            animateValue("kpi-news", 0, nCount || 0, 1000);
+            animateValue("kpi-courses", 0, cCount || 0, 1000);
             animateValue("kpi-questions", 0, questionsCount || 0, 1000);
 
             const { data: allSubjects } = await sb.from('subjects').select('year_level');
@@ -1314,25 +1340,110 @@ async function fetchQuizzes() {
     });
 }
 
-async function addNews() {
-    const content = document.getElementById('new-news-input').value;
-    if(!content) return;
-    await sb.from('news').insert([{ content }]);
-    document.getElementById('new-news-input').value = ''; refreshData();
+// --- COURSES LOGIC ---
+function openCourseModal() {
+    document.getElementById('inp-course-name').value = '';
+    document.getElementById('inp-course-img-url').value = '';
+    document.getElementById('course-url-preview').src = '';
+    document.getElementById('course-url-preview').classList.add('hidden');
+    document.getElementById('lectures-container').innerHTML = '';
+    addLectureRow(); // ضيف صف واحد فاضي كمبدأ
+    openModal('modal-course');
 }
-        
-async function fetchNews() {
-    const { data } = await sb.from('news').select('*').order('created_at', {ascending: false}).limit(5);
-    const list = document.getElementById('list-news');
-    list.innerHTML = '';
-    data?.forEach(n => {
-        list.innerHTML += `
-        <div class="p-3 bg-dark-800 rounded-xl text-gray-300 text-sm border-r-2 border-green-500 flex justify-between items-center mb-2 group shadow-sm hover:shadow-md transition-all">
-            <span class="flex-1 ml-4 leading-relaxed">${n.content}</span>
-            <button onclick="deleteItem('news', ${n.id})" class="w-8 h-8 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition flex items-center justify-center shrink-0 opacity-80 hover:opacity-100" title="حذف الخبر">
-                <i class="fas fa-trash-alt text-xs"></i>
-            </button>
-        </div>`;
+
+function previewCourseUrlImage(url) {
+    const preview = document.getElementById('course-url-preview');
+    if (url.trim() !== '') {
+        preview.src = url.trim();
+        preview.classList.remove('hidden');
+    } else {
+        preview.src = '';
+        preview.classList.add('hidden');
+    }
+}
+
+function addLectureRow() {
+    const container = document.getElementById('lectures-container');
+    const rowId = 'lec-' + Date.now();
+    container.insertAdjacentHTML('beforeend', `
+        <div id="${rowId}" class="flex gap-2 items-center bg-dark-800 p-2 rounded-lg border border-gray-700/50 lecture-row mb-2">
+            <input type="text" placeholder="اسم المحاضرة" class="lec-name flex-1 bg-dark-900 border border-gray-600 rounded p-2 text-white text-sm outline-none focus:border-green-500">
+            <input type="text" placeholder="رابط اليوتيوب" class="lec-link flex-1 bg-dark-900 border border-gray-600 rounded p-2 text-white text-sm outline-none focus:border-green-500 text-left" dir="ltr">
+            <button onclick="document.getElementById('${rowId}').remove()" class="text-red-400 hover:text-red-500 p-2 transition"><i class="fas fa-trash"></i></button>
+        </div>
+    `);
+}
+
+async function submitCourse() {
+    const name = document.getElementById('inp-course-name').value.trim();
+    const coverUrl = document.getElementById('inp-course-img-url').value.trim();
+    
+    if(!name || !coverUrl) return Swal.fire('تنبيه', 'يجب إدخال اسم الكورس ورابط صورة الغلاف', 'warning');
+
+    const lectureRows = document.querySelectorAll('.lecture-row');
+    let lectures = [];
+    lectureRows.forEach(row => {
+        const lName = row.querySelector('.lec-name').value.trim();
+        const lLink = row.querySelector('.lec-link').value.trim();
+        if(lName && lLink) lectures.push({ name: lName, url: lLink });
+    });
+
+    if(lectures.length === 0) return Swal.fire('تنبيه', 'يجب إدخال محاضرة واحدة على الأقل', 'warning');
+
+    Swal.fire({title: 'جاري الحفظ...', didOpen: () => Swal.showLoading(), background: '#1e293b', color: '#fff'});
+
+    const payload = {
+        title: name,
+        cover_image: coverUrl,
+        lectures: lectures // هتنحفظ كـ JSONB في الداتا بيز
+    };
+
+    const { error } = await sb.from('courses').insert([payload]);
+    if(!error) {
+        closeModal('modal-course');
+        Swal.fire({icon: 'success', title: 'تم حفظ الكورس بنجاح', background: '#1e293b', color: '#fff', timer: 1500, showConfirmButton: false});
+        fetchCourses();
+    } else {
+        Swal.fire('خطأ', 'حدثت مشكلة أثناء الحفظ', 'error');
+    }
+}
+
+async function fetchCourses() {
+    const { data, error } = await sb.from('courses').select('*').order('created_at', { ascending: false });
+    const grid = document.getElementById('grid-courses');
+    const empty = document.getElementById('empty-courses');
+    grid.innerHTML = '';
+    
+    if (error || !data || data.length === 0) {
+        empty.classList.remove('hidden');
+        return;
+    }
+    empty.classList.add('hidden');
+
+    data.forEach(course => {
+        const lecsCount = course.lectures ? course.lectures.length : 0;
+        grid.innerHTML += `
+            <div class="glass-panel rounded-2xl overflow-hidden border border-gray-700/50 transition hover:-translate-y-1 shadow-lg group">
+                <div class="h-40 w-full relative">
+                    <img src="${course.cover_image}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark-900 to-transparent"></div>
+                    <button onclick="deleteItem('courses', ${course.id})" class="absolute top-3 right-3 bg-red-500/80 hover:bg-red-500 text-white w-8 h-8 rounded-full flex items-center justify-center backdrop-blur shadow-lg transition"><i class="fas fa-trash-alt"></i></button>
+                </div>
+                <div class="p-5">
+                    <h4 class="font-bold text-white text-lg mb-2 truncate" title="${course.title}">${course.title}</h4>
+                    <div class="flex items-center gap-2 text-sm text-gray-400 mb-4">
+                        <i class="fas fa-list-ol text-green-500"></i> ${lecsCount} محاضرات
+                    </div>
+                </div>
+            </div>`;
+    });
+}
+
+function filterCourses() {
+    const term = document.getElementById('search-courses').value.toLowerCase();
+    document.querySelectorAll('#grid-courses > div').forEach(card => {
+        const title = card.querySelector('h4').innerText.toLowerCase();
+        card.style.display = title.includes(term) ? '' : 'none';
     });
 }
 
@@ -1365,7 +1476,7 @@ function updateChart(dataCounts) {
 
 function setupRealtimeListener() {
     sb.channel('db-changes')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'news' }, () => { fetchNews(); })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'courses' }, () => { fetchCourses(); fetchStats(); })
         .on('postgres_changes', { event: '*', schema: 'public', table: 'quizzes' }, () => { refreshData(); })
         .on('postgres_changes', { event: '*', schema: 'public', table: 'subjects' }, () => { refreshData(); })
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'quiz_results' }, (payload) => {
