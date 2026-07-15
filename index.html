@@ -551,10 +551,8 @@
                 </div>
             </div>
 
-                        <div id="mat-level-subjects" class="hidden text-center py-20 bg-slate-100 dark:bg-cardBg rounded-3xl border border-slate-300 dark:border-gray-800 shadow-xl max-w-4xl mx-auto">
-                <i class="fa-solid fa-book-open-reader text-7xl text-primary mb-6 opacity-60"></i>
-                <p class="text-2xl font-bold text-slate-600 dark:text-gray-400">No subjects have been added to this term yet.</p>
-            </div>
+                        <div id="mat-level-subjects" class="hidden grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto w-full">
+                            </div>
         </div>
     </div>
 
@@ -947,6 +945,25 @@
             }
         }
 
+        const subjectsData = {
+            "First Year": {
+                "First Term": ["GENERAL PHYSICS 1 (PHYSICS 101)"],
+                "Second Term": ["GENERAL PHYSICS 2 ( PHYSICS 102 )"]
+            },
+            "Second Year": {
+                "First Term": ["CLASSICAL PHYSICS (PHY221)", "COMPUTER SCIENCES (PHY245)", "ELCTROMAGNETISM (PHY231)", "MATHEMATICAL PHYSICS (PHY241)", "MODERN PHYSICS (PHY261)", "PRACTICAL PHYSICS (PHY201)", "THERMODYNAMICS (PHY251)"],
+                "Second Term": ["CLASSICAL MECHANICS (PHY222)", "COMPUTER SCIENCE (PHY247)", "ELCTROMAGNETISM (PHY232)", "MATHEMATICAL PHYSICS (PHY242)", "OPTICAL PHYSICS (PHY235)", "PRACTICAL PHYSICS (PHY201)", "SPECIAL RELATIVITY (PHY234)", "WAVES (PHY224)"]
+            },
+            "Third Year": {
+                "First Term": ["ELECTRICAL CIRCUITS (PHY390)", "FLUID PHYSICS (PHY321)", "LASER (PHY366)", "PHYSICS OF ENERGY (PHY354)", "PRACTICAL PHYSICS (PHY303)", "QUANTUM PHYSICS (PHY362)", "STATISTICAL PHYSICS (PHY351)"],
+                "Second Term": ["ELECTRICAL CIRCUITS (PHY390)", "FLUID PHYSICS (PHY321)", "LASER (PHY366)", "PHYSICS OF ENERGY (PHY354)", "PRACTICAL PHYSICS (PHY303)", "QUANTUM PHYSICS (PHY362)", "STATISTICAL PHYSICS (PHY351)"]
+            },
+            "Fourth Year": {
+                "First Term": ["DIGITAL ELCTRONICS (PHY490)", "FIELD THEORY (PHYS445)", "LOW TEMPERATURE PHYSICS (PHY495)", "MICROWAVES PHYSICS (PHY336)", "NUCLEAR PHYSICS (PHY482)", "REALTIVISTIC QUANTUM (PHY461)", "SOLID STATE PHYSICS (PHY472)", "SOLID STATE PRACTICAL (PHY403)"],
+                "Second Term": ["CONDENSED MATTER PHYSICS (PHY473)", "ELEMENTARY PARTICLES (PHY483)", "FUNDAMENTALS OF ANTENNA (PHY497)", "GROUP THEORY (PHY444)", "OPTICAL PHYSICS (496)", "PLASMA PHYISCS (PHY494)", "PRACTICAL NUCLEAR (PHY404)", "THIN FILMS (475)"]
+            }
+        };
+
         function showMaterialsLevel(level, title = '') {
             showSection('materials-section');
             
@@ -960,6 +977,7 @@
             termsLevel.classList.add('hidden');
             termsLevel.classList.remove('grid');
             subjectsLevel.classList.add('hidden');
+            subjectsLevel.classList.remove('grid');
             
             if (level === 'years') {
                 materialsHistory = ['years'];
@@ -977,6 +995,34 @@
                 subjectsLevel.classList.remove('hidden');
                 titleEl.innerHTML = `<span class="text-primary">${title}</span>`;
                 backBtn.classList.remove('hidden');
+
+                const yearObj = materialsHistory.find(h => h.level === 'terms');
+                const selectedYear = yearObj ? yearObj.title : '';
+                const termSubjects = (subjectsData[selectedYear] && subjectsData[selectedYear][title]) ? subjectsData[selectedYear][title] : [];
+
+                if (termSubjects.length > 0) {
+                    subjectsLevel.classList.add('grid');
+                    subjectsLevel.innerHTML = termSubjects.map(sub => `
+                        <div class="bg-gradient-to-br from-slate-100 to-white dark:from-[#131b26] dark:to-[#080c13] p-6 rounded-[1.5rem] border border-slate-300 dark:border-gray-800 shadow-xl hover:shadow-2xl hover:shadow-primary/20 hover:border-primary/50 transition-all duration-300 hover:-translate-y-2 group cursor-pointer flex flex-col">
+                            <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary transition-colors duration-300">
+                                <i class="fa-solid fa-atom text-2xl text-primary group-hover:text-darkBg transition-colors duration-300"></i>
+                            </div>
+                            <h4 class="text-lg font-black text-slate-900 dark:text-white mb-2 leading-tight">${sub}</h4>
+                            <div class="mt-auto pt-4 border-t border-slate-200 dark:border-gray-800 flex items-center justify-between text-sm font-bold text-slate-500 dark:text-gray-400 group-hover:text-primary transition-colors">
+                                <span>Explore Subject</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    subjectsLevel.classList.remove('grid');
+                    subjectsLevel.innerHTML = `
+                        <div class="text-center py-20 bg-slate-100 dark:bg-cardBg rounded-3xl border border-slate-300 dark:border-gray-800 shadow-xl max-w-4xl mx-auto w-full">
+                            <i class="fa-solid fa-book-open-reader text-7xl text-primary mb-6 opacity-60"></i>
+                            <p class="text-2xl font-bold text-slate-600 dark:text-gray-400">No subjects have been added to this term yet.</p>
+                        </div>
+                    `;
+                }
             }
         }
 
