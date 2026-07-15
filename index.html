@@ -307,26 +307,7 @@
                     </button>
                 </div>
 
-                <script>
-                    document.addEventListener("DOMContentLoaded", () => {
-                        const coursesGrid = document.getElementById('courses-grid');
-                        const noCoursesMsg = document.getElementById('no-courses-msg');
-                        const viewMoreBtn = document.getElementById('view-more-btn-container');
-                        
-                        // هيحسب عدد الكورسات اللي جوه الديف
-                        const courseCount = coursesGrid.children.length;
-                        
-                        if (courseCount === 0) {
-                            noCoursesMsg.style.display = 'block';
-                            coursesGrid.style.display = 'none';
-                        } else {
-                            coursesGrid.style.display = 'grid';
-                            if (courseCount > 3) {
-                                viewMoreBtn.style.display = 'block';
-                            }
-                        }
-                    });
-                </script>
+                <!-- تم نقل منطق الكورسات لأسفل مع باقي دوال الجافاسكريبت -->
             </div>
         </section>
 
@@ -820,6 +801,29 @@
         </div>
     </div>
 
+<div id="course-details-modal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal('course-details-modal')"></div>
+        <div class="absolute inset-4 md:inset-10 lg:inset-x-32 flex flex-col bg-slate-100 dark:bg-[#080c13] rounded-2xl overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300" id="course-details-box">
+            <div class="p-4 border-b border-slate-300 dark:border-gray-800 flex justify-between items-center bg-white dark:bg-cardBg">
+                <h2 id="modal-course-title" class="text-xl font-bold text-slate-900 dark:text-white">اسم الكورس</h2>
+                <button onclick="closeModal('course-details-modal'); document.getElementById('course-video-iframe').src='';" class="text-slate-500 hover:text-red-500 text-2xl"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+                <!-- Video Player (Iframe) -->
+                <div class="w-full md:w-2/3 bg-black flex items-center justify-center relative">
+                    <iframe id="course-video-iframe" class="w-full h-full min-h-[250px] md:min-h-full" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <!-- Lectures List -->
+                <div class="w-full md:w-1/3 bg-slate-50 dark:bg-[#080c13] border-l border-slate-300 dark:border-gray-800 overflow-y-auto custom-scrollbar p-4">
+                    <h3 class="font-bold text-slate-800 dark:text-gray-300 mb-4 border-b border-slate-300 dark:border-gray-700 pb-2">محتوى الكورس</h3>
+                    <div id="course-lectures-list" class="space-y-2 flex flex-col">
+                        <!-- المحاضرات هتتحط هنا ديناميكياً -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // 1. Mobile Menu Toggle
         // --- Custom Notification System ---
@@ -1163,9 +1167,10 @@
                     updateUIAfterLogin(session.user);
                 }
                 
-                // جلب المواد والكويزات ديناميكياً
+                // جلب المواد، الكويزات، والكورسات ديناميكياً
                 fetchDynamicSubjects();
                 fetchActiveQuizzes();
+                fetchFrontendCourses(); // الدالة الجديدة لجلب الكورسات
                 setupRealtimeListener();
                 checkAbandonedExams();
             } else {
@@ -1335,6 +1340,123 @@ async function fetchStudentStats(userId) {
                 </div>`;
                 container.innerHTML += html;
             });
+        }
+
+// ==========================================
+        // دوال الكورسات (الفرونت اند)
+        // ==========================================
+        
+        async function fetchFrontendCourses() {
+            const coursesGrid = document.getElementById('courses-grid');
+            const noCoursesMsg = document.getElementById('no-courses-msg');
+            const viewMoreBtn = document.getElementById('view-more-btn-container');
+
+            if (!coursesGrid) return;
+
+            // جلب الكورسات من قاعدة البيانات
+            const { data: courses, error } = await supabaseApp.from('courses').select('*').order('created_at', { ascending: false });
+
+            if (error || !courses || courses.length === 0) {
+                noCoursesMsg.style.display = 'block';
+                coursesGrid.style.display = 'none';
+                viewMoreBtn.style.display = 'none';
+                return;
+            }
+
+            noCoursesMsg.style.display = 'none';
+            coursesGrid.style.display = 'grid';
+            coursesGrid.innerHTML = '';
+
+            courses.forEach(course => {
+                const lecturesCount = course.lectures ? course.lectures.length : 0;
+                const safeCourse = encodeURIComponent(JSON.stringify(course));
+
+                coursesGrid.innerHTML += `
+                <div class="bg-slate-100 dark:bg-[#131b26] rounded-2xl overflow-hidden shadow-lg border border-slate-300 dark:border-gray-800 transition-transform hover:-translate-y-2 group flex flex-col">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="${course.cover_image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <span class="bg-primary/90 backdrop-blur text-xs font-bold px-3 py-1.5 rounded-lg border border-primary/50 shadow-lg flex items-center gap-1">
+                                <i class="fas fa-play-circle"></i> ${lecturesCount} محاضرات
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-1">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4 line-clamp-2 leading-snug" dir="auto">${course.title}</h3>
+                        <button onclick="openCourseDetails('${safeCourse}')" class="mt-auto w-full bg-slate-200 hover:bg-primary hover:text-white dark:bg-[#080c13] dark:hover:bg-primary text-slate-800 dark:text-white font-black py-3 rounded-xl transition-all duration-300 border border-slate-300 dark:border-gray-700 hover:border-primary shadow-sm flex items-center justify-center gap-2">
+                            شاهد الكورس <i class="fas fa-arrow-left text-sm"></i>
+                        </button>
+                    </div>
+                </div>`;
+            });
+
+            if (courses.length > 3) {
+                viewMoreBtn.style.display = 'block';
+            } else {
+                viewMoreBtn.style.display = 'none';
+            }
+        }
+
+        // تحويل رابط يوتيوب العادي لرابط Embed يشتغل جوا الـ Iframe
+        function getYouTubeEmbedUrl(url) {
+            let videoId = '';
+            if (!url) return '';
+            if (url.includes('youtube.com/watch?v=')) {
+                videoId = url.split('v=')[1].split('&')[0];
+            } else if (url.includes('youtu.be/')) {
+                videoId = url.split('youtu.be/')[1].split('?')[0];
+            }
+            return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
+        }
+
+        function playLecture(embedUrl, buttonElement) {
+            document.getElementById('course-video-iframe').src = embedUrl;
+            
+            // تلوين الزرار النشط
+            document.querySelectorAll('.lecture-btn').forEach(btn => {
+                btn.classList.remove('bg-primary/20', 'border-primary', 'text-primary');
+                btn.classList.add('bg-slate-200', 'dark:bg-darkBg', 'border-slate-300', 'dark:border-gray-700', 'text-slate-700', 'dark:text-gray-300');
+            });
+            
+            buttonElement.classList.remove('bg-slate-200', 'dark:bg-darkBg', 'border-slate-300', 'dark:border-gray-700', 'text-slate-700', 'dark:text-gray-300');
+            buttonElement.classList.add('bg-primary/20', 'border-primary', 'text-primary');
+        }
+
+        function openCourseDetails(encodedCourse) {
+            const course = JSON.parse(decodeURIComponent(encodedCourse));
+            document.getElementById('modal-course-title').innerText = course.title;
+            
+            const lecturesList = document.getElementById('course-lectures-list');
+            lecturesList.innerHTML = '';
+            
+            if (course.lectures && course.lectures.length > 0) {
+                // وضع أول محاضرة كافتراضية
+                const firstEmbed = getYouTubeEmbedUrl(course.lectures[0].url);
+                document.getElementById('course-video-iframe').src = firstEmbed;
+
+                course.lectures.forEach((lec, index) => {
+                    const embedUrl = getYouTubeEmbedUrl(lec.url);
+                    const isActive = index === 0;
+                    const activeClasses = isActive 
+                        ? 'lecture-btn bg-primary/20 border-primary text-primary' 
+                        : 'lecture-btn bg-slate-200 dark:bg-darkBg border-slate-300 dark:border-gray-700 text-slate-700 dark:text-gray-300 hover:border-primary/50';
+
+                    lecturesList.innerHTML += `
+                        <button onclick="playLecture('${embedUrl}', this)" class="w-full text-right p-3 rounded-xl border transition-all duration-300 flex items-center gap-3 font-bold group ${activeClasses}" dir="auto">
+                            <div class="w-8 h-8 rounded-full bg-slate-300 dark:bg-[#131b26] flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
+                                <i class="fas fa-play text-xs"></i>
+                            </div>
+                            <span class="flex-1 line-clamp-2 leading-snug">${lec.name}</span>
+                        </button>
+                    `;
+                });
+            } else {
+                document.getElementById('course-video-iframe').src = '';
+                lecturesList.innerHTML = '<p class="text-center text-slate-500 py-10">لا توجد محاضرات مضافة لهذا الكورس بعد.</p>';
+            }
+
+            openModal('course-details-modal');
         }
 
         let examState = { inProgress: false };
