@@ -453,16 +453,18 @@
     </div>
 
         <div id="quizzes-section" class="hidden py-24 min-h-screen bg-slate-200 dark:bg-darkBg transition-colors relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 animate-fade-in-up">
-            <h2 class="text-4xl font-black mb-8 text-slate-900 dark:text-white border-b border-slate-300 dark:border-gray-800 pb-4">
-                Available <span class="text-primary">Quizzes</span>
-            </h2>
-            <div class="text-center py-20 bg-slate-100 dark:bg-cardBg rounded-3xl border border-slate-300 dark:border-gray-800 shadow-xl">
-                <i class="fa-solid fa-clipboard-question text-7xl text-primary mb-6 opacity-60"></i>
-                <p class="text-2xl font-bold text-slate-600 dark:text-gray-400">No quizzes have been added yet.</p>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 animate-fade-in-up">
+                <h2 class="text-4xl font-black mb-8 text-slate-900 dark:text-white border-b border-slate-300 dark:border-gray-800 pb-4">
+                    Available <span class="text-primary">Quizzes</span>
+                </h2>
+                <div id="quizzes-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in-up">
+                    <div class="col-span-full text-center py-20 bg-slate-100 dark:bg-cardBg rounded-3xl border border-slate-300 dark:border-gray-800 shadow-xl">
+                        <i class="fa-solid fa-clipboard-question text-7xl text-primary mb-6 opacity-60"></i>
+                        <p class="text-2xl font-bold text-slate-600 dark:text-gray-400">No quizzes have been added yet.</p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
         <div id="materials-section" class="hidden py-24 min-h-screen bg-slate-200 dark:bg-darkBg transition-colors relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 animate-fade-in-up">
@@ -661,6 +663,55 @@
             </div>
         </div>
     </footer>
+
+<div id="active-quiz-view" class="hidden opacity-0 transition-opacity duration-500 min-h-screen bg-slate-100 dark:bg-darkBg relative flex flex-col select-none z-50">
+        <div class="bg-white dark:bg-cardBg border-b border-slate-300 dark:border-gray-800 p-4 sticky top-0 z-50 shadow-lg">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <div class="text-slate-900 dark:text-white font-bold text-lg truncate w-32 md:w-auto" id="active-quiz-title">Loading...</div>
+                    <span class="bg-primary/20 text-primaryDark dark:text-primary text-xs px-2 py-1 rounded border border-primary/30 font-mono" id="question-tracker">-- / --</span>
+                </div>
+                <div class="flex items-center gap-2 text-red-500 font-mono font-bold text-xl bg-slate-200 dark:bg-darkBg px-4 py-2 rounded-lg border border-red-500/30 shadow-inner">
+                    <i class="fa-solid fa-stopwatch animate-pulse"></i>
+                    <span id="quiz-timer">00:00</span>
+                </div>
+            </div>
+            <div class="w-full bg-slate-200 dark:bg-darkBg h-1.5 mt-4 rounded-full overflow-hidden">
+                <div id="quiz-progress-bar" class="bg-gradient-to-r from-primary to-accent h-full w-0 transition-all duration-300"></div>
+            </div>
+        </div>
+
+        <div class="flex-grow max-w-4xl mx-auto px-4 py-8 flex flex-col w-full relative z-10">
+            <div class="w-full bg-white dark:bg-cardBg p-6 md:p-10 rounded-3xl border border-slate-300 dark:border-gray-700 shadow-2xl relative flex flex-col flex-grow">
+                
+                <div id="question-content-area" class="mb-8 min-h-[200px] flex-grow">
+                    <h3 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white leading-relaxed mb-6" id="question-text" dir="auto">...</h3>
+                    
+                    <img id="question-image" src="" class="hidden w-full max-h-64 object-contain rounded-xl border border-slate-300 dark:border-gray-600 mb-6 bg-slate-100 dark:bg-black/50 mx-auto">
+                    
+                    <div id="options-container" class="space-y-3" dir="auto"></div>
+
+                    <div id="essay-input-container" class="hidden">
+                        <textarea id="essay-answer" class="w-full bg-slate-100 dark:bg-darkBg border border-slate-300 dark:border-gray-600 rounded-xl p-4 text-slate-900 dark:text-white focus:border-primary outline-none h-32 resize-none custom-scrollbar" placeholder="Type your answer here..." dir="auto"></textarea>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center pt-6 border-t border-slate-300 dark:border-gray-700 mt-auto">
+                    <button onclick="prevQuestion()" id="btn-prev" class="px-6 py-2 rounded-xl bg-slate-200 dark:bg-darkBg text-slate-500 dark:text-gray-400 hover:bg-slate-300 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition border border-slate-300 dark:border-gray-700">
+                        <i class="fa-solid fa-arrow-left mr-2"></i> Previous
+                    </button>
+
+                    <button onclick="nextQuestion()" id="btn-next" class="px-8 py-3 rounded-xl bg-primary hover:bg-primaryDark text-white font-bold shadow-lg transition transform active:scale-95 flex items-center">
+                        Next <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+
+                    <button onclick="finishQuiz()" id="btn-finish" class="hidden px-8 py-3 rounded-xl bg-green-500 hover:bg-green-600 text-white font-bold shadow-lg transition transform active:scale-95 flex items-center animate-pulse">
+                        Submit Exam <i class="fa-solid fa-check ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="login-modal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal('login-modal')"></div>
@@ -892,6 +943,10 @@
             document.getElementById('quizzes-section').classList.add('hidden');
             document.getElementById('materials-section').classList.add('hidden');
             document.getElementById('about-section').classList.add('hidden');
+            
+            const activeQuiz = document.getElementById('active-quiz-view');
+            if(activeQuiz) activeQuiz.classList.add('hidden');
+
             mobileMenu.classList.add('hidden');
             
             // إخفاء دوشة الفوتر في الصفحات الداخلية
@@ -1107,6 +1162,12 @@
                 if (session) {
                     updateUIAfterLogin(session.user);
                 }
+                
+                // جلب المواد والكويزات ديناميكياً
+                fetchDynamicSubjects();
+                fetchActiveQuizzes();
+                setupRealtimeListener();
+                checkAbandonedExams();
             } else {
                 console.error("Supabase failed to load from CDN.");
             }
@@ -1200,6 +1261,321 @@ async function fetchStudentStats(userId) {
             } catch (err) {
                 console.error("Error fetching stats:", err);
             }
+        }
+
+        // ==========================================
+        // إضافة الدوال الجديدة لربط الفرونت بالداش بورد
+        // ==========================================
+
+        async function fetchDynamicSubjects() {
+            const container = document.getElementById('courses-grid');
+            if (!container) return;
+            const { data, error } = await supabaseApp.from('subjects').select('*').order('created_at', { ascending: false });
+            if (error || !data || data.length === 0) return;
+
+            document.getElementById('no-courses-msg').style.display = 'none';
+            container.style.display = 'grid';
+            container.innerHTML = '';
+
+            data.forEach(sub => {
+                const html = `
+                    <div class="bg-slate-100 dark:bg-[#080c13] p-6 rounded-2xl border border-slate-300 dark:border-gray-800 hover:border-primary transition-colors shadow-lg group">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full" dir="auto">${sub.code || 'مادة عامة'}</span>
+                            <span class="text-xs text-slate-500 dark:text-gray-400" dir="auto">${sub.year_level || ''}</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-primary transition-colors" dir="auto">${sub.name}</h3>
+                        <p class="text-sm text-slate-600 dark:text-gray-400 mb-6 line-clamp-2" dir="auto">${sub.department || 'عام'}</p>
+                        ${sub.link ? `<a href="${sub.link}" target="_blank" class="block w-full text-center bg-transparent border border-primary text-primary hover:bg-primary hover:text-white font-bold py-2 rounded-lg transition-colors">المقرر الدراسي</a>` : ''}
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        async function fetchActiveQuizzes() {
+            const container = document.getElementById('quizzes-container');
+            if (!container) return;
+            container.innerHTML = '<div class="col-span-full text-center py-10"><i class="fa-solid fa-spinner fa-spin text-4xl text-primary"></i></div>';
+
+            const { data: quizzes, error } = await supabaseApp.from('quizzes').select('*').eq('is_active', true).order('created_at', { ascending: false });
+
+            let takenQuizIds = [];
+            if (supabaseApp && (await supabaseApp.auth.getSession()).data.session) {
+                const session = (await supabaseApp.auth.getSession()).data.session;
+                const {data: userResults} = await supabaseApp.from('quiz_results').select('quiz_id, score, total_score').eq('user_id', session.user.id);
+                if (userResults) takenQuizIds = userResults;
+            }
+
+            container.innerHTML = "";
+            if (!quizzes || quizzes.length === 0) {
+                container.innerHTML = `<div class="col-span-full text-center text-gray-500 py-10">لا توجد اختبارات متاحة حالياً</div>`;
+                return;
+            }
+
+            quizzes.forEach(quiz => {
+                const takenData = takenQuizIds.find(q => q.quiz_id === quiz.id);
+                const isTaken = !!takenData;
+
+                let buttonHtml = '';
+                if (isTaken) {
+                    const percent = Math.round((takenData.score / takenData.total_score) * 100);
+                    buttonHtml = `<button disabled class="w-full mt-4 bg-slate-200 dark:bg-darkBg border border-green-500/50 text-green-600 dark:text-green-500 font-bold py-3 rounded-xl flex items-center justify-center gap-2 cursor-not-allowed opacity-80"><span>تم الحل (${percent}%)</span> <i class="fa-solid fa-check-circle text-lg"></i></button>`;
+                } else {
+                    buttonHtml = `<button onclick="initQuizSession(${quiz.id}, '${quiz.title.replace(/'/g, "\\'")}', ${quiz.time_limit})" class="w-full mt-4 bg-primary hover:bg-primaryDark text-white font-bold py-3 rounded-xl shadow-lg transition flex items-center justify-center gap-2"><span>بدء الاختبار</span> <i class="fa-solid fa-play text-xs"></i></button>`;
+                }
+
+                const html = `
+                <div class="bg-slate-100 dark:bg-cardBg p-6 rounded-2xl border-t-4 ${isTaken ? 'border-green-500 opacity-80' : 'border-primary hover:-translate-y-1'} transition shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="text-xs font-mono bg-slate-200 dark:bg-darkBg ${isTaken ? 'text-green-600 dark:text-green-400 border-green-500/30' : 'text-primary border-primary/30'} px-2 py-1 rounded border" dir="auto">${quiz.subject_code || 'عام'}</span>
+                            <span class="text-xs text-slate-500 dark:text-gray-400" dir="auto"><i class="fa-solid fa-clock"></i> ${quiz.time_limit} دقيقة</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2 line-clamp-2" dir="auto">${quiz.title}</h3>
+                    </div>
+                    <div>${buttonHtml}</div>
+                </div>`;
+                container.innerHTML += html;
+            });
+        }
+
+        let examState = { inProgress: false };
+
+        async function initQuizSession(id, title, time) {
+            const { data: { session } } = await supabaseApp.auth.getSession();
+            if (!session) {
+                showNotification('تنبيه', 'يجب تسجيل الدخول للبدء في الاختبار', 'error');
+                return;
+            }
+
+            const { data } = await supabaseApp.from('quiz_results').select('id').eq('user_id', session.user.id).eq('quiz_id', id);
+            if(data && data.length > 0) {
+                showNotification('عفواً', 'لقد قمت بأداء هذا الاختبار مسبقاً.', 'error');
+                return;
+            }
+
+            if(confirm(`هل أنت مستعد؟ الزمن المحدد: ${time} دقيقة. بمجرد البدء لا يمكنك الخروج وإلا سيتم احتساب الدرجة صفر.`)) {
+                launchQuiz(id, title, time);
+            }
+        }
+
+        function cleanLatexInput(inputText) {
+            if (!inputText) return "";
+            let cleanedText = inputText.toString().replace(/\\item\s*/g, "");
+            cleanedText = cleanedText.replace(/\\begin\{enumerate\}\s*/g, "");
+            cleanedText = cleanedText.replace(/\\end\{enumerate\}\s*/g, "");
+            return cleanedText.trim();
+        }
+
+        async function launchQuiz(quizId, title, timeLimit) {
+            const { data, error } = await supabaseApp.from('questions').select('*').eq('quiz_id', quizId);
+            if (error || !data || data.length === 0) {
+                showNotification('خطأ', 'لا توجد أسئلة في هذا الاختبار', 'error');
+                return;
+            }
+
+            examState = {
+                questions: data,
+                currentIndex: 0,
+                answers: {},
+                inProgress: true,
+                quizId: quizId,
+                startTime: Date.now()
+            };
+
+            localStorage.setItem('ongoing_exam_id', quizId);
+            localStorage.setItem('ongoing_exam_title', title);
+            localStorage.setItem('ongoing_exam_total', data.length);
+
+            window.onbeforeunload = function() { return "سيتم إلغاء الامتحان واحتسابه صفر. هل أنت متأكد؟"; };
+
+            document.getElementById('active-quiz-title').innerText = title;
+            startTimer(timeLimit);
+            renderQuestion();
+            
+            showSection('active-quiz-view');
+        }
+
+        function startTimer(minutes) {
+            let timeLeft = minutes * 60;
+            const timerEl = document.getElementById('quiz-timer');
+            if (examState.timer) clearInterval(examState.timer);
+
+            examState.timer = setInterval(() => {
+                const m = Math.floor(timeLeft / 60);
+                const s = timeLeft % 60;
+                timerEl.innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+                if (timeLeft < 60) timerEl.classList.add('text-red-500', 'animate-pulse');
+                if (timeLeft <= 0) {
+                    clearInterval(examState.timer);
+                    submitExam(true);
+                }
+                timeLeft--;
+            }, 1000);
+        }
+
+        function renderQuestion() {
+            const q = examState.questions[examState.currentIndex];
+            const total = examState.questions.length;
+            
+            document.getElementById('question-tracker').innerText = `${examState.currentIndex + 1} / ${total}`;
+            document.getElementById('quiz-progress-bar').style.width = `${((examState.currentIndex + 1) / total) * 100}%`;
+            document.getElementById('question-text').innerText = cleanLatexInput(q.question_text || "انظر الصورة");
+            
+            const imgEl = document.getElementById('question-image');
+            if (q.image_url) {
+                imgEl.src = q.image_url;
+                imgEl.classList.remove('hidden');
+            } else {
+                imgEl.classList.add('hidden');
+            }
+
+            const optsDiv = document.getElementById('options-container');
+            const essayDiv = document.getElementById('essay-input-container');
+            const essayInput = document.getElementById('essay-answer');
+            
+            optsDiv.innerHTML = '';
+
+            if (q.question_type === 'mcq') {
+                essayDiv.classList.add('hidden');
+                optsDiv.classList.remove('hidden');
+                
+                [1, 2, 3, 4].forEach(num => {
+                    let txt = q[`option_${num}`];
+                    if (txt) {
+                        txt = cleanLatexInput(txt);
+                        const isSelected = examState.answers[q.id] === num;
+                        const activeClass = isSelected ? 'border-primary bg-primary/10 dark:bg-primary/30' : 'border-slate-300 dark:border-gray-600 bg-slate-50 dark:bg-darkBg';
+                        const dotClass = isSelected ? 'bg-primary border-primary' : 'border-slate-400 dark:border-gray-500';
+
+                        optsDiv.innerHTML += `
+                        <div onclick="selectOption(${q.id}, ${num})" class="cursor-pointer p-4 rounded-xl border ${activeClass} transition-all flex items-center gap-4 group">
+                            <div class="w-6 h-6 rounded-full border-2 ${dotClass} flex items-center justify-center flex-shrink-0">
+                                ${isSelected ? '<div class="w-2.5 h-2.5 bg-white rounded-full"></div>' : ''}
+                            </div>
+                            <span class="text-slate-700 dark:text-gray-200 group-hover:text-primary dark:group-hover:text-white text-lg font-medium" dir="auto">${txt}</span>
+                        </div>`;
+                    }
+                });
+            } else {
+                optsDiv.classList.add('hidden');
+                essayDiv.classList.remove('hidden');
+                if (essayInput) {
+                    essayInput.value = examState.answers[q.id] || '';
+                    essayInput.oninput = (e) => { examState.answers[q.id] = e.target.value; };
+                }
+            }
+
+            document.getElementById('btn-prev').disabled = (examState.currentIndex === 0);
+            if (examState.currentIndex === total - 1) {
+                document.getElementById('btn-next').classList.add('hidden');
+                document.getElementById('btn-finish').classList.remove('hidden');
+            } else {
+                document.getElementById('btn-next').classList.remove('hidden');
+                document.getElementById('btn-finish').classList.add('hidden');
+            }
+            if (window.MathJax && window.MathJax.typesetPromise) MathJax.typesetPromise();
+        }
+
+        function selectOption(qId, num) {
+            examState.answers[qId] = num;
+            renderQuestion();
+        }
+
+        function nextQuestion() {
+            if (examState.currentIndex < examState.questions.length - 1) {
+                examState.currentIndex++;
+                renderQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (examState.currentIndex > 0) {
+                examState.currentIndex--;
+                renderQuestion();
+            }
+        }
+
+        function finishQuiz() {
+            if(confirm('تأكد من مراجعة إجاباتك، هل تريد تسليم الورقة؟')) submitExam(false);
+        }
+
+        async function submitExam(isForced) {
+            if (examState.timer) clearInterval(examState.timer);
+            window.onbeforeunload = null;
+            examState.inProgress = false;
+            
+            localStorage.removeItem('ongoing_exam_id');
+            localStorage.removeItem('ongoing_exam_title');
+            localStorage.removeItem('ongoing_exam_total');
+
+            const session = (await supabaseApp.auth.getSession()).data.session;
+            if (!session) return;
+
+            let score = 0;
+            let totalMarks = examState.questions.length;
+
+            examState.questions.forEach((q) => {
+                if (q.question_type === 'mcq') {
+                    const studentAnsNum = isForced ? null : examState.answers[q.id];
+                    if (studentAnsNum == q.correct_option) score++;
+                } else {
+                    let ans = isForced ? "" : (examState.answers[q.id] ? examState.answers[q.id].trim() : "");
+                    if (ans.length > 0) score++;
+                }
+            });
+
+            const quizTitle = document.getElementById('active-quiz-title').innerText;
+            await supabaseApp.from('quiz_results').insert([{
+                user_id: session.user.id,
+                quiz_id: examState.quizId,
+                student_name: session.user.user_metadata.first_name + " " + session.user.user_metadata.last_name,
+                quiz_title: quizTitle,
+                score: score,
+                total_score: totalMarks 
+            }]);
+
+            alert(`تم التسليم بنجاح! درجتك: ${score} / ${totalMarks}`);
+            fetchActiveQuizzes();
+            showSection('quizzes-section');
+        }
+
+        async function checkAbandonedExams() {
+            const abandonedExamId = localStorage.getItem('ongoing_exam_id');
+            const session = (await supabaseApp.auth.getSession()).data.session;
+            if (abandonedExamId && session) {
+                const quizTitle = localStorage.getItem('ongoing_exam_title');
+                const totalMarks = localStorage.getItem('ongoing_exam_total');
+
+                localStorage.removeItem('ongoing_exam_id');
+                localStorage.removeItem('ongoing_exam_title');
+                localStorage.removeItem('ongoing_exam_total');
+
+                await supabaseApp.from('quiz_results').insert([{
+                    user_id: session.user.id,
+                    quiz_id: abandonedExamId,
+                    student_name: session.user.user_metadata.first_name + " " + session.user.user_metadata.last_name,
+                    quiz_title: quizTitle,
+                    score: 0,
+                    total_score: parseInt(totalMarks)
+                }]);
+
+                alert(`تم سحب الورقة! لقد قمت بتحديث الصفحة أثناء امتحان (${quizTitle}) وحصلت على صفر.`);
+            }
+        }
+
+        function setupRealtimeListener() {
+            supabaseApp.channel('frontend-updates')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'quizzes' }, () => {
+                if (!document.getElementById('quizzes-section').classList.contains('hidden')) {
+                    fetchActiveQuizzes();
+                }
+            })
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'subjects' }, () => {
+                fetchDynamicSubjects();
+            })
+            .subscribe();
         }
 
 
