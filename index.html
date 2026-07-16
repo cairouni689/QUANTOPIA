@@ -605,7 +605,7 @@
                         <div class="flex gap-4">
                             <a href="https://www.facebook.com/share/1BPcG3RihP/" target="_blank" class="w-10 h-10 rounded-full bg-slate-300 dark:bg-cardBg flex items-center justify-center text-slate-700 dark:text-white hover:bg-primary hover:text-white transition-all duration-300 shadow-sm"><i class="fa-brands fa-facebook-f"></i></a>
                             <a href="https://www.instagram.com/m.tawack0l?igsh=MWNoMTYyNmZ4MndhOA==" target="_blank" class="w-10 h-10 rounded-full bg-slate-300 dark:bg-cardBg flex items-center justify-center text-slate-700 dark:text-white hover:bg-primary hover:text-white transition-all duration-300 shadow-sm"><i class="fa-brands fa-instagram"></i></a>
-                            <a href="#" target="_blank" class="w-10 h-10 rounded-full bg-slate-300 dark:bg-cardBg flex items-center justify-center text-slate-700 dark:text-white hover:bg-primary hover:text-white transition-all duration-300 shadow-sm"><i class="fa-brands fa-telegram"></i></a>
+                            <a href="https://t.me/ABS0LUTE_ZERO0" target="_blank" class="w-10 h-10 rounded-full bg-slate-300 dark:bg-cardBg flex items-center justify-center text-slate-700 dark:text-white hover:bg-primary hover:text-white transition-all duration-300 shadow-sm"><i class="fa-brands fa-telegram"></i></a>
                             <a href="https://youtube.com/@absolutezero-001?si=QpSM6wrX4BZT-C9M" target="_blank" class="w-10 h-10 rounded-full bg-slate-300 dark:bg-cardBg flex items-center justify-center text-slate-700 dark:text-white hover:bg-primary hover:text-white transition-all duration-300 shadow-sm"><i class="fa-brands fa-youtube"></i></a>
                         </div>
                     </div>
@@ -626,12 +626,12 @@
                         </ul>
 
                         <div class="bg-slate-300 dark:bg-[#131b26] p-5 rounded-2xl border border-slate-400 dark:border-gray-800 shadow-sm">
-                            <h4 class="text-xs font-bold text-slate-900 dark:text-white mb-2 uppercase tracking-wider">Stay Updated</h4>
-                            <p class="text-[11px] text-slate-600 dark:text-gray-400 mb-4 font-medium leading-relaxed">Get the latest resources and updates in your inbox.</p>
-                            <form class="flex items-center bg-slate-100 dark:bg-[#080c13] rounded-lg overflow-hidden border border-slate-300 dark:border-gray-700 focus-within:border-primary transition-colors">
-                                <input type="email" placeholder="Your email" class="w-full bg-transparent px-3 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none placeholder-slate-500 dark:placeholder-gray-500">
-                                <button type="submit" class="bg-primary hover:bg-primaryDark text-white px-4 py-2.5 transition-colors">
-                                    <i class="fa-regular fa-paper-plane"></i>
+                            <h4 class="text-xs font-bold text-slate-900 dark:text-white mb-2 uppercase tracking-wider">صندوق الاقتراحات</h4>
+                            <p class="text-[11px] text-slate-600 dark:text-gray-400 mb-4 font-medium leading-relaxed">شاركنا أفكارك واقتراحاتك لتطوير المنصة.</p>
+                            <form id="suggestion-form" onsubmit="event.preventDefault(); submitSuggestion();" class="flex flex-col gap-2">
+                                <textarea id="sugg-text" placeholder="اكتب اقتراحك هنا..." required class="w-full bg-slate-100 dark:bg-[#080c13] rounded-lg px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-primary border border-slate-300 dark:border-gray-700 transition-colors resize-none h-16 custom-scrollbar"></textarea>
+                                <button type="submit" class="bg-primary hover:bg-primaryDark text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors w-full flex justify-center items-center gap-2">
+                                    إرسال الاقتراح <i class="fa-solid fa-paper-plane"></i>
                                 </button>
                             </form>
                         </div>
@@ -1692,6 +1692,35 @@ async function fetchStudentStats(userId) {
             if(supabaseApp) {
                 await supabaseApp.auth.signOut();
                 window.location.reload(); // أسهل طريقة عشان نرجع الموقع لحالة الـ Guest
+            }
+        }
+
+async function submitSuggestion() {
+            if(!supabaseApp) return;
+            const text = document.getElementById('sugg-text').value.trim();
+            if(!text) return;
+            
+            const btn = document.querySelector('#suggestion-form button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+            btn.disabled = true;
+
+            const { data: { session } } = await supabaseApp.auth.getSession();
+            const sender = session ? session.user.user_metadata.first_name + " " + session.user.user_metadata.last_name : "زائر غير مسجل";
+            
+            const { error } = await supabaseApp.from('suggestions').insert([{
+                sender_name: sender,
+                suggestion_text: text
+            }]);
+
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+
+            if(!error) {
+                document.getElementById('sugg-text').value = '';
+                showNotification('تم الإرسال', 'شكراً لمشاركتك واقتراحك لتطوير المنصة!', 'success');
+            } else {
+                showNotification('خطأ', 'حدثت مشكلة أثناء الإرسال', 'error');
             }
         }
 
