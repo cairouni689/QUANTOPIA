@@ -156,6 +156,10 @@
                 <button onclick="nav('courses')" class="sidebar-item w-full text-right p-4 rounded-xl text-gray-400 flex items-center gap-4 font-semibold group">
                     <div class="w-8 h-8 rounded-lg bg-dark-700 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-colors"><i class="fas fa-video"></i></div> إدارة الكورسات
                 </button>
+                <button onclick="nav('suggestions')" class="sidebar-item w-full text-right p-4 rounded-xl text-gray-400 flex items-center gap-4 font-semibold group">
+                    <div class="w-8 h-8 rounded-lg bg-dark-700 flex items-center justify-center group-hover:bg-pink-500 group-hover:text-white transition-colors"><i class="fas fa-lightbulb"></i></div> اقتراحات الجمهور
+                </button>
+
             </nav>
             <div class="p-6 border-t border-gray-700/50">
                 <button onclick="logout()" class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-500 py-3 rounded-xl text-sm font-bold border border-red-500/20 transition flex items-center justify-center gap-2 group">
@@ -332,6 +336,13 @@
                     </div>
                     <div id="grid-courses" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
                     <div id="empty-courses" class="hidden p-8 text-center text-gray-500 glass-panel rounded-2xl">لا توجد كورسات مضافة</div>
+                </div>
+                <div id="view-suggestions" class="hidden space-y-6 animate-fade-in-up">
+                    <div class="flex justify-between items-center bg-dark-800/50 p-4 rounded-2xl border border-gray-700">
+                        <h3 class="text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-lightbulb text-pink-500"></i> صندوق اقتراحات الجمهور</h3>
+                    </div>
+                    <div id="grid-suggestions" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                    <div id="empty-suggestions" class="hidden p-8 text-center text-gray-500 glass-panel rounded-2xl">لا توجد اقتراحات حالياً</div>
                 </div>
 
             </div>
@@ -718,7 +729,7 @@ function showDashboard() {
         }
 
         function nav(id) {
-            ['overview', 'subjects', 'quizzes', 'results', 'courses'].forEach(i => document.getElementById(`view-${i}`).classList.add('hidden'));
+            ['overview', 'subjects', 'quizzes', 'results', 'courses', 'suggestions'].forEach(i => document.getElementById(`view-${i}`).classList.add('hidden'));
             document.getElementById(`view-${id}`).classList.remove('hidden');
             
             const titles = {
@@ -726,7 +737,8 @@ function showDashboard() {
                 'subjects': '<span class="p-2 bg-blue-500/10 rounded-lg text-blue-500"><i class="fas fa-book"></i></span> إدارة المواد',
                 'quizzes': '<span class="p-2 bg-purple-500/10 rounded-lg text-purple-500"><i class="fas fa-brain"></i></span> بنك الكويزات',
                'results': '<span class="p-2 bg-yellow-500/10 rounded-lg text-yellow-500"><i class="fas fa-trophy"></i></span> نتائج الطلاب',
-                'courses': '<span class="p-2 bg-green-500/10 rounded-lg text-green-500"><i class="fas fa-video"></i></span> إدارة الكورسات'
+                'courses': '<span class="p-2 bg-green-500/10 rounded-lg text-green-500"><i class="fas fa-video"></i></span> إدارة الكورسات',
+                'suggestions': '<span class="p-2 bg-pink-500/10 rounded-lg text-pink-500"><i class="fas fa-lightbulb"></i></span> اقتراحات الجمهور'
             };
             document.getElementById('page-title').innerHTML = titles[id];
             
@@ -1025,7 +1037,8 @@ async function refreshData() {
         fetchQuizzes(), 
         fetchCourses(),
         fetchResults(),
-        fetchQuizAnalytics()
+        fetchQuizAnalytics(),
+        fetchSuggestions()
     ]);
     
     icon.classList.remove('animate-spin');
@@ -1447,6 +1460,37 @@ function filterCourses() {
     });
 }
 
+async function fetchSuggestions() {
+    const { data, error } = await sb.from('suggestions').select('*').order('created_at', { ascending: false });
+    const grid = document.getElementById('grid-suggestions');
+    const empty = document.getElementById('empty-suggestions');
+    grid.innerHTML = '';
+    
+    if (error || !data || data.length === 0) {
+        empty.classList.remove('hidden');
+        return;
+    }
+    empty.classList.add('hidden');
+
+    data.forEach(sugg => {
+        const date = new Date(sugg.created_at).toLocaleDateString('ar-EG');
+        grid.innerHTML += `
+            <div class="glass-panel p-5 rounded-2xl border border-gray-700/50 relative group transition-all hover:border-pink-500/50 shadow-lg flex flex-col">
+                <button onclick="deleteItem('suggestions', ${sugg.id})" class="absolute top-3 left-3 w-8 h-8 rounded-full bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100"><i class="fas fa-trash-alt"></i></button>
+                <div class="flex items-center gap-3 mb-4 border-b border-gray-700/50 pb-3">
+                    <div class="w-10 h-10 rounded-full bg-pink-500/10 text-pink-400 flex items-center justify-center border border-pink-500/20 shrink-0"><i class="fas fa-user"></i></div>
+                    <div>
+                        <h4 class="font-bold text-white text-sm">${sugg.sender_name || 'زائر غير مسجل'}</h4>
+                        <span class="text-[10px] text-gray-500"><i class="fas fa-clock"></i> ${date}</span>
+                    </div>
+                </div>
+                <div class="bg-dark-900/50 p-4 rounded-xl border border-gray-700/50 text-gray-300 text-sm leading-relaxed overflow-y-auto custom-scrollbar flex-1">
+                    ${sugg.suggestion_text}
+                </div>
+            </div>`;
+    });
+}
+
 async function toggleQuiz(id, status) {
     await sb.from('quizzes').update({ is_active: status }).eq('id', id);
 }
@@ -1479,6 +1523,7 @@ function setupRealtimeListener() {
         .on('postgres_changes', { event: '*', schema: 'public', table: 'courses' }, () => { fetchCourses(); fetchStats(); })
         .on('postgres_changes', { event: '*', schema: 'public', table: 'quizzes' }, () => { refreshData(); })
         .on('postgres_changes', { event: '*', schema: 'public', table: 'subjects' }, () => { refreshData(); })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'suggestions' }, () => { fetchSuggestions(); })
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'quiz_results' }, (payload) => {
             fetchResults();
             fetchStats();
