@@ -625,13 +625,13 @@
                             </li>
                         </ul>
 
-                        <div class="bg-slate-300 dark:bg-[#131b26] p-5 rounded-2xl border border-slate-400 dark:border-gray-800 shadow-sm">
-                            <h4 class="text-xs font-bold text-slate-900 dark:text-white mb-2 uppercase tracking-wider">صندوق الاقتراحات</h4>
-                            <p class="text-[11px] text-slate-600 dark:text-gray-400 mb-4 font-medium leading-relaxed">شاركنا أفكارك واقتراحاتك لتطوير المنصة.</p>
+                        <div class="bg-slate-300 dark:bg-[#131b26] p-5 rounded-2xl border border-slate-400 dark:border-gray-800 shadow-sm transition-transform duration-300 hover:-translate-y-1">
+                            <h4 class="text-xs font-bold text-slate-900 dark:text-white mb-2 uppercase tracking-wider">Suggestion Box</h4>
+                            <p class="text-[11px] text-slate-600 dark:text-gray-400 mb-4 font-medium leading-relaxed">Share your thoughts and suggestions to improve the platform.</p>
                             <form id="suggestion-form" onsubmit="event.preventDefault(); submitSuggestion();" class="flex flex-col gap-2">
-                                <textarea id="sugg-text" placeholder="اكتب اقتراحك هنا..." required class="w-full bg-slate-100 dark:bg-[#080c13] rounded-lg px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-primary border border-slate-300 dark:border-gray-700 transition-colors resize-none h-16 custom-scrollbar"></textarea>
+                                <textarea id="sugg-text" placeholder="Write your suggestion here..." required class="w-full bg-slate-100 dark:bg-[#080c13] rounded-lg px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-primary border border-slate-300 dark:border-gray-700 transition-colors resize-none h-16 custom-scrollbar" onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); submitSuggestion(); }"></textarea>
                                 <button type="submit" class="bg-primary hover:bg-primaryDark text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors w-full flex justify-center items-center gap-2">
-                                    إرسال الاقتراح <i class="fa-solid fa-paper-plane"></i>
+                                    Send Suggestion <i class="fa-solid fa-paper-plane"></i>
                                 </button>
                             </form>
                         </div>
