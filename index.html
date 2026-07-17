@@ -1028,6 +1028,9 @@
             if (state) {
                 if (state.type === 'home') {
                     showHome(state.hash, false); // false عشان منعملش pushState تاني واحنا بنرجع
+                } else if (state.type === 'materials') {
+                    // لو المتصفح رجعنا لخطوة جوه الماتريالز نستدعيها فوراً من غير هيستوري إضافي
+                    showMaterialsLevel(state.level, state.title, false);
                 } else if (state.type === 'section') {
                     showSection(state.id, false);
                 }
@@ -1039,8 +1042,14 @@
 
         const subjectsData = {};
 
-        function showMaterialsLevel(level, title = '') {
-            showSection('materials-section');
+        function showMaterialsLevel(level, title = '', pushToHistory = true) {
+            // بنستدعي السيكشن مع false عشان نمنعه يملي الهيستوري بعشوائية
+            showSection('materials-section', false);
+            
+            // إحنا اللي هنسجل الخطوة بالتفصيل في هيستوري المتصفح
+            if (pushToHistory) {
+                history.pushState({ type: 'materials', level: level, title: title }, '', '#materials-' + level);
+            }
             
             const yearsLevel = document.getElementById('mat-level-years');
             const termsLevel = document.getElementById('mat-level-terms');
@@ -1061,12 +1070,20 @@
                 titleEl.innerHTML = `Academic <span class="text-primary">Materials</span>`;
                 backBtn.classList.add('hidden');
             } else if (level === 'terms') {
+                // التأكد من صحة المصفوفة لمنع التكرار
+                if(materialsHistory.length === 0 || materialsHistory[0] !== 'years') materialsHistory = ['years'];
+                const existingIndex = materialsHistory.findIndex(h => h.level === 'terms');
+                if (existingIndex > -1) materialsHistory.splice(existingIndex);
+                
                 materialsHistory.push({level: 'terms', title: title});
                 termsLevel.classList.remove('hidden');
                 termsLevel.classList.add('grid');
                 titleEl.innerHTML = `<span class="text-primary">${title}</span>`;
                 backBtn.classList.remove('hidden');
             } else if (level === 'subjects') {
+                const existingIndex = materialsHistory.findIndex(h => h.level === 'subjects');
+                if (existingIndex > -1) materialsHistory.splice(existingIndex);
+                
                 materialsHistory.push({level: 'subjects', title: title});
                 subjectsLevel.classList.remove('hidden');
                 titleEl.innerHTML = `<span class="text-primary">${title}</span>`;
@@ -1104,14 +1121,9 @@
         }
 
         function goBackMaterials() {
-            materialsHistory.pop();
-            const prevState = materialsHistory[materialsHistory.length - 1];
-            if (prevState === 'years' || !prevState) {
-                showMaterialsLevel('years');
-            } else {
-                materialsHistory.pop(); 
-                showMaterialsLevel(prevState.level, prevState.title);
-            }
+            // الحل السحري: بنخلي زرار الرجوع الداخلي يشتغل كأنه زرار الموبايل بالظبط 
+            // عشان ميحصلش أي تداخل والرجوع يكون خطوة بخطوة بشكل سليم تماماً!
+            history.back();
         }
 
         // 5. Supabase Integration & Auth Logic
