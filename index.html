@@ -1146,6 +1146,24 @@
                 fetchFrontendCourses(); // الدالة الجديدة لجلب الكورسات
                 setupRealtimeListener();
                 checkAbandonedExams();
+
+                // ===== الإضافة الجديدة لحفظ الصفحة الحالية بعد الريفريش =====
+                const state = history.state;
+                if (state) {
+                    if (state.type === 'home') {
+                        showHome(state.hash, false);
+                    } else if (state.type === 'materials') {
+                        showMaterialsLevel(state.level, state.title, false);
+                    } else if (state.type === 'section') {
+                        showSection(state.id, false);
+                    }
+                } else if (window.location.hash) {
+                    const hash = window.location.hash.substring(1);
+                    if (document.getElementById(hash) && hash.includes('section')) {
+                        showSection(hash, false);
+                    }
+                }
+                // ==========================================================
             } else {
                 console.error("Supabase failed to load from CDN.");
             }
