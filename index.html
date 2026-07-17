@@ -969,7 +969,7 @@
             document.getElementById('footer-links').classList.add('hidden');
         }
 
-        function showSection(sectionId) {
+        function showSection(sectionId, pushToHistory = true) {
             hideAllSections();
             const section = document.getElementById(sectionId);
             section.classList.remove('hidden');
@@ -977,13 +977,17 @@
             void section.offsetWidth; 
             section.classList.add('animate-fade-in-up');
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            if (pushToHistory) {
+                history.pushState({ type: 'section', id: sectionId }, '', '#' + sectionId);
+            }
         }
 
         function showProfile() {
             showSection('profile-section');
         }
 
-        function showHome(hash = null) {
+        function showHome(hash = null, pushToHistory = true) {
             const isHomeActive = !document.getElementById('main-content').classList.contains('hidden');
             
             // لو احنا مش في الرئيسية، نخفي الباقي ونظهرها
@@ -996,6 +1000,10 @@
             document.getElementById('fat-footer').classList.remove('hidden');
             document.getElementById('footer-links').classList.remove('hidden');
             mobileMenu.classList.add('hidden');
+
+            if (pushToHistory) {
+                history.pushState({ type: 'home', hash: hash }, '', hash ? hash : '#home');
+            }
             
             if(hash) {
                 // لو احنا أصلاً في الرئيسية مفيش داعي للتأخير عشان النزول يبقى Smooth ومباشر
@@ -1007,13 +1015,27 @@
                         const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
                         
                         window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-                        history.pushState(null, null, hash);
                     }
                 }, isHomeActive ? 0 : 50);
             } else {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
+
+        // الإضافة الخاصة بأزرار المتصفح (Back/Forward)
+        window.addEventListener('popstate', (event) => {
+            const state = event.state;
+            if (state) {
+                if (state.type === 'home') {
+                    showHome(state.hash, false); // false عشان منعملش pushState تاني واحنا بنرجع
+                } else if (state.type === 'section') {
+                    showSection(state.id, false);
+                }
+            } else {
+                // لو مفيش state (أول ما اليوزر يفتح الموقع) نرجعه الرئيسية
+                showHome(null, false);
+            }
+        });
 
         const subjectsData = {};
 
