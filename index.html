@@ -244,17 +244,26 @@
             </div>
         </div>
         
-        <div id="mobile-menu" class="hidden bg-slate-100 dark:bg-[#080c13] border-b border-slate-300 dark:border-gray-800 p-4 transition-colors absolute w-full shadow-xl">
-            <div class="flex flex-col gap-4">
-                <a onclick="showHome()" class="text-slate-800 dark:text-white font-bold text-center cursor-pointer">Home</a>
-                <a onclick="showHome('#courses')" class="text-slate-800 dark:text-white font-bold text-center cursor-pointer">Courses</a>
-                <a onclick="showSection('quizzes-section')" class="text-slate-800 dark:text-white font-bold text-center cursor-pointer">Quizzes</a>
-                <a onclick="showMaterialsLevel('years')" class="text-slate-800 dark:text-white font-bold text-center cursor-pointer">Materials</a>
-                <a onclick="showSection('about-section')" class="text-slate-800 dark:text-white font-bold text-center cursor-pointer">About Us</a>
-                <div class="h-px bg-slate-300 dark:bg-gray-800 my-2"></div>
-                <div id="mobile-auth-buttons" class="flex flex-col gap-4">
-                    <button onclick="openModal('login-modal')" class="w-full text-center py-3 text-accent dark:text-accent font-bold border border-slate-400 dark:border-gray-700 rounded-lg">Login</button>
-                    <button onclick="openModal('signup-modal')" class="w-full bg-primary text-white py-3 rounded-lg font-bold">Sign Up!</button>
+        <!-- Mobile Sidebar Overlay -->
+        <div id="mobile-menu-overlay" class="fixed inset-0 bg-black/60 z-40 hidden opacity-0 transition-opacity duration-300" onclick="closeMobileMenu()"></div>
+        <!-- Mobile Sidebar -->
+        <div id="mobile-menu" class="fixed top-0 right-0 h-screen w-72 bg-slate-100 dark:bg-[#080c13] border-l border-slate-300 dark:border-gray-800 p-6 transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] translate-x-full z-50 shadow-[auto] flex flex-col">
+            <div class="flex justify-between items-center mb-8 border-b border-slate-300 dark:border-gray-800 pb-4">
+                <span class="font-black text-2xl text-slate-900 dark:text-white tracking-tight">Menu <i class="fa-solid fa-bars-staggered text-primary ml-1 text-lg"></i></span>
+                <button onclick="closeMobileMenu()" class="text-slate-400 hover:text-red-500 text-3xl transition-colors rotate-0 hover:rotate-90 duration-300">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            </div>
+            <div class="flex flex-col gap-5 flex-1">
+                <a onclick="closeMobileMenu(); showHome()" class="text-slate-700 dark:text-gray-300 font-bold text-lg hover:text-primary dark:hover:text-primary transition-all hover:translate-x-2 cursor-pointer flex items-center gap-3"><div class="w-8 flex justify-center"><i class="fa-solid fa-house"></i></div> Home</a>
+                <a onclick="closeMobileMenu(); showHome('#courses')" class="text-slate-700 dark:text-gray-300 font-bold text-lg hover:text-primary dark:hover:text-primary transition-all hover:translate-x-2 cursor-pointer flex items-center gap-3"><div class="w-8 flex justify-center"><i class="fa-solid fa-play"></i></div> Courses</a>
+                <a onclick="closeMobileMenu(); showSection('quizzes-section')" class="text-slate-700 dark:text-gray-300 font-bold text-lg hover:text-primary dark:hover:text-primary transition-all hover:translate-x-2 cursor-pointer flex items-center gap-3"><div class="w-8 flex justify-center"><i class="fa-solid fa-clipboard-question"></i></div> Quizzes</a>
+                <a onclick="closeMobileMenu(); showMaterialsLevel('years')" class="text-slate-700 dark:text-gray-300 font-bold text-lg hover:text-primary dark:hover:text-primary transition-all hover:translate-x-2 cursor-pointer flex items-center gap-3"><div class="w-8 flex justify-center"><i class="fa-solid fa-book-open"></i></div> Materials</a>
+                <a onclick="closeMobileMenu(); showSection('about-section')" class="text-slate-700 dark:text-gray-300 font-bold text-lg hover:text-primary dark:hover:text-primary transition-all hover:translate-x-2 cursor-pointer flex items-center gap-3"><div class="w-8 flex justify-center"><i class="fa-solid fa-atom"></i></div> About Us</a>
+                <div class="h-px w-full bg-gradient-to-r from-transparent via-slate-300 dark:via-gray-700 to-transparent my-2"></div>
+                <div id="mobile-auth-buttons" class="flex flex-col gap-4 mt-auto">
+                    <button onclick="closeMobileMenu(); openModal('login-modal')" class="w-full text-center py-3 text-accent dark:text-accent font-bold border-2 border-slate-300 dark:border-gray-700 rounded-xl hover:bg-slate-200 dark:hover:bg-gray-800 hover:border-accent dark:hover:border-accent transition-all duration-300">Login</button>
+                    <button onclick="closeMobileMenu(); openModal('signup-modal')" class="w-full bg-primary hover:bg-primaryDark text-white py-3 rounded-xl font-bold shadow-lg shadow-primary/30 transition-all duration-300 transform hover:-translate-y-1">Sign Up!</button>
                 </div>
             </div>
         </div>
@@ -886,10 +895,34 @@
         }
         const mobileBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
+        const mobileOverlay = document.getElementById('mobile-menu-overlay');
 
-        mobileBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
+        function toggleMobileMenu() {
+            const isClosed = mobileMenu.classList.contains('translate-x-full');
+            if (isClosed) {
+                if(mobileOverlay) {
+                    mobileOverlay.classList.remove('hidden');
+                    setTimeout(() => mobileOverlay.classList.remove('opacity-0'), 10);
+                }
+                mobileMenu.classList.remove('translate-x-full');
+            } else {
+                closeMobileMenu();
+            }
+        }
+
+        function closeMobileMenu() {
+            if(mobileMenu && !mobileMenu.classList.contains('translate-x-full')) {
+                mobileMenu.classList.add('translate-x-full');
+                if(mobileOverlay) {
+                    mobileOverlay.classList.add('opacity-0');
+                    setTimeout(() => mobileOverlay.classList.add('hidden'), 300);
+                }
+            }
+        }
+
+        if(mobileBtn) {
+            mobileBtn.addEventListener('click', toggleMobileMenu);
+        }
 
         // 2. Theme Toggle Logic
         const themeToggleBtn = document.getElementById('theme-toggle');
@@ -931,7 +964,7 @@
                 box.classList.remove('scale-95');
                 box.classList.add('scale-100');
             }, 10);
-            mobileMenu.classList.add('hidden');
+            closeMobileMenu(); // قفل السايد بار بانيميشن
         }
 
         function closeModal(modalId) {
@@ -945,14 +978,7 @@
             }, 300);
         }
 
-        function switchModal(closeId, openId) {
-            closeModal(closeId);
-            setTimeout(() => { openModal(openId); }, 300);
-        }
-
-        let materialsHistory = [];
-
-        function hideAllSections() {
+function hideAllSections() {
             document.getElementById('main-content').classList.add('hidden');
             document.getElementById('profile-section').classList.add('hidden');
             document.getElementById('quizzes-section').classList.add('hidden');
@@ -962,12 +988,20 @@
             const activeQuiz = document.getElementById('active-quiz-view');
             if(activeQuiz) activeQuiz.classList.add('hidden');
 
-            mobileMenu.classList.add('hidden');
+            closeMobileMenu(); // قفل السايد بار بانيميشن
             
             // إخفاء دوشة الفوتر في الصفحات الداخلية
             document.getElementById('fat-footer').classList.add('hidden');
             document.getElementById('footer-links').classList.add('hidden');
         }
+
+        function switchModal(closeId, openId) {
+            closeModal(closeId);
+            setTimeout(() => { openModal(openId); }, 300);
+        }
+
+        let materialsHistory = [];
+
 
         function showSection(sectionId, pushToHistory = true) {
             hideAllSections();
@@ -999,14 +1033,14 @@
             // إرجاع الفوتر الكامل للرئيسية
             document.getElementById('fat-footer').classList.remove('hidden');
             document.getElementById('footer-links').classList.remove('hidden');
-            mobileMenu.classList.add('hidden');
+            closeMobileMenu();
 
             if (pushToHistory) {
                 history.pushState({ type: 'home', hash: hash }, '', hash ? hash : '#home');
             }
             
             if(hash) {
-                // لو احنا أصلاً في الرئيسية مفيش داعي للتأخير عشان النزول يبقى Smooth ومباشر
+                // تزويد التأخير ل 150 مللي ثانية بيجبر المتصفح يرسم الصفحة الأول وبعدين ينزل بسلاسة كأنه بيسكرول طبيعي
                 setTimeout(() => {
                     const target = document.querySelector(hash);
                     if(target) {
@@ -1016,7 +1050,7 @@
                         
                         window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
                     }
-                }, isHomeActive ? 0 : 50);
+                }, 150);
             } else {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
