@@ -909,6 +909,7 @@
                     setTimeout(() => mobileOverlay.classList.remove('opacity-0'), 10);
                 }
                 mobileMenu.classList.remove('translate-x-full');
+                document.body.classList.add('overflow-hidden');
             } else {
                 closeMobileMenu();
             }
@@ -917,6 +918,7 @@
         function closeMobileMenu() {
             if(mobileMenu && !mobileMenu.classList.contains('translate-x-full')) {
                 mobileMenu.classList.add('translate-x-full');
+                document.body.classList.remove('overflow-hidden');
                 if(mobileOverlay) {
                     mobileOverlay.classList.add('opacity-0');
                     setTimeout(() => mobileOverlay.classList.add('hidden'), 300);
