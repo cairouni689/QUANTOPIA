@@ -250,7 +250,7 @@
         </nav>
 
     <!-- Mobile Sidebar Overlay -->
-    <div id="mobile-menu-overlay" class="fixed inset-0 bg-black/60 z-[60] hidden opacity-0 transition-opacity duration-300" onclick="closeMobileMenu()"></div>
+    <div id="mobile-menu-overlay" class="fixed inset-0 bg-black/60 z-[60] hidden opacity-0 transition-opacity duration-300 touch-none" onclick="closeMobileMenu()" ontouchmove="event.preventDefault()"></div>
     <!-- Mobile Sidebar -->
     <div id="mobile-menu" class="fixed top-0 right-0 h-screen w-72 bg-slate-100 dark:bg-[#080c13] border-l border-slate-300 dark:border-gray-800 p-6 transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] translate-x-full z-[70] shadow-[auto] flex flex-col overflow-y-auto overscroll-none">
         <div class="flex justify-between items-center mb-8 border-b border-slate-300 dark:border-gray-800 pb-4">
@@ -909,8 +909,7 @@
                     setTimeout(() => mobileOverlay.classList.remove('opacity-0'), 10);
                 }
                 mobileMenu.classList.remove('translate-x-full');
-                document.body.style.overflow = 'hidden';
-                document.documentElement.style.overflow = 'hidden';
+                document.body.classList.add('overflow-hidden');
             } else {
                 closeMobileMenu();
             }
@@ -919,8 +918,7 @@
         function closeMobileMenu() {
             if(mobileMenu && !mobileMenu.classList.contains('translate-x-full')) {
                 mobileMenu.classList.add('translate-x-full');
-                document.body.style.overflow = '';
-                document.documentElement.style.overflow = '';
+                document.body.classList.remove('overflow-hidden');
                 if(mobileOverlay) {
                     mobileOverlay.classList.add('opacity-0');
                     setTimeout(() => mobileOverlay.classList.add('hidden'), 300);
