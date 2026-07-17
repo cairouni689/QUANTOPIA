@@ -909,7 +909,8 @@
                     setTimeout(() => mobileOverlay.classList.remove('opacity-0'), 10);
                 }
                 mobileMenu.classList.remove('translate-x-full');
-                document.body.classList.add('overflow-hidden');
+                document.body.style.overflow = 'hidden';
+                document.documentElement.style.overflow = 'hidden';
             } else {
                 closeMobileMenu();
             }
@@ -918,7 +919,8 @@
         function closeMobileMenu() {
             if(mobileMenu && !mobileMenu.classList.contains('translate-x-full')) {
                 mobileMenu.classList.add('translate-x-full');
-                document.body.classList.remove('overflow-hidden');
+                document.body.style.overflow = '';
+                document.documentElement.style.overflow = '';
                 if(mobileOverlay) {
                     mobileOverlay.classList.add('opacity-0');
                     setTimeout(() => mobileOverlay.classList.add('hidden'), 300);
