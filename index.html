@@ -1886,7 +1886,7 @@ async function fetchStudentStats(userId) {
         async function handleLogout() {
             if(supabaseApp) {
                 await supabaseApp.auth.signOut();
-                window.location.reload(); // أسهل طريقة عشان نرجع الموقع لحالة الـ Guest
+                window.location.href = window.location.pathname; // بيمسح الهاش ويرجعك للرئيسية ويعمل ريفريش نضيف
             }
         }
 
