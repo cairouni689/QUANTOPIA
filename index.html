@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <!-- مكتبة MathJax لترجمة الرموز والأسس عند الطالب -->
     <script>
@@ -1563,9 +1564,22 @@ async function fetchStudentStats(userId) {
                 return;
             }
 
-            if(confirm(`هل أنت مستعد؟ الزمن المحدد: ${time} دقيقة. بمجرد البدء لا يمكنك الخروج وإلا سيتم احتساب الدرجة صفر.`)) {
-                launchQuiz(id, title, time);
-            }
+            Swal.fire({
+                title: 'هل أنت مستعد؟',
+                text: `الزمن المحدد: ${time} دقيقة. بمجرد البدء لا يمكنك الخروج وإلا سيتم احتساب الدرجة صفر.`,
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#00b4d8',
+                cancelButtonColor: '#374151',
+                confirmButtonText: 'ابدأ الاختبار',
+                cancelButtonText: 'تراجع',
+                background: document.documentElement.classList.contains('dark') ? '#080c13' : '#ffffff',
+                color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#0f172a'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    launchQuiz(id, title, time);
+                }
+            });
         }
 
         function cleanLatexInput(inputText) {
@@ -1706,7 +1720,22 @@ async function fetchStudentStats(userId) {
         }
 
         function finishQuiz() {
-            if(confirm('تأكد من مراجعة إجاباتك، هل تريد تسليم الورقة؟')) submitExam(false);
+            Swal.fire({
+                title: 'تسليم الاختبار؟',
+                text: "تأكد من مراجعة إجاباتك جيداً قبل التسليم.",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#22c55e',
+                cancelButtonColor: '#374151',
+                confirmButtonText: 'نعم، قم بالتسليم',
+                cancelButtonText: 'إلغاء',
+                background: document.documentElement.classList.contains('dark') ? '#080c13' : '#ffffff',
+                color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#0f172a'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    submitExam(false);
+                }
+            });
         }
 
         async function submitExam(isForced) {
@@ -1744,7 +1773,15 @@ async function fetchStudentStats(userId) {
                 total_score: totalMarks 
             }]);
 
-            alert(`تم التسليم بنجاح! درجتك: ${score} / ${totalMarks}`);
+            Swal.fire({
+                title: 'تم التسليم بنجاح!',
+                text: `درجتك: ${score} من ${totalMarks}`,
+                icon: 'success',
+                confirmButtonColor: '#00b4d8',
+                confirmButtonText: 'حسناً',
+                background: document.documentElement.classList.contains('dark') ? '#080c13' : '#ffffff',
+                color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#0f172a'
+            });
             fetchActiveQuizzes();
             showSection('quizzes-section');
         }
@@ -1769,7 +1806,15 @@ async function fetchStudentStats(userId) {
                     total_score: parseInt(totalMarks)
                 }]);
 
-                alert(`تم سحب الورقة! لقد قمت بتحديث الصفحة أثناء امتحان (${quizTitle}) وحصلت على صفر.`);
+                Swal.fire({
+                    title: 'تم سحب الورقة!',
+                    text: `لقد قمت بتحديث الصفحة أو الخروج أثناء امتحان (${quizTitle}) وحصلت على صفر.`,
+                    icon: 'error',
+                    confirmButtonColor: '#ef4444',
+                    confirmButtonText: 'فهمت',
+                    background: document.documentElement.classList.contains('dark') ? '#080c13' : '#ffffff',
+                    color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#0f172a'
+                });
             }
         }
 
@@ -1991,15 +2036,28 @@ async function submitSuggestion() {
         }
 
         async function deleteStudentQuestion(id) {
-            if(confirm('هل أنت متأكد من حذف هذا السؤال؟')) {
-                const { error } = await supabaseApp.from('student_questions').delete().eq('id', id);
-                if(!error) {
-                    showNotification('تم', 'تم حذف السؤال بنجاح', 'success');
-                    fetchStudentQuestions();
-                } else {
-                    showNotification('خطأ', 'حدثت مشكلة أثناء الحذف', 'error');
+            Swal.fire({
+                title: 'حذف السؤال؟',
+                text: "هل أنت متأكد أنك تريد حذف هذا السؤال نهائياً؟",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#374151',
+                confirmButtonText: 'نعم، احذف',
+                cancelButtonText: 'إلغاء',
+                background: document.documentElement.classList.contains('dark') ? '#080c13' : '#ffffff',
+                color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#0f172a'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const { error } = await supabaseApp.from('student_questions').delete().eq('id', id);
+                    if(!error) {
+                        showNotification('تم', 'تم حذف السؤال بنجاح', 'success');
+                        fetchStudentQuestions();
+                    } else {
+                        showNotification('خطأ', 'حدثت مشكلة أثناء الحذف', 'error');
+                    }
                 }
-            }
+            });
         }
 
 // 6. Global Scroll Animations (Fade In Up)
