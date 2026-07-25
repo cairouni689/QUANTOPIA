@@ -149,6 +149,9 @@
                 <button onclick="nav('suggestions')" class="sidebar-item w-full text-right p-4 rounded-xl text-gray-400 flex items-center gap-4 font-semibold group">
                     <div class="w-8 h-8 rounded-lg bg-dark-700 flex items-center justify-center group-hover:bg-pink-500 group-hover:text-white transition-colors"><i class="fas fa-lightbulb"></i></div> اقتراحات الجمهور
                 </button>
+                <button onclick="nav('qa')" class="sidebar-item w-full text-right p-4 rounded-xl text-gray-400 flex items-center gap-4 font-semibold group">
+                    <div class="w-8 h-8 rounded-lg bg-dark-700 flex items-center justify-center group-hover:bg-cyan-500 group-hover:text-white transition-colors"><i class="fas fa-comments"></i></div> أسئلة الطلاب
+                </button>
 
             </nav>
             <div class="p-6 border-t border-gray-700/50">
@@ -333,6 +336,14 @@
                     </div>
                     <div id="grid-suggestions" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
                     <div id="empty-suggestions" class="hidden p-8 text-center text-gray-500 glass-panel rounded-2xl">لا توجد اقتراحات حالياً</div>
+                </div>
+
+            <div id="view-qa" class="hidden space-y-6 animate-fade-in-up">
+                    <div class="flex justify-between items-center bg-dark-800/50 p-4 rounded-2xl border border-gray-700">
+                        <h3 class="text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-comments text-cyan-500"></i> الأسئلة المعلقة</h3>
+                    </div>
+                    <div id="grid-qa" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
+                    <div id="empty-qa" class="hidden p-8 text-center text-gray-500 glass-panel rounded-2xl">لا توجد أسئلة معلقة، أنت بطل!</div>
                 </div>
 
             </div>
@@ -541,6 +552,40 @@
         </button>
     </div>
 </div>
+<div id="modal-reply-qa" class="fixed inset-0 z-[90] bg-black/95 hidden flex items-center justify-center backdrop-blur-sm transition-opacity opacity-0">
+        <div class="bg-dark-800 p-8 rounded-[2rem] w-full max-w-2xl border border-gray-600 m-4 modal-content transform scale-95 transition-all shadow-2xl">
+            <div class="flex justify-between items-center mb-6 border-b border-gray-700 pb-4">
+                <h3 class="text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-reply text-cyan-500"></i> الرد على الطالب</h3>
+                <button onclick="closeModal('modal-reply-qa')" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <div class="bg-dark-900/50 p-4 rounded-xl border border-gray-700 mb-6">
+                <p class="text-xs text-gray-500 mb-2">الطالب: <span id="modal-qa-student" class="text-white font-bold"></span></p>
+                <p id="modal-qa-text" class="text-gray-300 text-sm whitespace-pre-wrap leading-relaxed" dir="auto"></p>
+            </div>
+
+            <div class="space-y-4">
+                <textarea id="inp-qa-reply" class="w-full bg-dark-900 border border-gray-600 rounded-xl p-4 text-white outline-none focus:border-cyan-500 h-24 resize-none" placeholder="اكتب ردك النصي هنا... (اختياري لو هتبعت فويس)"></textarea>
+                
+                <div class="bg-dark-900 p-4 rounded-xl border border-gray-600 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-3 w-full sm:w-auto">
+                        <button id="btn-record-audio" onclick="startAudioRecord()" class="w-12 h-12 rounded-full bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white transition shadow-lg flex items-center justify-center shrink-0">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                        <span id="record-status" class="text-sm text-gray-400 font-bold">تسجيل صوتي</span>
+                    </div>
+                    <div id="audio-preview-container" class="hidden flex-1 w-full flex items-center gap-2">
+                        <audio id="audio-preview" controls class="h-8 flex-1 outline-none"></audio>
+                        <button onclick="discardAudio()" class="w-8 h-8 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white transition flex items-center justify-center shrink-0"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="submitQaReply()" id="btn-submit-reply" class="w-full mt-6 bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 rounded-lg shadow-lg transition flex items-center justify-center gap-2">
+                اعتماد الرد وإرساله <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
     <script>
         const supabaseUrl = 'https://cilhimtbujromcbvqvgh.supabase.co';
         const supabaseKey = 'sb_publishable_a4YGKVHx6oBBY5XvB0iS8Q_GJCcfcHa';
@@ -659,16 +704,17 @@ function showDashboard() {
         }
 
         function nav(id) {
-            ['overview', 'subjects', 'quizzes', 'results', 'courses', 'suggestions'].forEach(i => document.getElementById(`view-${i}`).classList.add('hidden'));
+            ['overview', 'subjects', 'quizzes', 'results', 'courses', 'suggestions', 'qa'].forEach(i => document.getElementById(`view-${i}`).classList.add('hidden'));
             document.getElementById(`view-${id}`).classList.remove('hidden');
             
             const titles = {
                 'overview': '<span class="p-2 bg-gold-500/10 rounded-lg text-gold-500"><i class="fas fa-chart-pie"></i></span> نظرة عامة',
                 'subjects': '<span class="p-2 bg-blue-500/10 rounded-lg text-blue-500"><i class="fas fa-book"></i></span> إدارة المواد',
                 'quizzes': '<span class="p-2 bg-purple-500/10 rounded-lg text-purple-500"><i class="fas fa-brain"></i></span> بنك الكويزات',
-               'results': '<span class="p-2 bg-yellow-500/10 rounded-lg text-yellow-500"><i class="fas fa-trophy"></i></span> نتائج الطلاب',
+                'results': '<span class="p-2 bg-yellow-500/10 rounded-lg text-yellow-500"><i class="fas fa-trophy"></i></span> نتائج الطلاب',
                 'courses': '<span class="p-2 bg-green-500/10 rounded-lg text-green-500"><i class="fas fa-video"></i></span> إدارة الكورسات',
-                'suggestions': '<span class="p-2 bg-pink-500/10 rounded-lg text-pink-500"><i class="fas fa-lightbulb"></i></span> اقتراحات الجمهور'
+                'suggestions': '<span class="p-2 bg-pink-500/10 rounded-lg text-pink-500"><i class="fas fa-lightbulb"></i></span> اقتراحات الجمهور',
+                'qa': '<span class="p-2 bg-cyan-500/10 rounded-lg text-cyan-500"><i class="fas fa-comments"></i></span> أسئلة الطلاب'
             };
             document.getElementById('page-title').innerHTML = titles[id];
             
@@ -970,7 +1016,8 @@ async function refreshData() {
         fetchCourses(),
         fetchResults(),
         fetchQuizAnalytics(),
-        fetchSuggestions()
+        fetchSuggestions(),
+        fetchQaQuestions()
     ]);
     
     icon.classList.remove('animate-spin');
@@ -1613,6 +1660,154 @@ function exportTableToCSV(filename) {
     downloadLink.click();
     document.body.removeChild(downloadLink);
     Swal.mixin({toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, background: '#1e293b', color: '#fff'}).fire({ icon: 'success', title: 'تم تحميل ملف الإكسيل بنجاح 📥' });
+}
+
+// --- Q&A Logic ---
+let activeQaId = null;
+let mediaRecorder;
+let audioChunks = [];
+let finalAudioBlob = null;
+
+async function fetchQaQuestions() {
+    const { data, error } = await sb.from('student_questions').select('*').eq('status', 'pending').order('created_at', { ascending: true });
+    const grid = document.getElementById('grid-qa');
+    const empty = document.getElementById('empty-qa');
+    grid.innerHTML = '';
+    
+    if (error || !data || data.length === 0) {
+        empty.classList.remove('hidden');
+        return;
+    }
+    empty.classList.add('hidden');
+
+    data.forEach(q => {
+        const safeName = q.student_name.replace(/'/g, "\\'");
+        const safeJson = encodeURIComponent(JSON.stringify(q));
+        
+        grid.innerHTML += `
+            <div class="glass-panel p-6 rounded-2xl border-l-4 border-cyan-500 relative transition hover:-translate-y-1 shadow-lg flex flex-col">
+                <div class="flex items-center gap-3 mb-4 border-b border-gray-700/50 pb-3">
+                    <div class="w-10 h-10 rounded-full bg-cyan-500/10 text-cyan-400 flex items-center justify-center shrink-0"><i class="fas fa-user-graduate"></i></div>
+                    <div>
+                        <h4 class="font-bold text-white text-sm">${q.student_name}</h4>
+                        <span class="text-[10px] text-gray-500"><i class="fas fa-clock"></i> ${new Date(q.created_at).toLocaleDateString('ar-EG')}</span>
+                    </div>
+                </div>
+                <p class="text-gray-300 text-sm mb-4 leading-relaxed line-clamp-3" dir="auto">${q.question_text}</p>
+                ${q.question_image ? `<button onclick="window.open('${q.question_image}', '_blank')" class="text-xs text-blue-400 mb-4 text-right hover:underline"><i class="fas fa-image"></i> عرض الصورة المرفقة</button>` : ''}
+                
+                <div class="mt-auto flex gap-3">
+                    <button onclick="openReplyModal('${safeJson}')" class="flex-1 bg-cyan-600/20 text-cyan-400 hover:bg-cyan-600 hover:text-white py-2 rounded-lg font-bold transition flex items-center justify-center gap-2 border border-cyan-500/30">
+                        <i class="fas fa-reply"></i> الرد
+                    </button>
+                    <button onclick="deleteItem('student_questions', ${q.id})" class="w-10 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white py-2 rounded-lg transition flex items-center justify-center">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>`;
+    });
+}
+
+function openReplyModal(encodedJson) {
+    const q = JSON.parse(decodeURIComponent(encodedJson));
+    activeQaId = q.id;
+    document.getElementById('modal-qa-student').innerText = q.student_name;
+    document.getElementById('modal-qa-text').innerText = q.question_text;
+    document.getElementById('inp-qa-reply').value = '';
+    discardAudio(); // تصفير الفويس القديم
+    openModal('modal-reply-qa');
+}
+
+async function startAudioRecord() {
+    const btn = document.getElementById('btn-record-audio');
+    const status = document.getElementById('record-status');
+    
+    if (mediaRecorder && mediaRecorder.state === "recording") {
+        // Stop Recording
+        mediaRecorder.stop();
+        mediaRecorder.stream.getTracks().forEach(t => t.stop());
+        btn.innerHTML = '<i class="fas fa-microphone"></i>';
+        btn.classList.replace('bg-red-600', 'bg-red-500/20');
+        btn.classList.replace('text-white', 'text-red-500');
+        btn.classList.remove('animate-pulse');
+        status.innerText = 'تم التسجيل';
+        return;
+    }
+
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];
+
+        mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
+        mediaRecorder.onstop = () => {
+            finalAudioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            const audioUrl = URL.createObjectURL(finalAudioBlob);
+            document.getElementById('audio-preview').src = audioUrl;
+            document.getElementById('audio-preview-container').classList.remove('hidden');
+            status.classList.add('hidden');
+            btn.classList.add('hidden');
+        };
+
+        mediaRecorder.start();
+        btn.innerHTML = '<i class="fas fa-stop"></i>';
+        btn.classList.replace('bg-red-500/20', 'bg-red-600');
+        btn.classList.replace('text-red-500', 'text-white');
+        btn.classList.add('animate-pulse');
+        status.innerText = 'جاري التسجيل... اضغط للإيقاف';
+    } catch (err) {
+        Swal.fire('تنبيه', 'برجاء السماح للمتصفح باستخدام المايك', 'warning');
+    }
+}
+
+function discardAudio() {
+    finalAudioBlob = null;
+    document.getElementById('audio-preview').src = '';
+    document.getElementById('audio-preview-container').classList.add('hidden');
+    const btn = document.getElementById('btn-record-audio');
+    btn.classList.remove('hidden', 'bg-red-600', 'text-white', 'animate-pulse');
+    btn.classList.add('bg-red-500/20', 'text-red-500');
+    btn.innerHTML = '<i class="fas fa-microphone"></i>';
+    const status = document.getElementById('record-status');
+    status.classList.remove('hidden');
+    status.innerText = 'تسجيل صوتي';
+}
+
+async function submitQaReply() {
+    const text = document.getElementById('inp-qa-reply').value.trim();
+    const btn = document.getElementById('btn-submit-reply');
+    
+    if (!text && !finalAudioBlob) return Swal.fire('تنبيه', 'يجب كتابة رد أو إرفاق تسجيل صوتي', 'warning');
+
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+    btn.disabled = true;
+
+    let audioUrl = null;
+    if (finalAudioBlob) {
+        const fileName = `reply_${Date.now()}.webm`;
+        const { data, error } = await sb.storage.from('qa-media').upload(fileName, finalAudioBlob);
+        if (!error) {
+            const { data: pubData } = sb.storage.from('qa-media').getPublicUrl(fileName);
+            audioUrl = pubData.publicUrl;
+        }
+    }
+
+    const { error } = await sb.from('student_questions').update({
+        reply_text: text,
+        reply_audio_url: audioUrl,
+        status: 'answered'
+    }).eq('id', activeQaId);
+
+    btn.innerHTML = 'اعتماد الرد وإرساله <i class="fas fa-paper-plane"></i>';
+    btn.disabled = false;
+
+    if (!error) {
+        closeModal('modal-reply-qa');
+        Swal.fire({icon: 'success', title: 'تم الرد بنجاح', background: '#1e293b', color: '#fff', timer: 1500, showConfirmButton: false});
+        fetchQaQuestions(); // تحديث القائمة لإخفاء السؤال المجاب
+    } else {
+        Swal.fire('خطأ', 'فشل الإرسال', 'error');
+    }
 }
 
 // الحماية
