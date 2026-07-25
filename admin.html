@@ -857,6 +857,8 @@ async function submitQuestion(addAnother) {
                     </div>
                 </div>`;
             });
+            // تفعيل الماث جاكس عشان يظهر الرموز في قائمة الأسئلة للمدير
+            if (window.MathJax) MathJax.typesetPromise();
         }
 
 function editQuestionData(encodedData) {
