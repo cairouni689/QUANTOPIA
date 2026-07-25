@@ -561,7 +561,8 @@
             
             <div class="bg-dark-900/50 p-4 rounded-xl border border-gray-700 mb-6">
                 <p class="text-xs text-gray-500 mb-2">الطالب: <span id="modal-qa-student" class="text-white font-bold"></span></p>
-                <p id="modal-qa-text" class="text-gray-300 text-sm whitespace-pre-wrap leading-relaxed" dir="auto"></p>
+                <p id="modal-qa-text" class="text-gray-300 text-sm whitespace-pre-wrap leading-relaxed mb-3" dir="auto"></p>
+                <img id="modal-qa-img" src="" class="hidden max-h-48 rounded-lg border border-gray-700 cursor-pointer hover:opacity-90 transition" onclick="window.open(this.src, '_blank')">
             </div>
 
             <div class="space-y-4">
@@ -1669,7 +1670,7 @@ let audioChunks = [];
 let finalAudioBlob = null;
 
 async function fetchQaQuestions() {
-    const { data, error } = await sb.from('student_questions').select('*').eq('status', 'pending').order('created_at', { ascending: true });
+    const { data, error } = await sb.from('student_questions').select('*').order('created_at', { ascending: false });
     const grid = document.getElementById('grid-qa');
     const empty = document.getElementById('empty-qa');
     grid.innerHTML = '';
@@ -1683,22 +1684,28 @@ async function fetchQaQuestions() {
     data.forEach(q => {
         const safeName = q.student_name.replace(/'/g, "\\'");
         const safeJson = encodeURIComponent(JSON.stringify(q));
+        const isAnswered = q.status === 'answered';
+        const statusBadge = isAnswered 
+            ? `<span class="bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded border border-green-500/30"><i class="fas fa-check"></i> تم الرد</span>`
+            : `<span class="bg-yellow-500/20 text-yellow-400 text-xs px-2 py-1 rounded border border-yellow-500/30"><i class="fas fa-clock"></i> معلق</span>`;
+        const borderColor = isAnswered ? 'border-green-500' : 'border-cyan-500';
         
         grid.innerHTML += `
-            <div class="glass-panel p-6 rounded-2xl border-l-4 border-cyan-500 relative transition hover:-translate-y-1 shadow-lg flex flex-col">
+            <div class="glass-panel p-6 rounded-2xl border-l-4 ${borderColor} relative transition hover:-translate-y-1 shadow-lg flex flex-col">
                 <div class="flex items-center gap-3 mb-4 border-b border-gray-700/50 pb-3">
                     <div class="w-10 h-10 rounded-full bg-cyan-500/10 text-cyan-400 flex items-center justify-center shrink-0"><i class="fas fa-user-graduate"></i></div>
-                    <div>
+                    <div class="flex-1">
                         <h4 class="font-bold text-white text-sm">${q.student_name}</h4>
                         <span class="text-[10px] text-gray-500"><i class="fas fa-clock"></i> ${new Date(q.created_at).toLocaleDateString('ar-EG')}</span>
                     </div>
+                    <div>${statusBadge}</div>
                 </div>
                 <p class="text-gray-300 text-sm mb-4 leading-relaxed line-clamp-3" dir="auto">${q.question_text}</p>
                 ${q.question_image ? `<button onclick="window.open('${q.question_image}', '_blank')" class="text-xs text-blue-400 mb-4 text-right hover:underline"><i class="fas fa-image"></i> عرض الصورة المرفقة</button>` : ''}
                 
                 <div class="mt-auto flex gap-3">
                     <button onclick="openReplyModal('${safeJson}')" class="flex-1 bg-cyan-600/20 text-cyan-400 hover:bg-cyan-600 hover:text-white py-2 rounded-lg font-bold transition flex items-center justify-center gap-2 border border-cyan-500/30">
-                        <i class="fas fa-reply"></i> الرد
+                        <i class="fas fa-reply"></i> ${isAnswered ? 'تعديل الرد' : 'الرد'}
                     </button>
                     <button onclick="deleteItem('student_questions', ${q.id})" class="w-10 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white py-2 rounded-lg transition flex items-center justify-center">
                         <i class="fas fa-trash"></i>
@@ -1713,7 +1720,17 @@ function openReplyModal(encodedJson) {
     activeQaId = q.id;
     document.getElementById('modal-qa-student').innerText = q.student_name;
     document.getElementById('modal-qa-text').innerText = q.question_text;
-    document.getElementById('inp-qa-reply').value = '';
+    
+    const imgPreview = document.getElementById('modal-qa-img');
+    if (q.question_image) {
+        imgPreview.src = q.question_image;
+        imgPreview.classList.remove('hidden');
+    } else {
+        imgPreview.src = '';
+        imgPreview.classList.add('hidden');
+    }
+
+    document.getElementById('inp-qa-reply').value = q.reply_text || '';
     discardAudio(); // تصفير الفويس القديم
     openModal('modal-reply-qa');
 }
