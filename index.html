@@ -1977,8 +1977,9 @@ async function submitSuggestion() {
                 }
 
                 container.innerHTML += `
-                <div class="bg-slate-100 dark:bg-cardBg p-5 md:p-6 rounded-3xl border border-slate-300 dark:border-gray-800 shadow-md">
-                    <div class="flex justify-between items-start mb-3">
+                <div class="bg-slate-100 dark:bg-cardBg p-5 md:p-6 rounded-3xl border border-slate-300 dark:border-gray-800 shadow-md relative group">
+                    <button onclick="deleteStudentQuestion(${q.id})" class="absolute top-4 left-4 w-8 h-8 rounded-full bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100" title="حذف السؤال"><i class="fas fa-trash-alt text-xs"></i></button>
+                    <div class="flex justify-between items-start mb-3 pr-10">
                         ${statusBadge}
                         <span class="text-[10px] text-slate-500"><i class="fas fa-clock"></i> ${new Date(q.created_at).toLocaleDateString('ar-EG')}</span>
                     </div>
@@ -1987,6 +1988,18 @@ async function submitSuggestion() {
                     ${replyHtml}
                 </div>`;
             });
+        }
+
+        async function deleteStudentQuestion(id) {
+            if(confirm('هل أنت متأكد من حذف هذا السؤال؟')) {
+                const { error } = await supabaseApp.from('student_questions').delete().eq('id', id);
+                if(!error) {
+                    showNotification('تم', 'تم حذف السؤال بنجاح', 'success');
+                    fetchStudentQuestions();
+                } else {
+                    showNotification('خطأ', 'حدثت مشكلة أثناء الحذف', 'error');
+                }
+            }
         }
 
 // 6. Global Scroll Animations (Fade In Up)
