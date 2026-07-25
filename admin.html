@@ -339,11 +339,24 @@
                 </div>
 
             <div id="view-qa" class="hidden space-y-6 animate-fade-in-up">
-                    <div class="flex justify-between items-center bg-dark-800/50 p-4 rounded-2xl border border-gray-700">
-                        <h3 class="text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-comments text-cyan-500"></i> الأسئلة المعلقة</h3>
+                    <div class="bg-dark-800/50 p-2 rounded-2xl border border-gray-700 flex gap-2">
+                        <button id="tab-btn-pending" onclick="switchQaTab('pending')" class="flex-1 bg-cyan-600/20 text-cyan-400 font-bold py-3 rounded-xl transition border border-cyan-500/30 flex items-center justify-center gap-2">
+                            <i class="fas fa-clock"></i> المعلقة (<span id="count-pending">0</span>)
+                        </button>
+                        <button id="tab-btn-answered" onclick="switchQaTab('answered')" class="flex-1 text-gray-400 hover:text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">
+                            <i class="fas fa-check-double"></i> تم الرد (<span id="count-answered">0</span>)
+                        </button>
                     </div>
-                    <div id="grid-qa" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
-                    <div id="empty-qa" class="hidden p-8 text-center text-gray-500 glass-panel rounded-2xl">لا توجد أسئلة معلقة، أنت بطل!</div>
+                    
+                    <div id="qa-pending-section">
+                        <div id="grid-qa-pending" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
+                        <div id="empty-qa-pending" class="hidden p-8 text-center text-gray-500 glass-panel rounded-2xl">لا توجد أسئلة معلقة، أنت بطل!</div>
+                    </div>
+
+                    <div id="qa-answered-section" class="hidden">
+                        <div id="grid-qa-answered" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
+                        <div id="empty-qa-answered" class="hidden p-8 text-center text-gray-500 glass-panel rounded-2xl">لا توجد أسئلة تم الرد عليها حتى الآن.</div>
+                    </div>
                 </div>
 
             </div>
@@ -1671,15 +1684,25 @@ let finalAudioBlob = null;
 
 async function fetchQaQuestions() {
     const { data, error } = await sb.from('student_questions').select('*').order('created_at', { ascending: false });
-    const grid = document.getElementById('grid-qa');
-    const empty = document.getElementById('empty-qa');
-    grid.innerHTML = '';
+    
+    const gridPending = document.getElementById('grid-qa-pending');
+    const emptyPending = document.getElementById('empty-qa-pending');
+    const gridAnswered = document.getElementById('grid-qa-answered');
+    const emptyAnswered = document.getElementById('empty-qa-answered');
+    
+    gridPending.innerHTML = '';
+    gridAnswered.innerHTML = '';
     
     if (error || !data || data.length === 0) {
-        empty.classList.remove('hidden');
+        emptyPending.classList.remove('hidden');
+        emptyAnswered.classList.remove('hidden');
+        document.getElementById('count-pending').innerText = '0';
+        document.getElementById('count-answered').innerText = '0';
         return;
     }
-    empty.classList.add('hidden');
+
+    let pendingCount = 0;
+    let answeredCount = 0;
 
     data.forEach(q => {
         const safeName = q.student_name.replace(/'/g, "\\'");
@@ -1690,7 +1713,7 @@ async function fetchQaQuestions() {
             : `<span class="bg-yellow-500/20 text-yellow-400 text-xs px-2 py-1 rounded border border-yellow-500/30"><i class="fas fa-clock"></i> معلق</span>`;
         const borderColor = isAnswered ? 'border-green-500' : 'border-cyan-500';
         
-        grid.innerHTML += `
+        const cardHtml = `
             <div class="glass-panel p-6 rounded-2xl border-l-4 ${borderColor} relative transition hover:-translate-y-1 shadow-lg flex flex-col">
                 <div class="flex items-center gap-3 mb-4 border-b border-gray-700/50 pb-3">
                     <div class="w-10 h-10 rounded-full bg-cyan-500/10 text-cyan-400 flex items-center justify-center shrink-0"><i class="fas fa-user-graduate"></i></div>
@@ -1712,7 +1735,43 @@ async function fetchQaQuestions() {
                     </button>
                 </div>
             </div>`;
+            
+        if (isAnswered) {
+            gridAnswered.innerHTML += cardHtml;
+            answeredCount++;
+        } else {
+            gridPending.innerHTML += cardHtml;
+            pendingCount++;
+        }
     });
+    
+    document.getElementById('count-pending').innerText = pendingCount;
+    document.getElementById('count-answered').innerText = answeredCount;
+    
+    if (pendingCount === 0) emptyPending.classList.remove('hidden');
+    else emptyPending.classList.add('hidden');
+    
+    if (answeredCount === 0) emptyAnswered.classList.remove('hidden');
+    else emptyAnswered.classList.add('hidden');
+}
+
+function switchQaTab(tab) {
+    const btnPending = document.getElementById('tab-btn-pending');
+    const btnAnswered = document.getElementById('tab-btn-answered');
+    const secPending = document.getElementById('qa-pending-section');
+    const secAnswered = document.getElementById('qa-answered-section');
+    
+    if (tab === 'pending') {
+        btnPending.className = 'flex-1 bg-cyan-600/20 text-cyan-400 font-bold py-3 rounded-xl transition border border-cyan-500/30 flex items-center justify-center gap-2';
+        btnAnswered.className = 'flex-1 text-gray-400 hover:text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2';
+        secPending.classList.remove('hidden');
+        secAnswered.classList.add('hidden');
+    } else {
+        btnAnswered.className = 'flex-1 bg-green-600/20 text-green-400 font-bold py-3 rounded-xl transition border border-green-500/30 flex items-center justify-center gap-2';
+        btnPending.className = 'flex-1 text-gray-400 hover:text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2';
+        secAnswered.classList.remove('hidden');
+        secPending.classList.add('hidden');
+    }
 }
 
 function openReplyModal(encodedJson) {
