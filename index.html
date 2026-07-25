@@ -1026,7 +1026,7 @@ function hideAllSections() {
             section.classList.remove('animate-fade-in-up');
             void section.offsetWidth; 
             section.classList.add('animate-fade-in-up');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo(0, 0);
             
             if (pushToHistory) {
                 history.pushState({ type: 'section', id: sectionId }, '', '#' + sectionId);
@@ -1180,7 +1180,32 @@ function hideAllSections() {
         const SUPABASE_URL = 'https://cilhimtbujromcbvqvgh.supabase.co';
         const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_a4YGKVHx6oBBY5XvB0iS8Q_GJCcfcHa'; 
         let supabaseApp;
-        
+
+        // إيقاف استرجاع السكرول التلقائي للمتصفح عشان ميخفيش الناف بار بعد الريفريش
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+
+        // ===== التنفيذ الفوري لمعرفة الصفحة بدون انتظار التحميل لمنع الفلاش =====
+        (function initializeRoute() {
+            const state = history.state;
+            if (state) {
+                if (state.type === 'home') {
+                    showHome(state.hash, false);
+                } else if (state.type === 'materials') {
+                    showMaterialsLevel(state.level, state.title, false);
+                } else if (state.type === 'section') {
+                    showSection(state.id, false);
+                }
+            } else if (window.location.hash) {
+                const hash = window.location.hash.substring(1);
+                if (document.getElementById(hash) && hash.includes('section')) {
+                    showSection(hash, false);
+                }
+            }
+        })();
+        // ==========================================================
+
         window.addEventListener('load', async () => {
             if (window.supabase) {
                 supabaseApp = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
@@ -1196,24 +1221,6 @@ function hideAllSections() {
                 fetchFrontendCourses(); // الدالة الجديدة لجلب الكورسات
                 setupRealtimeListener();
                 checkAbandonedExams();
-
-                // ===== الإضافة الجديدة لحفظ الصفحة الحالية بعد الريفريش =====
-                const state = history.state;
-                if (state) {
-                    if (state.type === 'home') {
-                        showHome(state.hash, false);
-                    } else if (state.type === 'materials') {
-                        showMaterialsLevel(state.level, state.title, false);
-                    } else if (state.type === 'section') {
-                        showSection(state.id, false);
-                    }
-                } else if (window.location.hash) {
-                    const hash = window.location.hash.substring(1);
-                    if (document.getElementById(hash) && hash.includes('section')) {
-                        showSection(hash, false);
-                    }
-                }
-                // ==========================================================
             } else {
                 console.error("Supabase failed to load from CDN.");
             }
