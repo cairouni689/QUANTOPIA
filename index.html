@@ -230,7 +230,8 @@
                     <a onclick="showSection('quizzes-section')" class="nav-link text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold transition-colors cursor-pointer">Quizzes</a>
                     <a onclick="showMaterialsLevel('years')" class="nav-link text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold transition-colors cursor-pointer">Materials</a>
                     <a onclick="showSection('about-section')" class="nav-link text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold transition-colors cursor-pointer">About Us</a>
-                    
+                    <a onclick="showQaSection()" class="nav-link text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold transition-colors cursor-pointer text-primary">Q&A</a>
+
                     <div class="flex items-center gap-3 border-l border-slate-400 dark:border-gray-700 pl-4 ml-2" id="auth-buttons">
                         <button onclick="openModal('login-modal')" class="text-slate-700 dark:text-accent hover:text-slate-900 dark:hover:text-yellow-400 flex items-center gap-2 font-bold transition-colors">
                             <i class="fa-solid fa-person-rays"></i> Login
@@ -279,6 +280,8 @@
             <a onclick="closeMobileMenu(); showSection('quizzes-section')" class="text-slate-700 dark:text-gray-300 font-bold text-lg hover:text-primary dark:hover:text-primary transition-all hover:translate-x-2 cursor-pointer flex items-center gap-3"><div class="w-8 flex justify-center"><i class="fa-solid fa-clipboard-question"></i></div> Quizzes</a>
             <a onclick="closeMobileMenu(); showMaterialsLevel('years')" class="text-slate-700 dark:text-gray-300 font-bold text-lg hover:text-primary dark:hover:text-primary transition-all hover:translate-x-2 cursor-pointer flex items-center gap-3"><div class="w-8 flex justify-center"><i class="fa-solid fa-book-open"></i></div> Materials</a>
             <a onclick="closeMobileMenu(); showSection('about-section')" class="text-slate-700 dark:text-gray-300 font-bold text-lg hover:text-primary dark:hover:text-primary transition-all hover:translate-x-2 cursor-pointer flex items-center gap-3"><div class="w-8 flex justify-center"><i class="fa-solid fa-atom"></i></div> About Us</a>
+            <a onclick="closeMobileMenu(); showQaSection()" class="text-slate-700 dark:text-gray-300 font-bold text-lg hover:text-primary dark:hover:text-primary transition-all hover:translate-x-2 cursor-pointer flex items-center gap-3"><div class="w-8 flex justify-center"><i class="fa-solid fa-comments text-primary"></i></div> Q&A</a>
+
             <div class="h-px w-full bg-gradient-to-r from-transparent via-slate-300 dark:via-gray-700 to-transparent my-2"></div>
             <div id="mobile-auth-buttons" class="flex flex-col gap-4 mt-auto">
                 <button onclick="closeMobileMenu(); openModal('login-modal')" class="w-full text-center py-3 text-accent dark:text-accent font-bold border-2 border-slate-300 dark:border-gray-700 rounded-xl hover:bg-slate-200 dark:hover:bg-gray-800 hover:border-accent dark:hover:border-accent transition-all duration-300">Login</button>
@@ -611,6 +614,36 @@
         </div>
     </div>
 
+<div id="qa-section" class="hidden py-24 min-h-screen bg-slate-200 dark:bg-darkBg transition-colors relative">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 animate-fade-in-up">
+            <h2 class="text-4xl font-black mb-8 text-slate-900 dark:text-white border-b border-slate-300 dark:border-gray-800 pb-4">
+                منصة <span class="text-primary">الأسئلة والأجوبة (Q&A)</span>
+            </h2>
+            
+            <div class="bg-slate-100 dark:bg-cardBg p-6 rounded-3xl border border-slate-300 dark:border-gray-800 shadow-xl mb-10">
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-4">لديك سؤال مش فاهمه؟ اسأل الآن</h3>
+                <textarea id="qa-text-input" class="w-full bg-white dark:bg-[#080c13] border border-slate-300 dark:border-gray-700 rounded-xl p-4 text-slate-900 dark:text-white outline-none focus:border-primary resize-none h-24 mb-4 custom-scrollbar" placeholder="اكتب تفاصيل سؤالك هنا..." dir="auto"></textarea>
+                <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+                    <div class="flex items-center gap-4 w-full md:w-auto">
+                        <label class="cursor-pointer bg-slate-200 hover:bg-slate-300 dark:bg-[#080c13] dark:hover:bg-gray-800 text-slate-700 dark:text-gray-300 px-4 py-2 rounded-lg border border-slate-300 dark:border-gray-700 transition flex items-center gap-2">
+                            <i class="fas fa-image text-primary"></i> إرفاق صورة
+                            <input type="file" id="qa-image-upload" class="hidden" accept="image/*" onchange="previewQaImage(this)">
+                        </label>
+                        <img id="qa-img-preview" src="" class="hidden h-12 rounded border border-gray-600">
+                    </div>
+                    <button id="btn-submit-qa" onclick="submitStudentQuestion()" class="w-full md:w-auto bg-primary hover:bg-primaryDark text-white px-8 py-2.5 rounded-xl font-bold shadow-lg transition-transform hover:-translate-y-1 flex justify-center items-center gap-2">
+                        إرسال السؤال <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold mb-6 text-slate-900 dark:text-white border-b border-slate-300 dark:border-gray-800 pb-2">أسئلتي السابقة</h3>
+            <div id="qa-list-container" class="flex flex-col gap-6">
+                <!-- الأسئلة بتظهر هنا -->
+            </div>
+        </div>
+    </div>
+    
 <div id="active-quiz-view" class="hidden opacity-0 transition-opacity duration-500 min-h-screen bg-slate-100 dark:bg-darkBg relative flex flex-col select-none z-50">
         <div class="bg-white dark:bg-cardBg border-b border-slate-300 dark:border-gray-800 p-4 sticky top-0 z-50 shadow-lg">
             <div class="max-w-7xl mx-auto flex justify-between items-center">
@@ -996,19 +1029,19 @@
             }, 300);
         }
 
-function hideAllSections() {
+    function hideAllSections() {
             document.getElementById('main-content').classList.add('hidden');
             document.getElementById('profile-section').classList.add('hidden');
             document.getElementById('quizzes-section').classList.add('hidden');
             document.getElementById('materials-section').classList.add('hidden');
             document.getElementById('about-section').classList.add('hidden');
+            document.getElementById('qa-section').classList.add('hidden');
             
             const activeQuiz = document.getElementById('active-quiz-view');
             if(activeQuiz) activeQuiz.classList.add('hidden');
 
-            closeMobileMenu(); // قفل السايد بار بانيميشن
+            closeMobileMenu();
             
-            // إخفاء دوشة الفوتر في الصفحات الداخلية
             document.getElementById('fat-footer').classList.add('hidden');
             document.getElementById('footer-links').classList.add('hidden');
         }
@@ -1850,6 +1883,111 @@ async function submitSuggestion() {
             .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #00b4d8; }
         `;
         document.head.appendChild(style);
+
+    function showQaSection() {
+            showSection('qa-section');
+            fetchStudentQuestions();
+        }
+
+        function previewQaImage(input) {
+            const preview = document.getElementById('qa-img-preview');
+            if (input.files && input.files[0]) {
+                preview.src = URL.createObjectURL(input.files[0]);
+                preview.classList.remove('hidden');
+            }
+        }
+
+        async function submitStudentQuestion() {
+            const textInput = document.getElementById('qa-text-input');
+            const fileInput = document.getElementById('qa-image-upload');
+            const btn = document.getElementById('btn-submit-qa');
+            
+            const { data: { session } } = await supabaseApp.auth.getSession();
+            if (!session) return showNotification('تنبيه', 'يجب تسجيل الدخول لطرح سؤال', 'error');
+            if (!textInput.value.trim() && !fileInput.files[0]) return showNotification('تنبيه', 'يرجى كتابة السؤال أو إرفاق صورة', 'warning');
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+            btn.disabled = true;
+
+            let imageUrl = null;
+            if (fileInput.files[0]) {
+                const file = fileInput.files[0];
+                const fileName = `${Date.now()}_${file.name.replace(/\s/g, '_')}`;
+                const { data, error } = await supabaseApp.storage.from('qa-media').upload(fileName, file);
+                if (!error) {
+                    const { data: pubData } = supabaseApp.storage.from('qa-media').getPublicUrl(fileName);
+                    imageUrl = pubData.publicUrl;
+                }
+            }
+
+            const payload = {
+                user_id: session.user.id,
+                student_name: session.user.user_metadata.first_name + ' ' + session.user.user_metadata.last_name,
+                question_text: textInput.value.trim(),
+                question_image: imageUrl
+            };
+
+            const { error } = await supabaseApp.from('student_questions').insert([payload]);
+
+            btn.innerHTML = 'إرسال السؤال <i class="fas fa-paper-plane"></i>';
+            btn.disabled = false;
+
+            if (!error) {
+                textInput.value = '';
+                fileInput.value = '';
+                document.getElementById('qa-img-preview').classList.add('hidden');
+                showNotification('تم بنجاح', 'تم إرسال سؤالك، سيقوم المدرس بالرد عليك قريباً', 'success');
+                fetchStudentQuestions();
+            } else {
+                showNotification('خطأ', 'حدثت مشكلة أثناء الإرسال', 'error');
+            }
+        }
+
+        async function fetchStudentQuestions() {
+            const container = document.getElementById('qa-list-container');
+            container.innerHTML = '<div class="text-center py-10"><i class="fas fa-spinner fa-spin text-primary text-3xl"></i></div>';
+            
+            const { data: { session } } = await supabaseApp.auth.getSession();
+            if (!session) return;
+
+            const { data, error } = await supabaseApp.from('student_questions').select('*').eq('user_id', session.user.id).order('created_at', { ascending: false });
+            
+            if (error || !data || data.length === 0) {
+                container.innerHTML = '<div class="text-center py-10 bg-slate-100 dark:bg-cardBg rounded-2xl border border-slate-300 dark:border-gray-800"><p class="text-slate-500">لم تقم بطرح أي أسئلة بعد.</p></div>';
+                return;
+            }
+
+            container.innerHTML = '';
+            data.forEach(q => {
+                const statusBadge = q.status === 'answered' 
+                    ? `<span class="bg-green-500/20 text-green-600 dark:text-green-400 text-xs px-2 py-1 rounded font-bold border border-green-500/30">تم الرد</span>` 
+                    : `<span class="bg-accent/20 text-yellow-600 dark:text-accent text-xs px-2 py-1 rounded font-bold border border-accent/30">قيد المراجعة</span>`;
+
+                let replyHtml = '';
+                if (q.status === 'answered') {
+                    replyHtml = `
+                        <div class="mt-4 pt-4 border-t border-slate-300 dark:border-gray-700">
+                            <h4 class="text-primary font-bold mb-2 flex items-center gap-2"><i class="fas fa-chalkboard-teacher"></i> رد المدرس:</h4>
+                            ${q.reply_text ? `<p class="text-slate-700 dark:text-gray-300 text-sm whitespace-pre-wrap leading-relaxed mb-3" dir="auto">${q.reply_text}</p>` : ''}
+                            ${q.reply_audio_url ? `
+                                <div class="bg-slate-200 dark:bg-[#080c13] p-2 rounded-xl border border-slate-300 dark:border-gray-700">
+                                    <audio controls class="w-full h-10 outline-none"><source src="${q.reply_audio_url}" type="audio/webm">متصفحك لا يدعم تشغيل الصوت.</audio>
+                                </div>` : ''}
+                        </div>`;
+                }
+
+                container.innerHTML += `
+                <div class="bg-slate-100 dark:bg-cardBg p-5 md:p-6 rounded-3xl border border-slate-300 dark:border-gray-800 shadow-md">
+                    <div class="flex justify-between items-start mb-3">
+                        ${statusBadge}
+                        <span class="text-[10px] text-slate-500"><i class="fas fa-clock"></i> ${new Date(q.created_at).toLocaleDateString('ar-EG')}</span>
+                    </div>
+                    <p class="text-slate-900 dark:text-white font-medium whitespace-pre-wrap mb-3" dir="auto">${q.question_text}</p>
+                    ${q.question_image ? `<img src="${q.question_image}" class="max-h-48 rounded-xl border border-slate-300 dark:border-gray-700 cursor-pointer hover:opacity-90 transition" onclick="window.open(this.src, '_blank')">` : ''}
+                    ${replyHtml}
+                </div>`;
+            });
+        }
 
 // 6. Global Scroll Animations (Fade In Up)
 document.addEventListener("DOMContentLoaded", () => {
