@@ -610,6 +610,7 @@
 
         let editingSubjectId = null;
         let currentQuizId = null;
+        let editingCourseId = null;
 
 // 1. التحقق الآمن عند تحميل الصفحة
 window.onload = async () => {
@@ -1348,12 +1349,41 @@ async function fetchQuizzes() {
 
 // --- COURSES LOGIC ---
 function openCourseModal() {
+    editingCourseId = null;
     document.getElementById('inp-course-name').value = '';
     document.getElementById('inp-course-img-url').value = '';
     document.getElementById('course-url-preview').src = '';
     document.getElementById('course-url-preview').classList.add('hidden');
     document.getElementById('lectures-container').innerHTML = '';
+    document.querySelector('#modal-course button[onclick="submitCourse()"]').innerText = 'حفظ الكورس';
     addLectureRow(); // ضيف صف واحد فاضي كمبدأ
+    openModal('modal-course');
+}
+
+function editCourse(encodedCourse) {
+    const course = JSON.parse(decodeURIComponent(encodedCourse));
+    editingCourseId = course.id;
+    document.getElementById('inp-course-name').value = course.title;
+    document.getElementById('inp-course-img-url').value = course.cover_image || '';
+    previewCourseUrlImage(course.cover_image || '');
+    
+    const container = document.getElementById('lectures-container');
+    container.innerHTML = '';
+    if (course.lectures && course.lectures.length > 0) {
+        course.lectures.forEach(lec => {
+            const rowId = 'lec-' + Date.now() + Math.random().toString(36).substr(2, 5);
+            container.insertAdjacentHTML('beforeend', `
+                <div id="${rowId}" class="flex gap-2 items-center bg-dark-800 p-2 rounded-lg border border-gray-700/50 lecture-row mb-2">
+                    <input type="text" placeholder="اسم المحاضرة" value="${lec.name.replace(/"/g, '&quot;')}" class="lec-name flex-1 bg-dark-900 border border-gray-600 rounded p-2 text-white text-sm outline-none focus:border-green-500">
+                    <input type="text" placeholder="رابط اليوتيوب" value="${lec.url.replace(/"/g, '&quot;')}" class="lec-link flex-1 bg-dark-900 border border-gray-600 rounded p-2 text-white text-sm outline-none focus:border-green-500 text-left" dir="ltr">
+                    <button onclick="document.getElementById('${rowId}').remove()" class="text-red-400 hover:text-red-500 p-2 transition"><i class="fas fa-trash"></i></button>
+                </div>
+            `);
+        });
+    } else {
+        addLectureRow();
+    }
+    document.querySelector('#modal-course button[onclick="submitCourse()"]').innerText = 'حفظ التعديلات';
     openModal('modal-course');
 }
 
@@ -1401,13 +1431,22 @@ async function submitCourse() {
     const payload = {
         title: name,
         cover_image: coverUrl,
-        lectures: lectures // هتنحفظ كـ JSONB في الداتا بيز
+        lectures: lectures 
     };
 
-    const { error } = await sb.from('courses').insert([payload]);
+    let error;
+    if (editingCourseId) {
+        const res = await sb.from('courses').update(payload).eq('id', editingCourseId);
+        error = res.error;
+    } else {
+        const res = await sb.from('courses').insert([payload]);
+        error = res.error;
+    }
+
     if(!error) {
         closeModal('modal-course');
-        Swal.fire({icon: 'success', title: 'تم حفظ الكورس بنجاح', background: '#1e293b', color: '#fff', timer: 1500, showConfirmButton: false});
+        Swal.fire({icon: 'success', title: editingCourseId ? 'تم تعديل الكورس بنجاح' : 'تم حفظ الكورس بنجاح', background: '#1e293b', color: '#fff', timer: 1500, showConfirmButton: false});
+        editingCourseId = null;
         fetchCourses();
     } else {
         Swal.fire('خطأ', 'حدثت مشكلة أثناء الحفظ', 'error');
@@ -1428,12 +1467,14 @@ async function fetchCourses() {
 
     data.forEach(course => {
         const lecsCount = course.lectures ? course.lectures.length : 0;
+        const safeCourse = encodeURIComponent(JSON.stringify(course));
         grid.innerHTML += `
             <div class="glass-panel rounded-2xl overflow-hidden border border-gray-700/50 transition hover:-translate-y-1 shadow-lg group">
                 <div class="h-40 w-full relative">
                     <img src="${course.cover_image}" class="w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-dark-900 to-transparent"></div>
                     <button onclick="deleteItem('courses', ${course.id})" class="absolute top-3 right-3 bg-red-500/80 hover:bg-red-500 text-white w-8 h-8 rounded-full flex items-center justify-center backdrop-blur shadow-lg transition"><i class="fas fa-trash-alt"></i></button>
+                    <button onclick="editCourse('${safeCourse}')" class="absolute top-3 right-14 bg-blue-500/80 hover:bg-blue-500 text-white w-8 h-8 rounded-full flex items-center justify-center backdrop-blur shadow-lg transition"><i class="fas fa-pen text-xs"></i></button>
                 </div>
                 <div class="p-5">
                     <h4 class="font-bold text-white text-lg mb-2 truncate" title="${course.title}">${course.title}</h4>
